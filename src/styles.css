@@ -4,6 +4,7 @@ html, body{
    }
   
   body {
-     background: rgba(228, 230, 255,100);
+     /* background: rgba(228, 230, 255,100); */
+     background:#eeeeee;
 
    }

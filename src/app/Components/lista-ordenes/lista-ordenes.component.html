@@ -1,0 +1,66 @@
+<h3>Ordenes de servicio</h3>
+<div class="container" style="padding: 10px; width: 100%;">
+<div class="row">
+    <div class="col-md-2">
+        <select class="custom-select">
+            <option value="0" selected>Estatus</option>
+            <option value="1">Abierta</option>
+            <option value="2">Asignada</option>
+            <option value="3">Cerrada</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <input class="form-control" type="date" placeholder="De">
+    </div>
+    <div class="col-md-3">
+        <input class="form-control" type="date" placeholder="A">
+    </div>
+    <div class="col-md-1 text-right">
+            <button class="btn btn-primary">Buscar</button>
+    </div>
+    <div class="col-md-1 text-right">
+        <button class="btn btn-success">Agregar</button>
+</div>
+
+</div>
+</div>
+<table class="table table-hover" style="background-color: white;">
+    <thead>
+      <tr class="">
+        <th scope="col" >Orden</th>
+        <th scope="col" >Empresa</th>
+        <th scope="col" >Sucursal</th>
+        <th scope="col" >Creada</th>
+        <th scope="col" >Instalador</th>
+        <th scope="col" >Fecha programada</th>
+        <th scope="col" >Estatus</th>
+
+
+      </tr>
+    </thead>
+    <tbody *ngFor="let o of ordenes">
+        <tr>
+          <th scope="row">{{o.cve_orden}}</th>
+          <td>{{o.Empresa }}</td>
+          <td>{{o.cve_sucursal }}</td>
+          <td>{{o.fecha_creacion }}</td>
+          <td>
+            <p *ngIf="o.Instalador== null">Sin asignar</p>
+            <p *ngIf="o.estatus>0">{{o.cve_instalador}}</p>
+          </td>
+          <td>
+            <p *ngIf="o.fecha_programada== null">Sin programar</p>
+            <p *ngIf="o.fecha_programada!=null">{{o.fecha_programada}}</p>
+          </td>
+          <td>
+              <p *ngIf="o.estatus==1">Abierta</p>
+              <p *ngIf="o.estatus==2">Asignada</p>
+              <p *ngIf="o.estatus==3">Terminada</p>
+          </td>
+          <td >
+            <button class="btn btn-danger"><img src="/assets/delete-24px.svg" alt=""></button>
+            <button class="btn btn-primary"><img src="/assets/pageview-24px.svg" alt=""></button>
+        </td>
+        </tr>
+      </tbody>
+  </table>
