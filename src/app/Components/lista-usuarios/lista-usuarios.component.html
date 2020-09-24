@@ -1,20 +1,19 @@
-<app-sidebar></app-sidebar>
+<app-navbar></app-navbar>
 <div class="container text-center" style="padding: 10px; width: 90%;">
 <div class="row">
-    <div class="col-md-10 text-left">
+    <div class="col-md-10 col-sm-7 text-left">
         <h3>Lista de usuarios</h3>
     </div>
-    <div  class="col-md-2 text-right">
+    <div  class="col-md-2 col-sm-5 text-right">
         <a [routerLink]="['/abcUsuario']" class="btn btn-success">Agregar</a>
     </div>
 </div>
 </div>
 
 <div class="container table-container">
-    <table class="table table-hover" >
+    <table class="table table-hover"  >
         <thead>
           <tr class="">
-            <th scope="col" >No.</th>
             <th scope="col" >Nombre</th>
             <th scope="col" >Rol</th>
             <th scope="col" >Correo</th>
@@ -23,7 +22,7 @@
         </thead>
         <tbody *ngFor="let u of usuarios">
             <tr>
-              <th scope="row">{{cont+1}}</th>
+
               <td>{{u.nombre}}<u class="nomb"></u></td>
               <td>
                 <p *ngIf="u.nivel==1">Administrador</p>
@@ -33,28 +32,8 @@
             </td>
               <td>{{u.email }}</td>
               <td >
-                <button class="btn btn-primary" style="margin-right: 5px;"><img src="/assets/editar.png" alt=""></button>
-                <button class="btn btn-danger"  data-toggle="modal" data-target="#confirmacion"><img src="/assets/delete-24px.svg" alt=""></button>
-      <!-- Modal -->
-<div class="modal fade" id="confirmacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          ¿Desea borrar este usuario?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="borrar(u.cve_usuario)" >confirmar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-      <!--modal-->
+                <button class="btn btn-primary" [routerLink]="['/abcUsuario', u.cve_usuario]" style="margin-right: 5px;"><img src="/assets/editar.png" alt=""></button>
+                <button class="btn btn-danger"  (click)="borrar(u.cve_usuario, u.email)"><img src="/assets/delete-24px.svg" alt=""></button>
             </td>
             </tr>
           </tbody>

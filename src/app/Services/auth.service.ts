@@ -52,4 +52,8 @@ export class AuthService {
   {
       if(!localStorage['token']){ return false }else{return true} ;
   }
+
+  actualiarUltimoInicio(){
+    
+  }
 }

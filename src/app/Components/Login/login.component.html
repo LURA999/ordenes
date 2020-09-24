@@ -22,17 +22,20 @@
             <br>
             <div class="row">
                 <div class="col-md-8"  style="margin: auto;">
-                    <button  type="submit" class="btn btn-primary">Iniciar sesion</button>
-                    <!-- <input type="submit" class="btn btn-primary"> -->
+                    <button  type="submit" class="btn btn-primary">Iniciar sesion<div *ngIf="process"  class="lds-dual-ring"></div></button>
+                    <div *ngIf="process"  class="lds-dual-ring"></div>
+                    
                 </div>
             </div>
             <br>
-            <span *ngIf="f.submitted && f.controls['email'].errors" 
-             class="text-danger" >{{error.descripcion}}</span>
-
+            <span *ngIf="f.submitted && f.controls['email'].errors || f.controls['password'].errors" 
+             class="text-danger error" >{{error.descripcion}}<br></span>
+ 
              <span *ngIf="sesion.error" 
-             class="text-danger" >{{sesion.descripcion}}</span>
+             class="text-danger error" >{{sesion.descripcion}}</span>
+             
     </div>
 </form>
 </div>
 </div> 
+

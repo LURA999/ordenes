@@ -1,0 +1,21 @@
+nav{
+    background-color: black;
+}
+a{
+    color: white;
+    opacity: 1;
+    transition: 0.3s;
+}
+
+a:hover{
+    opacity: 0.6;
+}
+
+.dropdown-item{
+    color: black;
+}
+
+.dropdown-item:hover{
+    background-color: blanchedalmond;
+    color: black;
+}

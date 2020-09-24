@@ -1,53 +1,95 @@
-<div class="container" style="background-color:#DCDCDC; border-radius: 4px 4px 0px 0px; padding: 5px;">
-    <h3 style="padding: 3px;"><strong>Orden</strong> de servicio <img src="./assets/assignment-24px.svg"></h3>
-</div>
-<div class="container" style="background-color:white; border-radius: 0px 0px 4px 4px; padding: 20px;margin-bottom: 2%;">
-    <form>
-    <div class="form-group">
-        <div class="row">
-            <div class="col-md-6 ">
-                <label for="clienteId" class="col-form-label">Cliente</label>
-                <input class="form-control" id="clienteId" placeholder="cliente">
-            </div>
-            <div class="col-md-6">
-                <label for="sucursalId" class="col-form-label">Sucursal</label>
-                <input class="form-control" id="sucursalId" placeholder="Sucursal">
-            </div>
+<app-navbar></app-navbar>
+<div class="container text-center" style="padding: 10px; width: 90%;">
+    <div class="row">
+        <div class="col-md-10 text-left">
+            <h3>{{titulo}}</h3>
         </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <label for="contacto" class="col-form-label">Contacto</label>
-                <input class="form-control" id="clienteId" placeholder="Contacto">
-            </div>
-            <div class="col-md-6">
-                <label for="telefono" class="col-form-label">Telefono</label>
-                <input class="form-control" id="telefono" placeholder="Telefono">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <label for="descserv" class="col-form-label">Servicio</label>
-                <input class="form-control" id="descserv" placeholder="Servicio">
-            </div>
-        </div>
-
-
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="exampleFormControlTextarea1" class="col-form-label">Descripción</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                  </div>
-            </div>
-
-        </div>
-        
-        <button style="margin-right:5px;" class="btn btn-success">Aceptar</button>
-        
-        <button class="btn btn-danger">Cancelar</button>
     </div>
-    
+</div>
+<div class="container" style="background-color:white; border-radius: 0px 0px 4px 4px; padding: 20px;margin-bottom: 2%;" *ngIf="!esDetalle">
+    <form autocomplete="off" #forma="ngForm" (ngSubmit)="onSubmit(forma)">
+        <!-- Datos del cliente  -->
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-3 ">
+                    <label for="inputCliente" class="col-form-label">Cliente: </label>
+                    <input name="cliente" type="text" [(ngModel)]="cliente" (change)="cargarSucursal($event)"
+                        [class.is-invalid]="clienteVAL.touched && !clienteVAL.valid" #clienteVAL="ngModel"
+                        [disabled]="esDetalle"
+                        class="form-control" id="inputCliente" list="listaClientes" required>
+                    <datalist id="listaClientes">
+                        <option *ngFor="let cliente of clientes" [value]="cliente.nombre">
+                        <option>
+                    </datalist>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="listaSucursales" class="col-form-label">Sucursal: </label>
+                    <select name="sucursal" [(ngModel)]="orden.idSucursal" (change)="cargarContactos()"
+                        [class.is-invalid]="sucursal.touched && !sucursal.valid" #sucursal="ngModel"
+                        [disabled]="clienteValido == false" class="form-control" id="listaSucursales" required>
+                        <option *ngFor="let sucursal of sucursales" value="{{sucursal.idsucursal}}">{{sucursal.nombre}}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="contacto" class="col-form-label">Contacto: </label>
+
+                    <select name="contacto" [(ngModel)]="orden.idContacto" [disabled]="sucursalValida == false"
+                        (change)="cargarTelefono()" class="form-control" required>
+                        <option *ngFor="let contacto of contactos" value="{{contacto.idcontacto}}">{{contacto.Nombre}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="col-form-label">Telefono</label>
+                    <input name="numero" [(ngModel)]="numero" class="form-control" id="telefono" disabled>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="descserv" class="col-form-label">Servicio:</label>
+                    <input name="servicio" [(ngModel)]="orden.servicio"
+                        [class.is-invalid]="servicioVAL.touched && !servicioVAL.valid" #servicioVAL="ngModel"
+                        class="form-control" id="descserv" required>
+                </div>
+                <div class="col-md-3 ">
+                    <label for="instalador" class="col-form-label">Instalador:</label>
+                    <select class="form-control" id="instalador" name="instalador" [(ngModel)]="orden.idInstalador"
+                        >
+                        <option *ngFor="let i of instaladores" value="{{i.cve_usuario}}">{{i.nombre}}</option>
+                    </select>
+                </div>
+                <div class="col-md-3 ">
+                    <label for="instalador" class="col-form-label">Fecha programada:</label>
+                    <input name="fecha" [(ngModel)]="orden.fechaProgramada" class="form-control" type="date">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="descripcion" class="col-form-label">Descripción</label>
+                        <textarea name="descripcion" [(ngModel)]="orden.descripcion" id="descripcion" cols="30" rows="8"
+                        [class.is-invalid]="descVAL.touched && !descVAL.valid" #descVAL="ngModel"
+                            class="form-control" style="resize: none;" required></textarea>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <div class="form-group">
+                    <button style="margin-right:5px;" class="btn btn-success">Aceptar</button>
+                    <button class="btn btn-danger">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
     </form>
 </div>
+
+<app-orden-detalles [cve_orden]="cve_orden" *ngIf="esDetalle"></app-orden-detalles>

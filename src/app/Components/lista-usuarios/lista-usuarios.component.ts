@@ -1,28 +1,33 @@
-import { Component } from '@angular/core';
-import { HttpClient, HttpHeaders,  } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpHandler,  } from '@angular/common/http';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { UserService } from '../../Services/user.service';
+import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-lista-usuarios',
   templateUrl: './lista-usuarios.component.html',
   styleUrls: ['./lista-usuarios.component.css']
 })
-export class ListaUsuariosComponent  {
+export class ListaUsuariosComponent   {
 
-  usuarios:any[] = [];
-  public cont : number = 0;
+  usuarios: any[] = [] ;
   public cve : number;
-
  
 
-  constructor(private http: HttpClient, private route:Router ) { 
-    this.http.get('http://localhost/Usuario.php?cve=0')
-    .subscribe((resp:any)=>{
-      this.usuarios = resp;
-    });
+  constructor(private route:Router, private userService: UserService ) { 
+    this.userService.getAll().subscribe((result:any)=>{ this.usuarios = result});
+ }
+
+  public borrar(cve_usuario:number, nombre:string){
+    var confirmacion = confirm("¿Desea eliminar el usuario "+nombre+"?");
+    if(confirmacion){
+     this.userService.delete(cve_usuario).subscribe();
+     window.location.reload();
+    }
   }
 
-  public borrar(cve_usuario:number){
-    this.http.delete('http://localhost/Usuario.php?cve='+cve_usuario ).subscribe(resp=>{});
-    window.location.reload();
-  }
+
+  
 }
