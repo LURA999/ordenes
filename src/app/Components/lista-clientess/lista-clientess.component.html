@@ -1,0 +1,126 @@
+<app-navbar></app-navbar>
+<div class="container" >
+  <form>
+  <mat-form-field appearance="legacy" color="primary">
+    <mat-label>Buscar clave</mat-label>
+    <input matInput #escribir >
+  </mat-form-field>
+  <input type="submit"  value="Buscar" class="btnb" (click)="filtrar(escribir.value)">
+</form>
+ 
+  <label class= "btn" style="margin-left:5px;"> 
+    Cargar Excel
+  <input class="subir " (change)= "onFileChange($event)" style="display: none !important" type="file" multiple="false"/>
+  </label>
+  
+<div id="table">
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      multiTemplateDataRows 
+       *ngIf="true"
+    >
+      <ng-container
+        matColumnDef="{{ column }}"
+        *ngFor="let column of displayedColumns"
+        matColumn 
+      >
+        <th  mat-header-cell *matHeaderCellDef style="font:bold;">{{ column }}</th>
+        <td  mat-cell *matCellDef="let element">
+          <ng-container *ngIf="column == 'Celular 1' || column == 'Celular 2'; then thenTemplate; else elseTemplate"></ng-container>
+          <ng-template #thenTemplate>
+           <a href="tel:+52{{element[column]}}">{{ element[column] }}</a>
+          </ng-template>
+          <ng-template #elseTemplate>
+            <ng-container *ngIf="column == 'Estatus'; else elseTemplate">
+              <label class="opcion" ><input class="estatusInput" [checked]="element[column] == 1" (change)="modificarEstatus(element['Clave'],$event.target.checked)" type="checkbox">&nbsp;Activo</label>
+            </ng-container>
+            <ng-template #elseTemplate>
+              {{ element[column]  }}
+            </ng-template>
+          </ng-template>
+
+        </td>
+      </ng-container>
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <ng-container matColumnDef="expandedDetail">
+        <td
+          mat-cell
+          *matCellDef="let element"
+          [attr.colspan]="displayedColumns.length"
+        >
+          <div
+            class="example-element-detail"
+            [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'"
+          >
+          <div
+          *ngIf="element['info.dependent'] === 'parent'"
+          >
+            <div class="example-element-descriptions">
+                <!-- <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+            </mat-form-field>-->
+
+            <!--TITULO DE SUBLISTAS-->
+                <div class="description">
+                  <div class="description__header">
+                    <div
+                      class="description_cell"
+                      *ngFor="let key of getKeys(element['nested'][0]); let id=index" 
+                    >
+                      {{ key  }}
+                    </div>
+                  </div>
+                 
+                  <!--CONTENIDO DE SUBLISTAS-->
+                  <div>
+                  <div *ngFor="let nested of element['nested']; let idx = index"
+                    class="description__content">     
+                  <div class="description_cell">
+                  {{nested.Fecha }}
+                  </div>
+                  <div class="description_cell">
+                  {{nested.Servicio}} 
+                  </div>
+                  <div class="description_cell">
+                  {{nested.Saldo}}
+                  </div>
+                  <div class="description_cell">
+                  {{nested.Intereses}}
+                  </div> 
+                  <div *ngIf="idx > 0">
+                    <button class="btn-c" (click)="abrirComentario(element.Clave
+                    , nested.Fecha)">Comentar</button>
+                  </div>
+                  </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let element; columns: displayedColumns"
+        class="example-element-row"
+        [class.example-expanded-row]="expandedElement === element"
+        (click)="expandedElement = expandedElement === element ? null : element"
+      ></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: ['expandedDetail']"
+        class="example-detail-row"
+      ></tr>
+    </table>
+
+    <mat-paginator  class= "barra-paginator" (page)="pageEvents($event)"  [pageSize]="10"></mat-paginator>
+  </div>
+</div>
+<!-- Copyright 2019 Google Inc. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license -->
+
+

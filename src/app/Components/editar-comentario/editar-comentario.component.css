@@ -1,0 +1,50 @@
+.btn{
+    background-color: rgb(238, 235, 235);
+    border: 1px solid black;
+    font-size: 97%;
+}
+.btn:hover{
+    background-color: rgb(218, 214, 214);
+}
+
+.form{
+    align-items: center;
+    align-self: center;
+}
+.btn-editar{
+    width:35%;
+    background-color: #3085d6;
+    color:white;
+    font-size: medium;
+    font-weight: 500;
+    border:none;
+}
+.btn-editar:hover{
+    background-color: #2467a5;
+}
+.btn:disabled:hover{
+    background-color: #3085d6;
+    opacity: .65;
+ }
+ 
+.btn-cancelar{
+    width:35%;
+
+    background-color: #dd6b55;
+    color:white;
+    font-size: medium;
+    font-weight: 500;
+    border:none;
+}
+
+.btn-cancelar:hover{
+    background-color: #b45e4d;
+}
+
+#botones{
+    margin-top: 5%;
+}
+
+.container2{
+    padding: 30px;
+}

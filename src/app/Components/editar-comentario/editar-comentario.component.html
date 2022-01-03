@@ -1,0 +1,17 @@
+<div class="container2" style="text-align: center;">
+
+<h1 style="font:500 20px/32px Roboto, 'Helvetica Neue', sans-serif">Edite su comentario</h1>
+<form>
+<div>
+<textarea id="texto"style = "resize: none;" name="comentarios" (keyup)="onKey($event)" maxlength="250"  cols="40" rows="5" #nuevocomentario></textarea>
+<div class= "font">{{contador}}/250</div><br>
+</div>
+
+<br>
+<div id="botones">
+<input type="submit" [disabled]="contador==0" value="Editar" class="btn btn-editar" mat-button mat-dialog-close="false" (click)="editar(nuevocomentario.value)">&nbsp;
+<input type="submit" value="Cancelar" class="btn btn-cancelar" mat-button mat-dialog-close="false"> 
+</div>
+</form>
+
+</div>

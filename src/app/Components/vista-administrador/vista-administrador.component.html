@@ -1,0 +1,60 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="fecha" >   
+    <div class="form-group form-inline">
+      <label  for="inicio">De:&nbsp;</label>
+        <input class="form-control" type="date"  name="inicio" [(ngModel)]="fechaInicio">
+    </div>
+    <div class="form-group form-inline">
+      <label  for="fin">Hasta:&nbsp;</label>
+        <input class="form-control" type="date"  name="fin" [(ngModel)]="fechaFin">
+    </div>
+    
+    <div class="form-group">
+        <button class="btn btn-primary" (click)="filtrar()">Buscar <img src="./assets/pageview-24px.svg"></button>
+    </div>
+    </div>
+
+    <h2>Resultados</h2>
+    <div class="titulos">Ordenes y Levantamientos</div>
+    <div class="subContenedor">
+      <div class="box1">Ordenes cerradas
+      <div class="cantidad cerrada">{{contadorCerradaO}}</div></div>
+      <div class="box1">Ordenes abiertas
+      <div class="cantidad abierta">{{contadorAbiertaO}}</div></div>
+      <div class="box1">Ordenes asignadas
+      <div class="cantidad asignada">{{contadorAsignadaO}}</div></div>
+      <div class="box2">Levantamientos cerrados
+      <div class="cantidad cerrada">{{contadorCerradaL}}</div></div>
+      <div class="box2">Levantamientos abiertos
+      <div class="cantidad abierta">{{contadorAbiertaL}}</div></div>
+      <div class="box2">Levantamientos asignados
+      <div class="cantidad asignada">{{contadorAsignadaL}}</div></div>
+      </div>
+
+  
+      <h2 id="subt2">Graficas</h2>
+      <div class='graficas'> 
+          <div  class= "circular col-md-4">
+          <canvas baseChart 
+            [chartType]= "'doughnut'"
+            [datasets]= "chartData"
+            [labels] = "chartDataLabels"
+            [options] ="chartOptions"
+            >
+          </canvas>
+          </div>
+
+        <div  class="barra col-md-7">
+            <canvas baseChart height="115%"
+            [datasets]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            [plugins]="barChartPlugins"
+            [legend]="false"
+            [chartType]="barChartType">
+          </canvas>
+        </div>
+    </div>
+</div>
+

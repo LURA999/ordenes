@@ -1,0 +1,95 @@
+
+.roboto-font{
+    font-family: 'Roboto', sans-serif;
+}
+
+@media only screen and (max-width: 900px) {
+    .hidden-small{
+        display: none;
+    }
+}
+h2#subt2{
+    margin-top: 1%;
+}
+div.barra{
+    padding:  2% 0 2% 0 ;
+    border-radius: 10%;
+    background: white;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.subTitulo{
+    margin-top:1%;
+}
+.graficas{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.graficas div{
+    margin: 1%;
+}
+
+div.circular
+{
+    padding:  3% 0 3% 0 ;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px 100px / 120px;
+    background: white;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.fecha {
+    display: flex;
+    justify-content: center;
+}
+.fecha div{
+    margin-left: 1%;
+}
+
+.subContenedor {
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    padding: 3%;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 30px;
+}
+
+.subContenedor div{
+    margin-right:2%;
+    flex-direction: row-reverse;
+    font-size: small;
+
+}
+
+.cantidad{
+    padding: 20% 0 20% 0;
+    text-align: center;
+    border-radius: 10%;
+    color:#ffffff;
+    font-weight: bold;
+}
+
+
+.abierta{
+    background-image: linear-gradient(225deg, #fff330 0, #fff92c 6.25%, #fffc2e 12.5%, #ecfd34 18.75%, #cffa3e 25%, #b0f549 31.25%, #90ed53 37.5%, #6ce25c 43.75%, #42d463 50%, #00c669 56.25%, #00ba70 62.5%, #00af76 68.75%, #00a67d 75%, #009f85 81.25%, #009a8e 87.5%, #009698 93.75%, #0095a3 100%);
+}
+
+.cerrada{
+    background-image: linear-gradient(225deg, #ffaf00 0, #ffa118 8.33%, #ff9128 16.67%, #ff7f33 25%, #fc6b3b 33.33%, #eb5740 41.67%, #d44242 50%, #bc2e42 58.33%, #a61e42 66.67%, #930f42 75%, #820443 83.33%, #740144 91.67%, #680347 100%);
+}
+
+.asignada{
+    background-image: linear-gradient(225deg, #ffff76 0, #ffff63 16.67%, #f7df52 33.33%, #d4b442 50%, #af8c33 66.67%, #8d6927 83.33%, #6d4c1d 100%);
+}
+
+.titulos{
+    display: flex;
+    justify-content: center;
+    font-weight: 500;
+}
+
+
+

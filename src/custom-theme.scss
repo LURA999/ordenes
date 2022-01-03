@@ -1,0 +1,74 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+
+$my-color-azul: (
+    50 : #e4f9ff,
+    100 : #bdefff,
+    200 : #91e5ff,
+    300 : #64daff,
+    400 : #43d2ff,
+    500 : #22caff,
+    600 : #1ec5ff,
+    700 : #19bdff,
+    800 : #14b7ff,
+    900 : #0cabff,
+    A100 : #ffffff,
+    A200 : #f6fbff,
+    A400 : #c3e8ff,
+    A700 : #a9deff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+
+
+
+$r7OrdenesTrabajo-azul: mat-palette($my-color-azul);
+$r7OrdenesTrabajo-primary: mat-palette($mat-indigo);
+$r7OrdenesTrabajo-accent: mat-palette($mat-pink, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$r7OrdenesTrabajo-warn: mat-palette($mat-red);
+$r7OrdenesTrabajo-azul: mat-palette($mat-blue);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$r7OrdenesTrabajo-theme: mat-light-theme((
+  color: (
+    primary: $r7OrdenesTrabajo-azul,
+    accent: $r7OrdenesTrabajo-accent,
+    warn: $r7OrdenesTrabajo-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($r7OrdenesTrabajo-theme);
+

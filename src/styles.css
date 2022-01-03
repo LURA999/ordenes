@@ -1,49 +1,44 @@
 /* You can add global styles to this file, and also import other style files */
-html, body{
-    height:100%;
-   }
-  
-  body {
-     /* background: rgba(228, 230, 255,100); */
-     background:#eeeeee;
+/* angular-cli file: src/styles.css */
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
 
-   }
-    
-/* Load component */
-   .lds-dual-ring {
-    display: inherit;
-    width: 5px;
-    height: 5px;
-  }
-  .lds-dual-ring:after {
-    content: " ";
-    display: inherit;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    border: 6px solid black;
-    border-color: #fff transparent #fff transparent;
-    animation: lds-dual-ring 1.2s linear infinite;
-  }
-  @keyframes lds-dual-ring {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-  
-  .error {
-    width: 100px;
-    height: 100px;
-    background-color: white;
-    animation-name: newError;
-    animation-duration: 2s;
-  }
-  
-  @keyframes newError {
-    0%   {background-color: red;}
-    100%  {background-color: white;}
 
-  }
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: rgb(241, 241, 241);
+}
+
+.table-container {
+  border-radius: 8px;
+  background-color: white;
+  margin-bottom: 15px;
+}
+
+.max-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  width: 100%;
+  margin: auto;
+}
+
+.roboto-font{
+  font-family: 'Roboto', sans-serif;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+div.flatpickr-calendar{
+  display: none;
+  overflow: hidden;
+}
+
+.container {
+  margin-top: 1%;
+}

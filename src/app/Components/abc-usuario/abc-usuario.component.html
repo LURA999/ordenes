@@ -1,55 +1,77 @@
 <app-navbar></app-navbar>
-<div class="container text-center" style="padding: 10px; width: 90%;">
-    <div class="row">
-        <div class="col-md-10 text-left">
-            <h3>{{titulo}}</h3>
-        </div>
+<div class="row">
+    <div class="col-md-10" style="text-align: center; margin-left: 8%; margin-top: 1%;">
+        <h3>{{titulo}}</h3>
     </div>
 </div>
+
 <div class="container table-container">
-    <form #forma="ngForm" (ngSubmit)="onSubmit(forma)">
-        <div class="form-group row">
-            <label for="inputNombre" class="col-sm-2 col-form-label">Nombre:</label>
-            <div class="col-sm-10">
-              <input name="nombre" 
-              [(ngModel)]="usuario.nombre" [class.is-invalid]="name.touched && !name.valid" #name="ngModel" [disabled]="isUpdate"
-               type="text" class="form-control" id="inputNombre" placeholder="Nombre" required>
+<form #forma="ngForm" (ngSubmit)="onSubmit(forma)">
+    <div class="form-group row">
+        <label for="inputNombre" class="col-sm-2 col-form-label">Nombre:</label>
+        <div class="col-sm-10">
+          <input name="nombre" 
+          [(ngModel)]="usuario.nombre" [class.is-invalid]="name.touched && !name.valid" #name="ngModel" [disabled]="isUpdate"
+           type="text" class="form-control" id="inputNombre" placeholder="Nombre" required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="inputMail" class="col-sm-2 col-form-label ">Correo:</label>
+        <div class="col-sm-10">
+          <input name="email" [(ngModel)]="usuario.email" [class.is-invalid]="mail.touched && !mail.valid" 
+          #mail="ngModel" 
+          type="email" class="form-control " id="inputMail" placeholder="Ejemplo@dominio.com" pattern="[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})" required>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="inputPassword" class="col-sm-2 col-form-label">Contraseña:</label>
+        <div class="col-sm-10">
+          <input name="password" [(ngModel)]="usuario.password" [class.is-invalid]="password.touched && !password.valid" 
+          #password="ngModel" [required]="isUpdate==true ? false : true"
+           type="password" class="form-control" id="inputPassword" required minlength="6" placeholder="Al menos 6 caracteres"> 
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="inputPassword" class="col-sm-2 col-form-label">Rol:</label>
+        <div class="col-sm-10">
+          <select class="form-control" name="nivel" [(ngModel)]="usuario.nivel" [class.is-invalid]="nivel.touched && !nivel.valid" 
+          #nivel="ngModel"  required> 
+              <option value="1">Admistrador</option>
+              <option value="2">Ventas</option>
+              <option value="3">Infraestructura</option>
+              <option value="4">Instalador</option>
+              <option value="5">Coordinador</option>
+          </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="inputPassword" class="col-sm-2 col-md-2 col-form-label">Ciudad:</label>
+        <div class="col-4 col-sm-4 col-md-4" >
+          <select class="form-control" name="ciudadLista" [(ngModel)]="usuario.ciudad" 
+          #ciudad="ngModel" size="4" [disabled]="isUpdate" > 
+              <option [value]="ciudad.idciudad" *ngFor="let ciudad of ciudades">{{ciudad.Nombre}}</option>
+          </select>
+        </div>
+        <div class="col-4 col-sm-2 col-md-2">
+            <div class="row">
+                <button type="button" [disabled]="isUpdate" class="btn btn-secondary btn-block" (click)="agregarCiudad()" style="margin-bottom: 10px;">Agregar</button>
             </div>
+            <div class="row">
+                <button type="button" [disabled]="isUpdate" class="btn btn-secondary btn-block" (click)="quitarCiudad()">Eliminar</button>
+            </div>
+        </div>
+        <div class="col-4 col-sm-4 col-md-4" >
+            <select class="form-control" name="ciudad" [(ngModel)]="ciudadCursor" [class.is-invalid]="ciudad.touched && !ciudad.valid" 
+            #ciudad="ngModel" size="4" [disabled]="isUpdate" > 
+                <option [value]="ciudad.idciudad" *ngFor="let ciudad of ciudadesSelecionadas">{{ciudad.Nombre}}</option>
+            </select>
           </div>
-          <div class="form-group row">
-            <label for="inputMail" class="col-sm-2 col-form-label ">Correo:</label>
-            <div class="col-sm-10">
-              <input name="email" [(ngModel)]="usuario.email" [class.is-invalid]="mail.touched && !mail.valid" 
-              #mail="ngModel" 
-              type="email" class="form-control " id="inputMail" placeholder="Ejemplo@dominio.com" pattern="[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})" required>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="inputPassword" class="col-sm-2 col-form-label">Contraseña:</label>
-            <div class="col-sm-10">
-              <input name="password" [(ngModel)]="usuario.password" [class.is-invalid]="password.touched && !password.valid" 
-              #password="ngModel" [required]="isUpdate==true ? false : true"
-               type="password" class="form-control" id="inputPassword" required minlength="6" placeholder="Al menos 6 caracteres"> 
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="inputPassword" class="col-sm-2 col-form-label">Rol:</label>
-            <div class="col-sm-10">
-              <select class="form-control" name="nivel" [(ngModel)]="usuario.nivel" [class.is-invalid]="nivel.touched && !nivel.valid" 
-              #nivel="ngModel" [disabled]="isUpdate" required> 
-                  <option value="1">Admistrador</option>
-                  <option value="2">Ventas</option>
-                  <option value="3">Infraestructura</option>
-                  <option value="4">Instalador</option>
-              </select>
-            </div>
-        </div>
+    </div>
 
-        <div class="form-group text-right">
-            <button *ngIf="isUpdate == false"  type="submit" class="btn btn-success" style="margin-right: 5px;">Guardar</button>
-            <button *ngIf="isUpdate == true"  type="button" (click)="actualizar(forma)"class="btn btn-success" style="margin-right: 5px;">Editar</button>
-            <button [routerLink]="['/listaUsuarios']" class="btn btn-danger">Cancelar</button>
-        </div>
-
-    </form>
+    <div class="form-group text-center">
+        <button *ngIf="isUpdate == false"  type="submit" class="btn btn-success" style="margin-right: 5px;">Guardar</button>
+        <button *ngIf="isUpdate == true"  type="button" (click)="actualizar(forma)"class="btn btn-success" style="margin-right: 5px;">Editar</button>
+        <button [routerLink]="['/usuarios']" class="btn btn-danger">Cancelar</button>
+    </div>
+</form>
 </div>

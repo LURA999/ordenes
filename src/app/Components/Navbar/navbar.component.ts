@@ -1,4 +1,5 @@
-import { Component } from "@angular/core"
+import { Component } from "@angular/core";
+import { NavbarService } from "src/app/services/navbar.service";
 
 
 @Component({
@@ -10,7 +11,12 @@ import { Component } from "@angular/core"
 
 export class NavbarComponent{
 
-    usuario: string = localStorage['name'];
+  constructor(public nav: NavbarService){
+
+  }
+  
+  nivel: number = localStorage['level'];
+  usuario: string = localStorage['name'];
    public testOut() {
       console.log("hovering outside sidebar");
       }

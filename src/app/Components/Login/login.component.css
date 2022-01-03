@@ -1,13 +1,20 @@
+body{
+    display: flex;
+    flex-wrap: wrap;
+    background-image: url('https://htmlcolorcodes.com/assets/images/html-color-codes-color-tutorials-hero.jpg');   
+}
+
 .login-panel{
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
-    width: 60%;
+    min-height: 75vh;
+    width: 70%;
     margin:auto;
+    font-family:'Roboto', sans-serif;
 }
 
-@media only screen and (max-width: 768px){
+@media only screen and (max-width: 1200px){
     .login-panel{
         display: flex;
         align-items: center;
@@ -17,12 +24,35 @@
         height: 80%;
         margin:auto;
     }
+}
+
+@media only screen and (max-width: 813px) and (orientation: landscape) { 
+    .login-panel{
+        display:block;
+        align-items: center;
+        justify-content: center;
+        max-height: 50%;
+        width: 80%;
+        margin:auto;
+        font-family:'Roboto', sans-serif;
+    }
+
+    .login-panel img{
+        height: 120;
+        width:100px;
+        padding-top: .5em;
+    }
+
+    .login-panel button{
+         margin-bottom: 1em;
+    }
     
 }
 
 .login-container{
     border-radius: 8px;
-    background-color:white;
+    background-color:rgb(255, 255, 255);
+    
 }
 
 .content-panel{
@@ -45,3 +75,4 @@ input{
 input:hover{
     background-color: rgb(240, 240, 240);
 }
+

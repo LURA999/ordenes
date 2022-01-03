@@ -1,0 +1,63 @@
+textarea{
+    width: 100%;
+}
+#titulo {
+    text-align: center;
+}
+
+.font{
+    font-family: "Times New Roman", Times, serif;
+    font-size: medium;
+}
+.font2{
+    font-size: 80%;
+    font-family: "Times New Roman", Times, serif;
+}
+.btn{
+    background-color: rgb(238, 235, 235);
+    border: 1px solid black;
+    font-size: 97%;
+}
+
+.btn:hover{
+    background-color: rgb(218, 214, 214);
+}
+
+.comentario{
+    max-width: 100%; 
+    display:block;
+    overflow: auto;
+}
+.btn:disabled:hover{
+   background-color: rgb(238, 235, 235);
+}
+
+.lista {
+    text-align: center;
+}
+
+.btn-editar{
+    color: white; 
+    border:1px solid black; 
+    padding: 5px;
+    background-color: #0c82ff;
+}
+
+.btn-editar:active{
+    background-color: #1472d6;
+
+}
+
+.btn-exit{
+    color: white; 
+    border:1px solid black; 
+    padding: 5px;
+    background-color: red;
+}
+
+#Nohay{
+    margin-top: 5%;
+    margin-left: 170%;
+    display: flex;
+    text-align: center;
+}
