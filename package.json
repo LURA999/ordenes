@@ -1,5 +1,5 @@
 {
-  "name": "r7-ordenes-trabajo",
+  "name": "r7-callcenter",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -66,5 +66,17 @@
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
     "typescript": "~3.9.5"
-  }
+  },
+  "description": "This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.7.",
+  "main": "karma.conf.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LURA999/callcenter.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LURA999/callcenter.git/issues"
+  },
+  "homepage": "https://github.com/LURA999/callcenter.git#readme"
 }
