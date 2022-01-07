@@ -32,18 +32,22 @@
            <a (click)="CLICK($event)" href="tel:+52{{element[column]}}">{{ element[column] }}</a>
           </ng-template>
           <ng-template #elseTemplate>
-            <ng-container *ngIf="column == 'Estatus'; else elseTemplate">
-             <select (click)="CLICK($event)" (change)="modificarEstatus(element['Clave'], $event.target)" name="select" [value]="element[column]">
-                <option value="0">Nuevo</option>
+            <ng-container *ngIf="column == 'Estado'; else elseTemplate">
+             <select (click)="CLICK($event)" (change)="modificarEstado(element['Clave'], $event.target)" name="select" [value]="element[column]">
+                <option value="0" disabled hidden>Nuevo</option>
                 <option value="1">Bueno</option>
                 <option value="2">Buzon/No sirve</option>
                 <option value="3">Mensaje</option>
                 <option value="4">Convenio</option>
               </select>
-              <!-- <label class="opcion" >   <input class="estatusInput" [checked]="element[column] == 1" (change)="modificarEstatus(element['Clave'],$event.target.checked)" type="checkbox">&nbsp;Activo</label>-->
             </ng-container>
             <ng-template #elseTemplate>
-              {{ element[column]  }}
+              <ng-container *ngIf="column == 'Estatus'; else elseTemplate">
+                <label class="opcion" >   <input class="estatusInput" [checked]="element[column] == 1" (change)="modificarEstatus(element['Clave'],$event.target.checked)" type="checkbox">&nbsp;Activo</label>
+              </ng-container>
+              <ng-template #elseTemplate>
+                {{ element[column]  }}
+              </ng-template>
             </ng-template>
           </ng-template>
 

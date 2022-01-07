@@ -42,9 +42,10 @@ export class ClientService {
     return this.http.get(this.local+'Cliente/Cliente.php?id=true&cve='+cve);
   }
   
-  actualizarEstatus(estatus: String, cve : String){
-    return this.http.patch(this.local+'Cliente/Cliente.php?cve='+cve+'&estatus='+estatus,{responseType: 'text'});
+  actualizarEstatus_Estado(opc: number,estatus: String, cve : String){
+    return this.http.patch(this.local+'Cliente/Cliente.php?estatus2='+opc+'=1&cve='+cve+'&estatus='+estatus,{responseType: 'text'});
   }
+
   clienteRepetido(cve : String){
     return this.http.get(this.local+'Cliente/Cliente.php?repetidosClientes=true&cve='+cve);
   }

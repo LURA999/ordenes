@@ -303,8 +303,13 @@ async filtrar(valor :String) {
     event.stopPropagation();
   }
 
-  async modificarEstatus( cve : String, input: HTMLSelectElement){
-    await this.sService.actualizarEstatus(input.value, cve).toPromise();
+  async modificarEstatus( cve : String, input: String){
+    await this.sService.actualizarEstatus_Estado(2,(input? 1:0)+"", cve).toPromise();
+    await this.cargarTodo()
+  }
+  
+  async modificarEstado( cve : String, input: HTMLSelectElement){
+    await this.sService.actualizarEstatus_Estado(1,input.value, cve).toPromise();
     await this.cargarTodo()
   }
 
