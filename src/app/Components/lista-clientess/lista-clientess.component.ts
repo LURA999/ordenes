@@ -299,8 +299,12 @@ async filtrar(valor :String) {
   onItemSelected(idx: number) {
   }
 
-  async modificarEstatus( cve : String, input:String){
-    await this.sService.actualizarEstatus((input? 1:0)+"", cve).toPromise();
+  CLICK(event){
+    event.stopPropagation();
+  }
+
+  async modificarEstatus( cve : String, input: HTMLSelectElement){
+    await this.sService.actualizarEstatus(input.value, cve).toPromise();
     await this.cargarTodo()
   }
 
