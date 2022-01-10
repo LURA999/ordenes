@@ -148,7 +148,29 @@ background: #ff797999;
 .a4{
   background: #ffff0059;
 }
-  
+.a5{
+  background: #ff910059;
+}
+
+.option1{
+  background: #4aef4a80;
+  }
+  .option2{
+  background: #ff797999;
+  }
+  .option3{
+    background: #2591ff42;
+  }
+  .option4{
+    background: #ffff0059;
+  }
+  .option5{
+    background: #ff910059;
+  }
+
+.option1:hover{
+  display:none;
+}
 /*Botones de cabecera*/
 .btnb{
   margin-left: 1rem;

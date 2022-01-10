@@ -12,8 +12,6 @@ import { longitud } from 'src/app/Components/lista-clientess/spanish-paginator-i
 import { MatDialog } from '@angular/material/dialog';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { PopupComentarioComponent } from '../popup-comentario/popup-comentario.component';
-import { textChangeRangeIsUnchanged } from 'typescript';
-import ht from 'date-fns/locale/ht';
 
 
 
@@ -276,7 +274,7 @@ async filtrar(valor :String) {
           }
         }catch(Exception){}
          }
-        // await location.reload();
+        //await location.reload();
           /*Insertar solamente el cliente sin servicios */
         }else if(this.excel[0].length == 9){
         for (let p = 0; p < this.excel.length; p++) {
@@ -335,6 +333,9 @@ async filtrar(valor :String) {
       this.opcionCEfiltro = 1;
     }else{
       this.opcionCEfiltro = 4;
+    }  
+    if(this.estado == "6"){
+      this.estado = "5"
     }
   }
   /**Filtro de ciudades */
@@ -379,14 +380,17 @@ async filtrar(valor :String) {
   async modificarEstado( cve : String, input: number){
     var cambiarColor = Array.from(document.getElementsByClassName(""+cve) as HTMLCollectionOf<HTMLElement>)
     for (let i = 0; i <cambiarColor.length; i++) {
+
     if(input == 1){
       cambiarColor[i].style.background="#4aef4a80";        
     }else if(input == 2){
       cambiarColor[i].style.background="#ff797999";        
     }else if(input == 3){
       cambiarColor[i].style.background="#2591ff42";        
-    }else {
+    }else if(input == 4){
       cambiarColor[i].style.background="#ffff0059";        
+    }else if(input == 5){
+      cambiarColor[i].style.background="#ff910059";
     }
   }
     
@@ -398,24 +402,27 @@ async filtrar(valor :String) {
 
   estadoExcel(excel : String) : String{
     switch(excel.replace(/\s/g, "").toLowerCase()){
-      case "sin":
+      case "nuevo":
         excel= "0";
         break;
-      case "bueno":
+      case "sicontestan":
         excel= "1";
         break;
-      case "buzon/nosirve":
-        excel= "2";
+      case "dejamosrecado":
+        excel= "3";
         break;
-      case "mensaje":
-        excel = "3";
+      case "nocontestan":
+        excel = "5";
+        break;
+      case "nosirve":
+        excel = "2";
         break;
       case "convenio":
         excel = "4";
         break;
       default:
-        excel = "0";
-        break;
+        throw new Error("no existe el estado");
+
     }
     return excel
   }

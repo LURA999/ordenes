@@ -33,10 +33,11 @@
         <mat-select class="selecthead" (selectionChange)="verEstado($event.value)" >
           <mat-option [value]="5">Todos</mat-option>
           <mat-option [value]="0">Nuevo</mat-option>
-          <mat-option [value]="1">Bueno</mat-option>
-          <mat-option [value]="2">Buzon/No sirve</mat-option>
-          <mat-option [value]="3">Mensaje</mat-option>
+          <mat-option [value]="1">Si contestan</mat-option>
+          <mat-option [value]="2">No sirve</mat-option>
+          <mat-option [value]="3">Dejamos recado</mat-option>
           <mat-option [value]="4">Convenio</mat-option>
+          <mat-option [value]="6">No contestan</mat-option>
         </mat-select>
       </mat-form-field>
       </div>
@@ -76,10 +77,11 @@
             <ng-container *ngIf="column == 'Estado'; else elseTemplate">
              <select (click)="CLICK($event)" (change)="modificarEstado(element['Clave'], $event.target.value)" name="select" [value]="element[column]" class="selectTabla seleccionar">
                 <option value="0" disabled hidden>Nuevo</option>
-                <option value="1">Bueno</option>
-                <option value="2">Buzon/No sirve</option>
-                <option value="3">Mensaje</option>
-                <option value="4">Convenio</option>
+                <option class = "option1" value="1">Si contestan</option>
+                <option class ="option3" value="3">Dejamos recado</option>
+                <option class= "option5" value="5">No contestan</option>
+                <option class = "option2" value="2">No sirve</option>
+                <option class="option4" value="4">Convenio</option>
               </select>
             </ng-container>
             <ng-template #elseTemplate>
@@ -141,8 +143,8 @@
                   {{nested.Intereses}}
                   </div> 
                   <div *ngIf="idx > 0">
-                    <button class="btn-c" (click)="abrirComentario(element.Clave
-                    , nested.Fecha)">Comentar</button>
+                   <!-- <button class="btn-c" (click)="abrirComentario(element.Clave
+                    , nested.Fecha)">Comentar</button>-->
                   </div>
                   </div>
                   </div>
