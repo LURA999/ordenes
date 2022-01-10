@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
-
 @Injectable({
   providedIn: 'root'
 })
+
 export class ClientService {
   local=environment.api;
 
@@ -13,6 +13,17 @@ export class ClientService {
 
   getAll(){
     return this.http.get(this.local+'Cliente/Cliente.php?todo='+true);
+  }
+
+  /**Esta consulta puede consultar todas las ciudades registras, 
+   * y tambien todos los usuarios de una ciudad */
+  getciudades(opc:number,nombreCiudad:String){
+    return this.http.get(this.local+'Cliente/Cliente.php?ciudades='+true+'&opc='+opc+'&nombre='+nombreCiudad);
+  }
+
+  getciudadesEstados(opc:number,ciudad:String,estado:String){
+    console.log(this.local+'Cliente/Cliente.php?ciudadesEstados='+true+'&opc='+opc+'&ciudad='+ciudad+'&estado='+estado);
+    return this.http.get(this.local+'Cliente/Cliente.php?ciudadesEstados='+true+'&opc='+opc+'&ciudad='+ciudad+'&estado='+estado);
   }
 
   getServicios(id_servicio:String){
@@ -41,12 +52,13 @@ export class ClientService {
   id(cve:String){
     return this.http.get(this.local+'Cliente/Cliente.php?id=true&cve='+cve);
   }
-  
+
   actualizarEstatus_Estado(opc: number,estatus: String, cve : String){
-    return this.http.patch(this.local+'Cliente/Cliente.php?estatus2='+opc+'=1&cve='+cve+'&estatus='+estatus,{responseType: 'text'});
+    return this.http.patch(this.local+'Cliente/Cliente.php?estatus2='+opc+'&cve='+cve+'&estatus='+estatus,{responseType: 'text'});
   }
 
   clienteRepetido(cve : String){
     return this.http.get(this.local+'Cliente/Cliente.php?repetidosClientes=true&cve='+cve);
   }
+
 }

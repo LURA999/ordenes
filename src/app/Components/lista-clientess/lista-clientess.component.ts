@@ -1,5 +1,5 @@
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ClientService } from 'src/app/services/client.service';
 import { ClienteModel } from '../../models/cliente.model';
 
@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { PopupComentarioComponent } from '../popup-comentario/popup-comentario.component';
 import { textChangeRangeIsUnchanged } from 'typescript';
+import ht from 'date-fns/locale/ht';
 
 
 
@@ -42,6 +43,11 @@ export class ListaClientessComponent implements OnInit {
   aux:any;
   data : any []=[];
   cliente: ClienteModel;
+  ciudades: any;
+  ciudad:String;
+  estado:String;
+  opcionCEfiltro : number;
+  
   //variable load, sirve para cargar la tabla cuando esta en true
   load : Boolean =false;
   inicio : number=0;
@@ -62,12 +68,18 @@ export class ListaClientessComponent implements OnInit {
   
   focused: boolean;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
- 
+  
   constructor(private sService: ClientService, private sLoader: LoaderService,
     public dialog: MatDialog) {
-      this.cliente = new ClienteModel();
-
+    this.cliente = new ClienteModel();
     this.cargarTodo();
+    this.cargarCiudades();
+  }
+
+  async cargarCiudades(){
+      await this.sService.getciudades(1,"").subscribe(resp=>{
+        this.ciudades = resp;
+      });
   }
 
   async cargarTodo(){
@@ -86,7 +98,7 @@ export class ListaClientessComponent implements OnInit {
   async cargarInicio(){
    this.paginator.hidePageSize=true;
    while ( this.inicio <this.fin + 2 && this.inicio < this.subcliente.length) {
-   if(this.inicio < this.fin){
+    if(this.inicio < this.fin){
       this.data[this.inicio] =(    
           {
             'info.dependent': 'parent',
@@ -165,14 +177,20 @@ async pageEvents(event: any) {
   }
 }
 
+
+
+
   /* BUSCAR CLAVE DE USUARIO */
 async filtrar(valor :String) {
   let iniciof : number =0;
+  let id :any;
   this.dataSource=null;
   this.data=[];
+
+
   if(valor!==""){
   try{
-  let id :any = await this.sService.id(valor).toPromise();
+    id  = await this.sService.id(valor).toPromise();
   for await (const obj of id) {
          this.data[iniciof] =(    
            {
@@ -248,7 +266,7 @@ async filtrar(valor :String) {
             this.cliente.celular1=this.excel[p][5];
             this.cliente.celular2=this.excel[p][6];
             this.cliente.ciudad=this.excel[p][7];
-            this.cliente.estado=this.excel[p][8];
+            this.cliente.estado= await this.estadoExcel(this.excel[p][8]);
             await this.sLoader.insertClientes(this.cliente).toPromise();
            }
           }catch(Exception){}
@@ -258,7 +276,7 @@ async filtrar(valor :String) {
           }
         }catch(Exception){}
          }
-         await location.reload();
+        // await location.reload();
           /*Insertar solamente el cliente sin servicios */
         }else if(this.excel[0].length == 9){
         for (let p = 0; p < this.excel.length; p++) {
@@ -297,20 +315,109 @@ async filtrar(valor :String) {
   }
 
   onItemSelected(idx: number) {
+    console.log(idx)
   }
 
+
+  /**Sirve para que la lista no se active */
   CLICK(event){
     event.stopPropagation();
   }
 
+
+  /**Proceso de filtracion */
+  async CiudadEstado(){
+    if(this.estado == "5" && this.ciudad !== "-1" && this.ciudad !==undefined){
+      this.opcionCEfiltro = 3;
+    }else if(this.ciudad == "-1" && this.estado != "5" && this.estado !==undefined){
+      this.opcionCEfiltro = 2;
+    }else if(this.estado !==undefined && this.ciudad !==undefined && this.estado !== "5" && this.ciudad !== "-1" ){
+      this.opcionCEfiltro = 1;
+    }else{
+      this.opcionCEfiltro = 4;
+    }
+  }
+  /**Filtro de ciudades */
+  async verCiudad(ciudad : String){
+    this.ciudad = ciudad;
+    if(this.ciudad === undefined){
+      this.ciudad ="-1";
+    }
+  if(this.estado != undefined && this.ciudad != undefined){
+    this.dataSource=null; 
+    this.data =[];
+    this.inicio=0;
+    this.fin=10;
+    this.paginator.pageIndex = 0;
+    await this.CiudadEstado();
+    this.subcliente = await this.sService.getciudadesEstados(this.opcionCEfiltro, this.ciudad, this.estado).toPromise();
+    await this.cargarInicio()
+  }
+  }
+
+  /**filtro de estado*/
+  async verEstado(estado : String){
+    this.estado = estado;  
+    if(this.estado !=undefined && this.ciudad != undefined){
+      this.dataSource=null; 
+      this.data =[];
+      this.inicio=0;
+      this.fin=10;
+      this.paginator.pageIndex = 0;
+      await this.CiudadEstado(); 
+      this.subcliente = await this.sService.getciudadesEstados(this.opcionCEfiltro, this.ciudad, this.estado).toPromise();
+      await this.cargarInicio()
+    }
+  }
+
   async modificarEstatus( cve : String, input: String){
     await this.sService.actualizarEstatus_Estado(2,(input? 1:0)+"", cve).toPromise();
-    await this.cargarTodo()
+    this.subcliente = await this.sService.getciudadesEstados(this.opcionCEfiltro, this.ciudad, this.estado).toPromise();
+    await this.cargarInicio()
   }
   
-  async modificarEstado( cve : String, input: HTMLSelectElement){
-    await this.sService.actualizarEstatus_Estado(1,input.value, cve).toPromise();
-    await this.cargarTodo()
+  async modificarEstado( cve : String, input: number){
+    var cambiarColor = Array.from(document.getElementsByClassName(""+cve) as HTMLCollectionOf<HTMLElement>)
+    for (let i = 0; i <cambiarColor.length; i++) {
+    if(input == 1){
+      cambiarColor[i].style.background="#4aef4a80";        
+    }else if(input == 2){
+      cambiarColor[i].style.background="#ff797999";        
+    }else if(input == 3){
+      cambiarColor[i].style.background="#2591ff42";        
+    }else {
+      cambiarColor[i].style.background="#ffff0059";        
+    }
+  }
+    
+    await this.sService.actualizarEstatus_Estado(1,input+"", cve).toPromise();
+    this.subcliente = await this.sService.getciudadesEstados(this.opcionCEfiltro, this.ciudad, this.estado).toPromise();
+    await this.cargarInicio();
+
+  }
+
+  estadoExcel(excel : String) : String{
+    switch(excel.replace(/\s/g, "").toLowerCase()){
+      case "sin":
+        excel= "0";
+        break;
+      case "bueno":
+        excel= "1";
+        break;
+      case "buzon/nosirve":
+        excel= "2";
+        break;
+      case "mensaje":
+        excel = "3";
+        break;
+      case "convenio":
+        excel = "4";
+        break;
+      default:
+        excel = "0";
+        break;
+    }
+    return excel
   }
 
   abrirComentario(clave : String, fecha : String){
@@ -325,6 +432,11 @@ async filtrar(valor :String) {
   ngOnDestroy(): void {
     this.sub$.unsubscribe();
   }
+
+  filaNombre(e){
+    console.log(e)    
+  }
+ 
 
   applyFilter() {}
 

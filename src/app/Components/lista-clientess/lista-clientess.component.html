@@ -1,39 +1,80 @@
 <app-navbar></app-navbar>
 <div class="container" >
-  <form>
-  <mat-form-field appearance="legacy" color="primary">
-    <mat-label>Buscar clave</mat-label>
-    <input matInput #escribir >
-  </mat-form-field>
-  <input type="submit"  value="Buscar" class="btnb" (click)="filtrar(escribir.value)">
-</form>
- 
-  <label class= "btn" style="margin-left:5px;"> 
-    Cargar Excel
-  <input class="subir " (change)= "onFileChange($event)" style="display: none !important" type="file" multiple="false"/>
-  </label>
+<div class="opciones-head">
+  <div class="buscador">
+  <form >
+      <mat-form-field class="aqui" appearance="legacy" color="primary">
+        <mat-label>Buscar clave</mat-label>
+        <input matInput #escribir >
+      </mat-form-field>
+     <button mat-raised-button  class="btnb" (click)="filtrar(escribir.value)" >Buscar</button>
+    </form>
+    <div>
+  </div>
+  </div>
   
-<div id="table">
+  <div class="selects row">
+    <div class="ciudad">
+      <mat-label  class="selectb">Buscar:&nbsp;</mat-label>
+
+      <mat-form-field appearance="fill">
+        <mat-label >Ciudad</mat-label>
+        <mat-select  class="selecthead" (selectionChange)="verCiudad($event.value.ciudad)" >
+          <mat-option [value]="-1">Todos</mat-option>
+          <mat-option *ngFor="let nombre of ciudades" [value]="nombre">{{nombre.ciudad}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="estado">
+     <mat-label class="selectb conector">Y...&nbsp;</mat-label>
+      <mat-form-field appearance="fill">
+      <mat-label >Estado</mat-label>
+        <mat-select class="selecthead" (selectionChange)="verEstado($event.value)" >
+          <mat-option [value]="5">Todos</mat-option>
+          <mat-option [value]="0">Nuevo</mat-option>
+          <mat-option [value]="1">Bueno</mat-option>
+          <mat-option [value]="2">Buzon/No sirve</mat-option>
+          <mat-option [value]="3">Mensaje</mat-option>
+          <mat-option [value]="4">Convenio</mat-option>
+        </mat-select>
+      </mat-form-field>
+      </div>
+    </div>
+    <div class="cargar">
+      <label  class= "btn" > 
+        Cargar Excel
+      <input class="subir " (change)= "onFileChange($event)" style="display: none !important" type="file" multiple="false"/>
+      </label>
+    </div> 
+  
+</div>
+
+  
+  
+<div id="tabla">
     <table
       mat-table
       [dataSource]="dataSource"
       multiTemplateDataRows 
        *ngIf="true"
     >
-      <ng-container
+    
+    <ng-container
         matColumnDef="{{ column }}"
         *ngFor="let column of displayedColumns"
         matColumn 
       >
-        <th  mat-header-cell *matHeaderCellDef style="font:bold;">{{ column }}</th>
-        <td  mat-cell *matCellDef="let element">
+      
+        <th  mat-header-cell *matHeaderCellDef style="font:900; border-bottom:1px solid gray;">{{ column }}</th>
+        <td class = "a{{element['Estado']}} {{element['Clave']}}"  mat-cell *matCellDef="let element" (click)="filaNombre(column)">
           <ng-container *ngIf="column == 'Celular 1' || column == 'Celular 2'; then thenTemplate; else elseTemplate"></ng-container>
           <ng-template #thenTemplate>
            <a (click)="CLICK($event)" href="tel:+52{{element[column]}}">{{ element[column] }}</a>
           </ng-template>
           <ng-template #elseTemplate>
             <ng-container *ngIf="column == 'Estado'; else elseTemplate">
-             <select (click)="CLICK($event)" (change)="modificarEstado(element['Clave'], $event.target)" name="select" [value]="element[column]">
+             <select (click)="CLICK($event)" (change)="modificarEstado(element['Clave'], $event.target.value)" name="select" [value]="element[column]" class="selectTabla seleccionar">
                 <option value="0" disabled hidden>Nuevo</option>
                 <option value="1">Bueno</option>
                 <option value="2">Buzon/No sirve</option>
@@ -43,15 +84,15 @@
             </ng-container>
             <ng-template #elseTemplate>
               <ng-container *ngIf="column == 'Estatus'; else elseTemplate">
-                <label class="opcion" >   <input class="estatusInput" [checked]="element[column] == 1" (change)="modificarEstatus(element['Clave'],$event.target.checked)" type="checkbox">&nbsp;Activo</label>
+                <label class="seleccionar" (click)="CLICK($event)">   <input class="estatusInput" [checked]="element[column] == 1" (change)="modificarEstatus(element['Clave'],$event.target.checked)"  type="checkbox">&nbsp;Activo</label>
               </ng-container>
               <ng-template #elseTemplate>
                 {{ element[column]  }}
               </ng-template>
             </ng-template>
           </ng-template>
-
         </td>
+      
       </ng-container>
       <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
       <ng-container matColumnDef="expandedDetail">

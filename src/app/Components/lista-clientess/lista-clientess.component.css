@@ -1,3 +1,4 @@
+/*Lista no expandible*/
 table {
   width: 100%;
   }
@@ -79,6 +80,14 @@ table {
     color:black;
     font-size: 1rem;
   }
+  mat-form-field, mat-label {
+    color: black;
+    font-size: 1rem;
+}
+.seleccionar{
+  cursor:pointer;
+}
+ 
 /*Lista expandible*/
   .barra-paginator
   {
@@ -116,19 +125,38 @@ table {
   color: #0c82ff;
 }
 
-form{
-  display: flex;
-  float: left;
+/*select del estado*/
+.selectTabla{
+  font-size: 90%;
 }
-
+select{
+  outline: none;
+  text-align: center;
+  padding: 3px;
+  border-radius: 5px;
+}
+/** Colores de las filas*/
+.a1{
+background: #4aef4a80;
+}
+.a2{
+background: #ff797999;
+}
+.a3{
+  background: #2591ff42;
+}
+.a4{
+  background: #ffff0059;
+}
+  
+/*Botones de cabecera*/
 .btnb{
-  margin-top: 5%;
-  margin-bottom: 5%;
-  margin-left: 10%;
-  height: auto;
+  margin-left: 1rem;
+  height: 60%;
   background-color: #0c82ff;
-  text-shadow: #777;
+  font-size: 100%;
   color: white;
+  font-weight: 400;
   border: 1px solid black;
 }
 .btnb:hover{
@@ -136,15 +164,12 @@ form{
 }
 
 .btn{
-  display: flex;
-  float: right;
-  padding: 1%;
-  margin-top: 0.6%;
   font-size: 100%;
   background-color: #0c82ff;
-  text-shadow: #777;
   color: white;
+  margin-top: 10%;
   border: 1px solid black;
+
 }
 .btn:hover{
   background-color: #1167b8;
@@ -160,27 +185,60 @@ form{
   flex-wrap: nowrap;
 }
 
-@media screen and (max-width: 768px){
-  table td{
-    font-size: 60%;
-  }
+.opciones-head{
+  display: flex; 
+  margin-top:2%;
+justify-content: space-between;}
 
-  .btn {
-    font-size:60%;
-  }
-  .btnb {
-    font-size:60%;
-  }
-  mat-form-field,
-  mat-label {
-    color:black;
-    font-size: 80%;
-  }
-
-  table th{
-    font-size: 60%;
-  }
+.selects{
+  width: 55%;
+  text-align: center;
 }
+
+/* css de los mat-select*/
+.mat-form-field.mat-primary.mat-form-field-type-mat-select {
+  width: 60%;
+}
+mat-select{
+  font-size: 95%;
+}
+.mat-option {
+  margin-bottom: -3%;
+}
+.mat-option.mat-active {
+  background: #00b9ff !important;
+  color: white !important;
+}
+
+.mat-option:hover:not(.mat-option-disabled)
+{
+  background:#bbbbbb;color:white
+}
+/*
+pinta tambien la linea donde escribe
+::ng-deep .mat-form-field-underline, ::ng-deep .mat-form-field-ripple {
+  background-color: #00b2ff !important;
+}*/
+ 
+
+mat-label{
+  font-size: 90%;
+}
+
+.ciudad, .mat-form-field.mat-primary.mat-form-field-type-mat-select {
+  width: 50% ;
+  margin-right: -17%;
+}
+
+.estado, .mat-form-field.mat-primary.mat-form-field-type-mat-select {
+  width: 50% ;
+  margin-right: -39%;
+}
+
+.selectb{
+  margin-left: 4%;
+}
+
 .btn-c{
   padding: 15%;
   background: #4553ff;
@@ -201,6 +259,64 @@ form{
   cursor:pointer;
 }
 
+
+@media screen and (max-width: 989px){
+  table td{
+    font-size: 60%;
+  }
+  .opciones-head{
+    font-size: 70%;
+  }
+  mat-form-field,mat-label {
+    color:black;
+    font-size: 100%;
+    width: 70%;
+  }
+
+  .btnb {
+    margin-left:1em;
+  }
+  .btn {
+    margin: auto;
+  }
+  table th{
+    font-size: 60%;
+  }
+
+  .mat-paginator{
+    font-size: 70% ;
+  }
+}
+@media screen and (max-width: 767px){
+  mat-form-field {
+    color:black;
+    font-size: 100%;
+    width: 50%;
+  }
+  .btnb{
+    margin-left: 1em;
+  }
+  .selects {
+    margin-left: 7%;
+  }
+  .ciudad, .mat-form-field.mat-primary.mat-form-field-type-mat-select {
+    width: 60%;
+    margin-right: -11%;
+  }
+
+  .ciudad {
+    margin-left: -25%;
+  }
+
+  .estado, .mat-form-field.mat-primary.mat-form-field-type-mat-select {
+    width: 60%;
+    margin-right: -10%;
+  }
+  .mat-paginator{
+    font-size: 60% ;
+  }
+}
+
 @media screen and (max-width: 393px){
   table td{
     font-size: 40%;
@@ -211,6 +327,7 @@ form{
     border:1% solid black;
 
   }
+
  
 }
 

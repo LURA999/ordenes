@@ -16,6 +16,7 @@ import { HomeComponent } from './Components/home/home.component';
 import { NavbarService } from './services/navbar.service';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import {MatNativeDateModule} from '@angular/material/core';
 
 
 import { FlatpickrModule } from 'angularx-flatpickr';
@@ -32,6 +33,8 @@ import { MatSidenavModule  } from "@angular/material/sidenav";
 import { MatSortModule } from "@angular/material/sort";
 import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatSelectModule  } from "@angular/material/select";
+import { MatButtonModule  } from "@angular/material/button";
 
 //import { LoaderComponent } from './components/shared/loader/loader.component';
 
@@ -73,9 +76,12 @@ import { EditarComentarioComponent } from './Components/editar-comentario/editar
     MatToolbarModule,
     MatInputModule,
     MatTableModule,
+    MatSelectModule, 
     MatPaginatorModule,
     MatSortModule,
     MatDialogModule,
+    HttpClientModule,
+    MatButtonModule,
     MatProgressSpinnerModule,
     FlatpickrModule.forRoot(),
     CalendarModule.forRoot({

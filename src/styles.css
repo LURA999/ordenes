@@ -42,3 +42,9 @@ div.flatpickr-calendar{
 .container {
   margin-top: 1%;
 }
+.mat-form-field-ripple {
+  background-color: #00b2ff;
+}
+
+
+
