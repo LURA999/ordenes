@@ -45,7 +45,8 @@ export class ListaClientessComponent implements OnInit {
   ciudad:String;
   estado:String;
   opcionCEfiltro : number;
-  
+  existe : any;
+  existeBarra : any;
   //variable load, sirve para cargar la tabla cuando esta en true
   load : Boolean =false;
   inicio : number=0;
@@ -75,9 +76,9 @@ export class ListaClientessComponent implements OnInit {
   }
 
   async cargarCiudades(){
-      await this.sService.getciudades(1,"").subscribe(resp=>{
-        this.ciudades = resp;
-      });
+    await this.sService.getciudades(1,"").subscribe(resp=>{
+      this.ciudades = resp;
+    });
   }
 
   async cargarTodo(){
@@ -94,6 +95,8 @@ export class ListaClientessComponent implements OnInit {
    */
 
   async cargarInicio(){
+
+    this.noHayclientes(this.subcliente.length);
    this.paginator.hidePageSize=true;
    while ( this.inicio <this.fin + 2 && this.inicio < this.subcliente.length) {
     if(this.inicio < this.fin){
@@ -152,6 +155,9 @@ export class ListaClientessComponent implements OnInit {
   }
 
   ngOnInit(){ 
+    this.existe= document.getElementById("existe").style.display = "none";
+    this.existeBarra=document.getElementById("barra-paginator").style.display = "true";  
+
   }
 
 
@@ -189,6 +195,7 @@ async filtrar(valor :String) {
   if(valor!==""){
   try{
     id  = await this.sService.id(valor).toPromise();
+    this.noHayclientes(id);
   for await (const obj of id) {
          this.data[iniciof] =(    
            {
@@ -274,7 +281,7 @@ async filtrar(valor :String) {
           }
         }catch(Exception){}
          }
-        //await location.reload();
+         await location.reload();
           /*Insertar solamente el cliente sin servicios */
         }else if(this.excel[0].length == 9){
         for (let p = 0; p < this.excel.length; p++) {
@@ -352,6 +359,7 @@ async filtrar(valor :String) {
     this.paginator.pageIndex = 0;
     await this.CiudadEstado();
     this.subcliente = await this.sService.getciudadesEstados(this.opcionCEfiltro, this.ciudad, this.estado).toPromise();
+    
     await this.cargarInicio()
   }
   }
@@ -443,7 +451,16 @@ async filtrar(valor :String) {
   filaNombre(e){
     console.log(e)    
   }
- 
+
+  noHayclientes(cantidad : number){
+    console.log(cantidad)
+    if(cantidad == 0){
+      this.existe = document.getElementById("existe").style.display = "block";
+    }else{
+      this.existe = document.getElementById("existe").style.display = "none";
+    }
+    
+  }
 
   applyFilter() {}
 

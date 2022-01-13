@@ -89,7 +89,7 @@ table {
 }
  
 /*Lista expandible*/
-  .barra-paginator
+  #barra-paginator
   {
     display: flex;
     flex-direction: column;
@@ -125,6 +125,15 @@ table {
   color: #0c82ff;
 }
 
+
+/*Mensaje cuando no hay clientes*/
+
+ #existe{
+  margin-top: 5%;
+  margin-bottom: 5%;
+  text-align: center;
+ }
+
 /*select del estado*/
 .selectTabla{
   font-size: 90%;
@@ -136,7 +145,7 @@ select{
   border-radius: 5px;
 }
 /** Colores de las filas*/
-.a1{
+.a1 {
 background: #4aef4a80;
 }
 .a2{
@@ -153,20 +162,20 @@ background: #ff797999;
 }
 
 .option1{
-  background: #4aef4a80;
-  }
-  .option2{
-  background: #ff797999;
-  }
-  .option3{
-    background: #2591ff42;
-  }
-  .option4{
-    background: #ffff0059;
-  }
-  .option5{
-    background: #ff910059;
-  }
+background: #4aef4a80;
+}
+.option2{
+background: #ff797999;
+}
+.option3{
+  background: #2591ff42;
+}
+.option4{
+  background: #ffff0059;
+}
+.option5{
+  background: #ff910059;
+}
 
 .option1:hover{
   display:none;
@@ -286,6 +295,10 @@ mat-label{
   table td{
     font-size: 60%;
   }
+
+  #existe{
+    font-size: 60%;
+  }
   .opciones-head{
     font-size: 70%;
   }
@@ -329,7 +342,9 @@ mat-label{
   .ciudad {
     margin-left: -25%;
   }
-
+  #existe{
+    font-size: 60%;
+  }
   .estado, .mat-form-field.mat-primary.mat-form-field-type-mat-select {
     width: 60%;
     margin-right: -10%;
@@ -347,9 +362,10 @@ mat-label{
   table th{
     font-size: 40%;
     border:1% solid black;
-
   }
-
+  #existe{
+    font-size: 40%;
+  }
  
 }
 
