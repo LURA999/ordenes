@@ -143,8 +143,8 @@
                   {{nested.Intereses}}
                   </div> 
                   <div *ngIf="idx > 0">
-                   <!-- <button class="btn-c" (click)="abrirComentario(element.Clave
-                    , nested.Fecha)">Comentar</button>-->
+                    <button class="btn-c" (click)="abrirComentario(element.Clave
+                    , nested.Fecha)">Comentar</button>
                   </div>
                   </div>
                   </div>
@@ -170,8 +170,11 @@
       ></tr>
     </table>
 
-    <mat-paginator  class= "barra-paginator" (page)="pageEvents($event)"  [pageSize]="10"></mat-paginator>
+      <div id="existe">No se encontraron resultados... </div>
+
+    <mat-paginator  id= "barra-paginator" (page)="pageEvents($event)"  [pageSize]="10"></mat-paginator>
   </div>
+
 </div>
 <!-- Copyright 2019 Google Inc. All Rights Reserved.
     Use of this source code is governed by an MIT-style license that
