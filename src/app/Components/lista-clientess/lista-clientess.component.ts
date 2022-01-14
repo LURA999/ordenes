@@ -1,5 +1,5 @@
 
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ClientService } from 'src/app/services/client.service';
 import { ClienteModel } from '../../models/cliente.model';
 
@@ -51,6 +51,8 @@ export class ListaClientessComponent implements OnInit {
   load : Boolean =false;
   inicio : number=0;
   fin : number=10;
+
+  @ViewChild("hola") hola : ElementRef;
   displayedColumns = [
     'Clave',
     'Nombre',
@@ -157,9 +159,7 @@ export class ListaClientessComponent implements OnInit {
   ngOnInit(){ 
     this.existe= document.getElementById("existe").style.display = "none";
     this.existeBarra=document.getElementById("barra-paginator").style.display = "true";  
-
   }
-
 
   /* CUANDO PRESIONAS EL BOTON DE NEXT Y PREVIOUS */
 async pageEvents(event: any) {
@@ -192,9 +192,18 @@ async filtrar(valor :String) {
   this.data=[];
 
 
+
   if(valor!==""){
   try{
-    id  = await this.sService.id(valor).toPromise();
+    if(this.ciudad == "-1" && this.estado == "5" || this.ciudad == undefined && this.estado == undefined){
+      console.log("Entro aqui2")
+      id  = await this.sService.id(5,valor,"","").toPromise();
+    }else{
+       console.log("Entro aqui "+valor+" estado "+this.estado+" ciudad "+this.ciudad)
+      id  = await this.sService.id(0,valor,this.estado,this.ciudad).toPromise();
+    }
+  
+    
     this.noHayclientes(id);
   for await (const obj of id) {
          this.data[iniciof] =(    
@@ -441,7 +450,7 @@ async filtrar(valor :String) {
   }
   //Es para saber si el cliente esta activo o no
   checkbox(a:String){
-    console.log(a);
+
 
   }
   ngOnDestroy(): void {
@@ -449,11 +458,10 @@ async filtrar(valor :String) {
   }
 
   filaNombre(e){
-    console.log(e)    
+  
   }
 
   noHayclientes(cantidad : number){
-    console.log(cantidad)
     if(cantidad == 0){
       this.existe = document.getElementById("existe").style.display = "block";
     }else{

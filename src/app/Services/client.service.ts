@@ -49,8 +49,9 @@ export class ClientService {
     return this.http.get(this.local+'Cliente/Cliente.php?idcliente='+cve+'&idserv='+cveserv+'&buscarIDserv=true');
   }
   
-  id(cve:String){
-    return this.http.get(this.local+'Cliente/Cliente.php?id=true&cve='+cve);
+  id(opc:number,cve:String, estado:String, ciudad:String){
+    console.log(this.local+'Cliente/Cliente.php?opc='+opc+'&id=true&cve='+cve+'&estado='+estado+'&ciudad='+ciudad)
+    return this.http.get(this.local+'Cliente/Cliente.php?opc='+opc+'&id=true&cve='+cve+'&estado='+estado+'&ciudad='+ciudad);
   }
 
   actualizarEstatus_Estado(opc: number,estatus: String, cve : String){

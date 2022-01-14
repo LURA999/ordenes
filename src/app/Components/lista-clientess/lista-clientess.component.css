@@ -318,8 +318,9 @@ mat-label{
     font-size: 60%;
   }
 
-  .mat-paginator{
-    font-size: 70% ;
+  #barra-paginator{
+    font-size: 70%;
+    height: 1%;
   }
 }
 @media screen and (max-width: 767px){
@@ -349,7 +350,7 @@ mat-label{
     width: 60%;
     margin-right: -10%;
   }
-  .mat-paginator{
+  #barra-paginator{
     font-size: 60% ;
   }
 }
