@@ -50,6 +50,7 @@ export class ClientService {
   }
   
   id(opc:number,cve:String, estado:String, ciudad:String){
+    console.log(this.local+'Cliente/Cliente.php?opc='+opc+'&id=true&cve='+cve+'&estado='+estado+'&ciudad='+ciudad)
     return this.http.get(this.local+'Cliente/Cliente.php?opc='+opc+'&id=true&cve='+cve+'&estado='+estado+'&ciudad='+ciudad);
   }
 
