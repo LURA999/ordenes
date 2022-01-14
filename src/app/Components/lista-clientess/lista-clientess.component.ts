@@ -12,6 +12,7 @@ import { longitud } from 'src/app/Components/lista-clientess/spanish-paginator-i
 import { MatDialog } from '@angular/material/dialog';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { PopupComentarioComponent } from '../popup-comentario/popup-comentario.component';
+import { ThrowStmt } from '@angular/compiler';
 
 
 
@@ -196,10 +197,9 @@ async filtrar(valor :String) {
   if(valor!==""){
   try{
     if(this.ciudad == "-1" && this.estado == "5" || this.ciudad == undefined && this.estado == undefined){
-      console.log("Entro aqui2")
       id  = await this.sService.id(5,valor,"","").toPromise();
     }else{
-       console.log("Entro aqui "+valor+" estado "+this.estado+" ciudad "+this.ciudad)
+      console.log("ciudad: "+this.ciudad+ ", estado: "+this.estado)
       id  = await this.sService.id(0,valor,this.estado,this.ciudad).toPromise();
     }
   
@@ -350,9 +350,8 @@ async filtrar(valor :String) {
     }else{
       this.opcionCEfiltro = 4;
     }  
-    if(this.estado == "6"){
-      this.estado = "5"
-    }
+
+    
   }
   /**Filtro de ciudades */
   async verCiudad(ciudad : String){
@@ -436,7 +435,6 @@ async filtrar(valor :String) {
         break;
       case "convenio":
         excel = "4";
-        break;
       default:
         throw new Error("no existe el estado");
 
