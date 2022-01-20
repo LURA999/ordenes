@@ -1,7 +1,5 @@
-import { ResourceLoader } from '@angular/compiler';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { async } from 'rxjs/internal/scheduler/async';
 import {  ComentarioService } from "src/app/services/comentario.service";
 import Swal from 'sweetalert2';
 import { EditarComentarioComponent } from '../editar-comentario/editar-comentario.component';
@@ -31,7 +29,7 @@ export class PopupComentarioComponent implements OnInit {
   email = localStorage.getItem('email')
 
   comentario : String;
-
+  dialogRef   : any;
   atras : Boolean = true;
   adelante : Boolean;
 
@@ -68,12 +66,15 @@ export class PopupComentarioComponent implements OnInit {
   }
 
   async editarComentario(e:String,idcomentario : String,clave_serv : String,fecha : String){
-     let dialogRef = this.dialog.open(EditarComentarioComponent, 
-      {data: {mensaje: e, idcomentario: idcomentario, clave_serv: clave_serv, fecha: fecha},width:"500px"});
+     this.dialogRef = this.dialog.open(EditarComentarioComponent, 
+      {data: {mensaje: e, idcomentario: idcomentario, clave_serv: clave_serv, fecha: fecha},width:"500px",
+      panelClass: ['animate__animated','animate__slideInLeft']});
 
-      dialogRef.afterClosed().subscribe(result => {
+      this.dialogRef.afterClosed().subscribe(result => {
         this.todosServCliente()
       });
+      
+    
  }
 
 

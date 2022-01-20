@@ -290,6 +290,28 @@ mat-label{
   cursor:pointer;
 }
 
+.mat-paginator-range-label {
+  margin: 0% !important;
+  padding: 0%;
+}
+
+.mat-paginator-navigation-next {
+  position: absolute !important;
+  left: 55%;
+}
+
+.mat-paginator-navigation-previous {
+  position: absolute !important;
+  right: 55%;
+}
+
+/** Tabla convenios*/
+ .tab-convenio{
+   margin-top: 10%;
+   width: 30%;
+ }
+
+
 
 @media screen and (max-width: 989px){
   table td{
@@ -322,6 +344,12 @@ mat-label{
     font-size: 70%;
     height: 1%;
   }
+}
+
+#existe-conv {
+  margin-top: 10%;
+  margin-bottom: 10%;
+  text-align: center;
 }
 @media screen and (max-width: 767px){
   mat-form-field {

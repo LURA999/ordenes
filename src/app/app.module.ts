@@ -16,7 +16,6 @@ import { HomeComponent } from './Components/home/home.component';
 import { NavbarService } from './services/navbar.service';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-import {MatNativeDateModule} from '@angular/material/core';
 
 
 import { FlatpickrModule } from 'angularx-flatpickr';
@@ -35,6 +34,7 @@ import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatSelectModule  } from "@angular/material/select";
 import { MatButtonModule  } from "@angular/material/button";
+import { MatRadioModule } from '@angular/material/radio';
 
 //import { LoaderComponent } from './components/shared/loader/loader.component';
 
@@ -46,6 +46,9 @@ import { AbcUsuarioComponent } from "./Components/abc-usuario/abc-usuario.compon
 import { PopupComentarioComponent } from './Components/popup-comentario/popup-comentario.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { EditarComentarioComponent } from './Components/editar-comentario/editar-comentario.component';
+import { ConvenioComponent } from './Components/convenio/convenio.component';
+import { NgDialogAnimationService } from 'ng-dialog-animation';
+
 
 @NgModule({
   declarations: [
@@ -59,6 +62,7 @@ import { EditarComentarioComponent } from './Components/editar-comentario/editar
     AbcUsuarioComponent,
     PopupComentarioComponent,
     EditarComentarioComponent,
+    ConvenioComponent,
   ],
   entryComponents:[PopupComentarioComponent],
   imports: [
@@ -82,6 +86,7 @@ import { EditarComentarioComponent } from './Components/editar-comentario/editar
     MatDialogModule,
     HttpClientModule,
     MatButtonModule,
+    MatRadioModule,
     MatProgressSpinnerModule,
     FlatpickrModule.forRoot(),
     CalendarModule.forRoot({
@@ -89,8 +94,11 @@ import { EditarComentarioComponent } from './Components/editar-comentario/editar
       useFactory: adapterFactory,
     }),
   ],
-  providers: [NavbarService, { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() }, LoaderService
-  ,{provide: HTTP_INTERCEPTORS, useClass:LoaderInterceptor, multi: true} ],
+  providers: [NgDialogAnimationService,
+    NavbarService,
+    { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() }, 
+    LoaderService,{provide: HTTP_INTERCEPTORS, useClass:LoaderInterceptor, multi: true} ],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

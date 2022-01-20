@@ -1,20 +1,14 @@
-
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ClientService } from 'src/app/services/client.service';
 import { ClienteModel } from '../../models/cliente.model';
-
 import { LoaderService } from '../../services/loader.service';
 import { MatPaginator} from '@angular/material/paginator';
 import * as XLSX from 'xlsx';
 import { Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
-import { longitud } from 'src/app/Components/lista-clientess/spanish-paginator-intl';
-import { MatDialog } from '@angular/material/dialog';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { PopupComentarioComponent } from '../popup-comentario/popup-comentario.component';
-import { ThrowStmt } from '@angular/compiler';
-
-
+import { NgDialogAnimationService } from 'ng-dialog-animation';
 
 @Component({
   selector: 'app-lista-clientess',
@@ -47,13 +41,15 @@ export class ListaClientessComponent implements OnInit {
   estado:String;
   opcionCEfiltro : number;
   existe : any;
-  existeBarra : any;
+  existeBarra : any;  
   //variable load, sirve para cargar la tabla cuando esta en true
   load : Boolean =false;
   inicio : number=0;
   fin : number=10;
-
-  @ViewChild("hola") hola : ElementRef;
+  acumClientesCVE : String [] =[];
+  displayedColumns2: string[] = ['id','cliente', 'estado'];
+  dataSource2 : any;
+  tablaConvenios : any[] = [];
   displayedColumns = [
     'Clave',
     'Nombre',
@@ -66,13 +62,12 @@ export class ListaClientessComponent implements OnInit {
     'Estado',
     'Estatus'
   ];
-  btn =document.getElementById("btn");
-  
   focused: boolean;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  
+  @ViewChild('paginator') paginator: MatPaginator;
+  @ViewChild('paginator2') paginator2: MatPaginator;
+
   constructor(private sService: ClientService, private sLoader: LoaderService,
-    public dialog: MatDialog) {
+    public dialog: NgDialogAnimationService) {
     this.cliente = new ClienteModel();
     this.cargarTodo();
     this.cargarCiudades();
@@ -98,9 +93,7 @@ export class ListaClientessComponent implements OnInit {
    */
 
   async cargarInicio(){
-
-    this.noHayclientes(this.subcliente.length);
-   this.paginator.hidePageSize=true;
+  this.noHayclientes(this.subcliente.length);
    while ( this.inicio <this.fin + 2 && this.inicio < this.subcliente.length) {
     if(this.inicio < this.fin){
       this.data[this.inicio] =(    
@@ -151,14 +144,20 @@ export class ListaClientessComponent implements OnInit {
       }
     }
     this.load =true;
-    longitud(this.subcliente.length);    
     this.dataSource = await new MatTableDataSource(this.data);
-    this.displayedColumns =await this.displayedColumns;
-    this.dataSource.paginator = await this.paginator;     
+    this.dataSource.paginator = await this.paginator;    
+    this.paginator.hidePageSize= await true;
+    this.paginator.length = await this.subcliente.length;
+
+  //this.dataSource2 = await new MatTableDataSource(this.ELEMENT_DATA);
+   // this.dataSource2.paginator = await this.paginator2;
+  //  this.paginator2.hidePageSize=  true;
+  //this.paginator2.length = await this.ELEMENT_DATA.length;
   }
 
   ngOnInit(){ 
     this.existe= document.getElementById("existe").style.display = "none";
+    this.existe= document.getElementById("existe-conv").style.display = "block";
     this.existeBarra=document.getElementById("barra-paginator").style.display = "true";  
   }
 
@@ -182,17 +181,15 @@ async pageEvents(event: any) {
   }
 }
 
-
-
-
+async pageEvents2(event: any) {
+  
+}
   /* BUSCAR CLAVE DE USUARIO */
 async filtrar(valor :String) {
   let iniciof : number =0;
   let id :any;
   this.dataSource=null;
   this.data=[];
-
-
 
   if(valor!==""){
   try{
@@ -258,7 +255,6 @@ async filtrar(valor :String) {
 
   
   reader.onload = async (e: any) =>{
-    let p=0;
     const bstr : string = e.target.result;
     const wb : XLSX.WorkBook = XLSX.read(bstr, {type:'binary'});
     const wsname : string = wb.SheetNames[0];
@@ -271,41 +267,45 @@ async filtrar(valor :String) {
         let repetido = await this.sService.getTotalDeServiciosClienteID(this.ExcelDateToJSDate(this.excel[p][9]).toLocaleString(),this.excel[p][0]).toPromise();
         let repetidocliente = await this.sService.clienteRepetido(this.excel[p][0]).toPromise();
          try{
-           if(this.excel[p][0] !== undefined  && repetidocliente[0].repetido == 0 || this.excel[p][0] == "" && repetidocliente[0].repetido == 0){
-            this.cliente.cve=this.excel[p][0];
-            this.cliente.nombre=this.excel[p][1];
-            this.cliente.colonia=this.excel[p][2];
-            this.cliente.calle=this.excel[p][3];
-            this.cliente.num=this.excel[p][4];
-            this.cliente.celular1=this.excel[p][5];
-            this.cliente.celular2=this.excel[p][6];
-            this.cliente.ciudad=this.excel[p][7];
-            this.cliente.estado= await this.estadoExcel(this.excel[p][8]);
-            await this.sLoader.insertClientes(this.cliente).toPromise();
+           if(this.excel[p][0] !== undefined  && repetidocliente[0].repetido == 0 || this.excel[p][0] == "" && repetidocliente[0].repetido == 0){   
+              this.acumClientesCVE.push(this.excel[p][0]);
+              this.cliente.cve=this.excel[p][0];
+              this.cliente.nombre=this.excel[p][1];
+              this.cliente.colonia=this.excel[p][2];
+              this.cliente.calle=this.excel[p][3];
+              this.cliente.num=this.excel[p][4];
+              this.cliente.celular1=this.excel[p][5];
+              this.cliente.celular2=this.excel[p][6];
+              this.cliente.ciudad=this.excel[p][7];
+              this.cliente.estado= await this.estadoExcel(this.excel[p][8]);
+              await this.sLoader.insertClientes(this.cliente).toPromise();
            }
           }catch(Exception){}
+
           try{
           if(this.excel[p][9] !== undefined && repetido[0].total ==0 || this.excel[p][9] == "" && repetido[0].total ==0 ){
             await this.sLoader.insertClientesServ(this.excel[p][0], this.ExcelDateToJSDate(this.excel[p][9]).toLocaleString(),this.excel[p][10],this.excel[p][11],this.excel[p][12]).toPromise();
           }
         }catch(Exception){}
          }
-         await location.reload();
-          /*Insertar solamente el cliente sin servicios */
-        }else if(this.excel[0].length == 9){
-        for (let p = 0; p < this.excel.length; p++) {
-          if(this.excel[p][0] !== undefined || this.excel[p][0] == "" ){
-          }
+        for(let x=0; x<this.acumClientesCVE.length; x++){
+         for(let y = 0; y<this.subcliente.length; y++){
+          if(this.acumClientesCVE[x] === this.subcliente[y]){
+            this.subcliente[y].pop();
+          }       
         }
-      }else if(this.excel[0].length == 4){
-        for (let h = 1; h<this.excel.length; h++){
-          if(this.excel[h][0] !== undefined || this.excel[h][0] == ""){
-          }
+
+        for(let p=0; p<this.subcliente.length; p++){
+          console.log(this.subcliente[p]);
         }
       }
+
+
+       //  await location.reload();
+        }
+
     };
     await reader.readAsBinaryString(target.files[0]);
-
   }
 
   /**calcula la fecha que se introdujo en el excel */
@@ -321,23 +321,16 @@ async filtrar(valor :String) {
     var minutes = Math.floor(total_seconds / 60) % 60;
     return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate()+1, hours, minutes, seconds);
  }
-   
-
+  
  /**metodos para la tabla */
   getKeys(object): string[] {
     return Object.keys(object);
   }
 
-  onItemSelected(idx: number) {
-    console.log(idx)
-  }
-
-
   /**Sirve para que la lista no se active */
   CLICK(event){
     event.stopPropagation();
   }
-
 
   /**Proceso de filtracion */
   async CiudadEstado(){
@@ -367,7 +360,6 @@ async filtrar(valor :String) {
     this.paginator.pageIndex = 0;
     await this.CiudadEstado();
     this.subcliente = await this.sService.getciudadesEstados(this.opcionCEfiltro, this.ciudad, this.estado).toPromise();
-    
     await this.cargarInicio()
   }
   }
@@ -441,22 +433,24 @@ async filtrar(valor :String) {
     }
     return excel
   }
-
+  /*abrir el modulo comentario*/
   abrirComentario(clave : String, fecha : String){
     this.dialog.open(PopupComentarioComponent,
-    {data: {name: localStorage.getItem("name"), clave: clave, fecha: fecha, email: localStorage.getItem("email")}, height:"600px"});
+    {animation: { to: "bottom"},
+    data: 
+      {name: 
+        localStorage.getItem("name"), 
+        clave: clave, 
+        fecha: fecha, 
+        email: localStorage.getItem("email")
+      }
+      , height:"80%", width:"75%"
+    });
+    
   }
-  //Es para saber si el cliente esta activo o no
-  checkbox(a:String){
 
-
-  }
   ngOnDestroy(): void {
     this.sub$.unsubscribe();
-  }
-
-  filaNombre(e){
-  
   }
 
   noHayclientes(cantidad : number){
@@ -467,9 +461,5 @@ async filtrar(valor :String) {
     }
     
   }
-
-  applyFilter() {}
-
-  
 }
 

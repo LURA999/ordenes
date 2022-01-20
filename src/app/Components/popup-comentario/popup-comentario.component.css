@@ -1,5 +1,6 @@
 textarea{
     width: 100%;
+    height: 100%;
 }
 #titulo {
     text-align: center;
@@ -55,9 +56,49 @@ textarea{
     background-color: red;
 }
 
+thead {
+    background: #FFC300;
+    color: black;
+}
+.fila1{
+    background: #FFF0BF;
+}
+
+.fila3{
+    background: #FFF0BF;
+}
+
+.btn-list{
+    width: 47px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+}
+
 #Nohay{
     margin-top: 5%;
     margin-left: 170%;
     display: flex;
     text-align: center;
+}
+
+.comentario-nuevo{
+    margin-top: 5%;
+    width: 40%;
+    height: 100%;
+}
+
+.cabecera{
+    display: flex;
+}
+
+.radiobutton{
+    width: min-content;
+    align-self: center;
+    margin-left: 3%;
+}
+
+
+mat-radio-button {
+    margin-top: 14px;
 }

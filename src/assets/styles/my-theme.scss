@@ -76,16 +76,18 @@ $my-warn-color: (
 
 // PALETA DE COLORES
 $my-palette-primary: mat-palette($my-primary-color);
-$my-palette-accent: mat-palette($my-accent-color);
+$my-palette-accent: mat-palette($mat-red);
 $my-palette-warn: mat-palette($my-warn-color);
 $my-palette-azul: mat-palette($md-mcgpalette0);
+
+
 
 // TEMA PROPIO
 $my-theme: mat-light-theme((
  color: (
    primary: $my-palette-azul,
    accent: $my-palette-accent,
-   warn: $my-palette-warn
+   warn: $my-palette-warn,
  )
 ));
 

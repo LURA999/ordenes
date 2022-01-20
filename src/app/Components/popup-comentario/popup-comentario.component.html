@@ -1,17 +1,29 @@
 
     <div class="container">
     <h2>Seccion de comentarios</h2>
-
+<div class="cabecera">
     <div class="comentario-nuevo"> 
-        <span class="font">Ingrese un comentario</span>
+        <span>Ingrese un comentario</span>
         <form name="confirmationForm" method="post">
-            <textarea style = "resize: none;"class="text" rows="5" (keyup)="onKey($event)" maxlength="250" #texto></textarea>
+            <textarea style = "resize: none;"class="text" rows="10" (keyup)="onKey($event)" maxlength="250" #texto></textarea>
             <div class= "font">{{contador}}/250</div><br>
-           <input [disabled]="contador==0"type="submit" value="Registrar" (click)="actualizarComentarios(texto.value)" class="btn">
+            <button  [disabled]="contador==0"type="submit" (click)="actualizarComentarios(texto.value)"  mat-raised-button color="warn" style="color: white;">Comentar</button>
         </form>
     </div>
+    <div class="radiobutton">
+        <span>Tipo de comentario</span>
+        <section class= "seccion-radiob">
+            <mat-radio-group >
+              <mat-radio-button class="example-radio-button" value="after" checked="true">Comentario</mat-radio-button>
+              <mat-radio-button class="example-radio-button" value="before">Pago</mat-radio-button>
+              <mat-radio-button class="example-radio-button" value="before">Convenio</mat-radio-button>
+            </mat-radio-group>
+        </section>
+    </div>
+</div>
+
     <hr>
-  
+
 
     <div class="otros-comentarios">
         <span class="font">Comentarios:</span>
@@ -28,11 +40,11 @@
                 <div id="Nohay">No hay comentarios</div>
             </ng-container>
             <ng-template #elseTemplate>
-                <tbody *ngFor="let c of comentariosMostrar">
-                    <tr>
-                    <td>{{c.nombre}}<u class="nomb"></u></td>
-                    <td style="text-align: justify;"><textarea readonly="yes" style="border:none; resize: none;
-                        background: none; outline: none; height: 70px;">{{c.comentario}}</textarea></td>
+                <tbody *ngFor="let c of comentariosMostrar; let i = index">
+                    <tr class="fila{{i}}">
+                    <td>{{c.nombre}}</td>
+                    <td  style="text-align: justify;"><textarea readonly="yes" style="border:none; resize: none;
+                        background: none; outline: none; height: 40px;">{{c.comentario}}</textarea></td>
                     <td>{{c.fecha}}</td>
                     <td>
                     <ng-container *ngIf="email != c.correo; else elseTemplate">
@@ -53,14 +65,18 @@
                 </tbody>
             </ng-template>
         </table>
-        </div>   
+        </div>
+        
         <div class="row" *ngIf="comentarios.length > 0 " >
         <div class="col-md-12 text-center">
-            <input type="submit" value="Anterior" class="btn" [disabled]="!btnPrev" (click)="previo()">
+            
+            <input type="image" src="assets/flecha.png" class="btn btn-list" style ="transform:rotate(90deg);"[disabled]="!btnPrev" (click)="previo()">
             <span style="margin-left: 10px; margin-right: 10px; ">{{actualPage}} de {{totalPages}}</span>
-            <input type="submit" value="Siguiente" class="btn" [disabled]="!btnNext" (click)="siguiente()">
+            <input type="image" src="assets/flecha.png" class="btn btn-list"style="transform:rotate(270deg);" [disabled]="!btnNext" (click)="siguiente()">
           </div>
         </div>
+
+
     <div>
-        <button class="btn" mat-button mat-dialog-close="false">Cerrar</button>
+        <button mat-dialog-close="false" mat-raised-button color ="accent">Cerrar</button>
     </div>
