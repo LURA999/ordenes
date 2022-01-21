@@ -43,7 +43,7 @@
       </div>
     </div>
     <div class="cargar">
-      <label  class= "btn" > 
+      <label class= "btn"> 
         Cargar Excel
       <input class="subir " (change)= "onFileChange($event)" style="display: none !important" type="file" multiple="false"/>
       </label>
@@ -65,8 +65,12 @@
         *ngFor="let column of displayedColumns"
         matColumn 
       >
-        <th  mat-header-cell *matHeaderCellDef style="font:900; border-bottom:1px solid gray;">{{ column }}</th>
-        <td class = "a{{element['Estado']}} {{element['Clave']}}"  mat-cell *matCellDef="let element" (click)="filaNombre(column)">
+      <thead>
+        <tr>
+          <th  mat-header-cell *matHeaderCellDef style="border-bottom:1px solid gray;">{{ column }}</th>
+        </tr>
+      </thead>
+        <td class = "a{{element['Estado']}} {{element['Clave']}}"  mat-cell *matCellDef="let element">
           <ng-container *ngIf="column == 'Celular 1' || column == 'Celular 2'; then thenTemplate; else elseTemplate"></ng-container>
           <ng-template #thenTemplate>
            <a (click)="CLICK($event)" href="tel:+52{{element[column]}}">{{ element[column] }}</a>
@@ -138,7 +142,7 @@
                   {{nested.Intereses}}
                   </div> 
                   <div *ngIf="idx > 0">
-                    <button class="btn-c" (click)="abrirComentario(element.Clave
+                    <button mat-raised-button class="btn-c" (click)="abrirComentario(element.Clave
                     , nested.Fecha)">Comentar</button>
                   </div>
                   </div>

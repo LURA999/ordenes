@@ -35,7 +35,8 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatSelectModule  } from "@angular/material/select";
 import { MatButtonModule  } from "@angular/material/button";
 import { MatRadioModule } from '@angular/material/radio';
-
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from "@angular/material/form-field";
 //import { LoaderComponent } from './components/shared/loader/loader.component';
 
 import { LoaderService } from './services/loader.service';
@@ -87,6 +88,8 @@ import { NgDialogAnimationService } from 'ng-dialog-animation';
     HttpClientModule,
     MatButtonModule,
     MatRadioModule,
+    MatCardModule,
+    MatFormFieldModule,
     MatProgressSpinnerModule,
     FlatpickrModule.forRoot(),
     CalendarModule.forRoot({

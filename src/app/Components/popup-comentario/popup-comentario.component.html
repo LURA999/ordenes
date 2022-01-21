@@ -1,40 +1,83 @@
 
     <div class="container">
+    <button class="btn-s" mat-dialog-close="false">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+        </svg>
+    </button>
+
     <h2>Seccion de comentarios</h2>
-<div class="cabecera">
+    <div class="cabecera">
     <div class="comentario-nuevo"> 
-        <span>Ingrese un comentario</span>
-        <form name="confirmationForm" method="post">
-            <textarea style = "resize: none;"class="text" rows="10" (keyup)="onKey($event)" maxlength="250" #texto></textarea>
-            <div class= "font">{{contador}}/250</div><br>
-            <button  [disabled]="contador==0"type="submit" (click)="actualizarComentarios(texto.value)"  mat-raised-button color="warn" style="color: white;">Comentar</button>
-        </form>
+        <mat-form-field class="comentario" color="accent" appearance="legacy">
+            <mat-label>Ingrese un comentario</mat-label>
+            <textarea class="comentario2" matInput style = "resize: none;" rows="10" (keyup)="onKey($event)" maxlength="250" #texto></textarea>
+        </mat-form-field>
+        <div class= "font">{{contador}}/250</div><br>
+        <button  [disabled]="contador==0"type="submit" (click)="actualizarComentarios(texto.value)"  mat-raised-button color="warn" style="color: white;">Comentar</button>
     </div>
+    
     <div class="radiobutton">
         <span>Tipo de comentario</span>
         <section class= "seccion-radiob">
             <mat-radio-group >
-              <mat-radio-button class="example-radio-button" value="after" checked="true">Comentario</mat-radio-button>
-              <mat-radio-button class="example-radio-button" value="before">Pago</mat-radio-button>
-              <mat-radio-button class="example-radio-button" value="before">Convenio</mat-radio-button>
+            <mat-radio-button class="example-radio-button" value="comentario" checked="true">Comentario</mat-radio-button>
+            <mat-radio-button class="example-radio-button" value="pago">Pago</mat-radio-button>
+            <mat-radio-button class="example-radio-button" value="convenio">Convenio</mat-radio-button>
             </mat-radio-group>
         </section>
     </div>
-</div>
+
+    <mat-card disabled>
+        <mat-card-title>Mas opciones</mat-card-title>
+        <mat-card-subtitle>seleccione convenio o pago</mat-card-subtitle>
+        <div id="opciones-extras">
+            <mat-form-field id="select" color="accent" appearance="legacy">
+                <mat-label>Lista de convenios</mat-label>
+                <div *ngIf="listaConvenios.length == 0">
+                    <mat-select>
+                        <mat-option>No hay convenios</mat-option>
+                    </mat-select>
+                </div>
+                <div *ngIf="listaConvenios.length > 0">
+                    <mat-select *ngFor="let convenio of listaConvenios">
+                        <mat-option [value] = "convenio.id">Este es un ejemplo2</mat-option>
+                    </mat-select>
+                </div>
+                
+
+            </mat-form-field>
+
+            <mat-form-field id="convenio" color="accent" appearance="legacy">
+                <mat-label>Fecha de convenio</mat-label>
+                <input matInput>
+            </mat-form-field>
+
+            <mat-form-field id="cantidad" color="accent" appearance="legacy" floatLabel="always">
+                <mat-label>Ingrese pago</mat-label>
+                <input matInput type="number" placeholder="0">
+                <span matPrefix>$&nbsp;</span>
+            </mat-form-field>
+        </div>
+    </mat-card>
+    </div>
 
     <hr>
-
-
     <div class="otros-comentarios">
         <span class="font">Comentarios:</span>
         <table class="table table-hover table-container" style="width: 100%;">
             <thead>
-              <tr class="">
-                <th scope="col">Usuario</th>
-                <th scope="col">Comentario</th>
-                <th scope="col">Fecha de publicacion</th>
-                <th scope="col">Mas opciones</th>
-              </tr>
+                <tr class="head-tabla">
+                    <td scope="col">Tipo</td>
+                    <td scope="col">Usuario</td>
+                    <td scope="col">Comentario</td>
+                    <td scope="col">Fecha de public.</td>
+                    <td scope="col">Fecha para pagar</td>
+                    <td scope="col">Cantidad para pagar</td>
+                    <td scope="col">Cantidad pagada</td>
+                    <td scope="col">Id convenio</td>
+                    <td scope="col">Mas opciones</td>
+                </tr>
             </thead>
             <ng-container *ngIf="comentarios.length ==0; else elseTemplate">
                 <div id="Nohay">No hay comentarios</div>
@@ -42,25 +85,35 @@
             <ng-template #elseTemplate>
                 <tbody *ngFor="let c of comentariosMostrar; let i = index">
                     <tr class="fila{{i}}">
+                    <td>No</td>
                     <td>{{c.nombre}}</td>
                     <td  style="text-align: justify;"><textarea readonly="yes" style="border:none; resize: none;
                         background: none; outline: none; height: 40px;">{{c.comentario}}</textarea></td>
                     <td>{{c.fecha}}</td>
+                    <td>Fecha pp</td>
+                    <td>cantidad pp</td>
+                    <td>cantidad pag</td>
+                    <td>id conv</td>
                     <td>
                     <ng-container *ngIf="email != c.correo; else elseTemplate">
                         <ng-container *ngIf="nivel == 1; else elseTemplate">
-                            <input type="submit" value="Editar" class="btnE btn-editar" (click)="editarComentario(c.comentario,c.idcomentario,c.clave_serv,c.fecha)">
-                            <input type="submit" value="Borrar" class="btnE btn-exit" (click)="deleteComentario(c.idcomentario,c.clave_serv,c.fecha)">
+                            <div class="btns-eb">
+                                <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentario,c.clave_serv,c.fecha)">Editar</button>
+                                <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentario,c.clave_serv,c.fecha)">Borrar</button>
+                            </div>
                         </ng-container>
                         <ng-template #elseTemplate>
                             <div>No puedes editar</div>
                         </ng-template>
                     </ng-container>
                     <ng-template #elseTemplate>
-                        <input type="submit" value="Editar" class="btnE btn-editar" (click)="editarComentario(c.comentario,c.idcomentario,c.clave_serv,c.fecha)">
-                        <input type="submit" value="Borrar" class="btnE btn-exit" (click)="deleteComentario(c.idcomentario,c.clave_serv,c.fecha)">
+                        <div class="btns-eb">
+                            <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentario,c.clave_serv,c.fecha)">Editar</button>
+                            <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentario,c.clave_serv,c.fecha)">Borrar</button>
+                        </div>
                     </ng-template>
                     </td>
+
                     </tr>
                 </tbody>
             </ng-template>
@@ -70,10 +123,18 @@
         <div class="row" *ngIf="comentarios.length > 0 " >
         <div class="col-md-12 text-center">
             
-            <input type="image" src="assets/flecha.png" class="btn btn-list" style ="transform:rotate(90deg);"[disabled]="!btnPrev" (click)="previo()">
+            <button src="assets/arrow-left-circle.svg" class="btn-list btn-outline-danger" [disabled]="!btnPrev" (click)="previo()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                </svg>
+            </button>
             <span style="margin-left: 10px; margin-right: 10px; ">{{actualPage}} de {{totalPages}}</span>
-            <input type="image" src="assets/flecha.png" class="btn btn-list"style="transform:rotate(270deg);" [disabled]="!btnNext" (click)="siguiente()">
-          </div>
+            <button src="http://www.w3.org/2000/svg" class="btn-list btn-outline-danger" [disabled]="!btnNext" (click)="siguiente()">
+                <svg xmlns="assets/arrow-left-circle-fill.svg" fill="currentColor" class="bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                    <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
+                  </svg>
+            </button>
+            </div>
         </div>
 
 

@@ -16,7 +16,6 @@ textarea{
 }
 .btn{
     background-color: rgb(238, 235, 235);
-    border: 1px solid black;
     font-size: 97%;
 }
 
@@ -24,10 +23,8 @@ textarea{
     background-color: rgb(218, 214, 214);
 }
 
-.comentario{
-    max-width: 100%; 
-    display:block;
-    overflow: auto;
+.comentario-nuevo{
+    width: 45%; 
 }
 .btn:disabled:hover{
    background-color: rgb(238, 235, 235);
@@ -39,9 +36,19 @@ textarea{
 
 .btn-editar{
     color: white; 
-    border:1px solid black; 
-    padding: 5px;
-    background-color: #0c82ff;
+    border:transparent; 
+    background-color: black;
+}
+.btn-s{
+    display:flex; 
+    float:right; 
+    border:transparent; 
+    outline: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
 }
 
 .btn-editar:active{
@@ -51,14 +58,16 @@ textarea{
 
 .btn-exit{
     color: white; 
-    border:1px solid black; 
-    padding: 5px;
+    border:transparent; 
     background-color: red;
 }
 
 thead {
-    background: #FFC300;
-    color: black;
+    background: #f44336;
+    color: white;
+    border:transparent;
+    font-weight: bold;
+    font-family: "Trebuchet MS", Verdana, ui-sans-serif;
 }
 .fila1{
     background: #FFF0BF;
@@ -68,12 +77,34 @@ thead {
     background: #FFF0BF;
 }
 
+
+/*Boton de atras*/
 .btn-list{
-    width: 47px;
+    width: 40px;
     height: 40px;
     border-radius: 50%;
     background: white;
+    cursor: pointer;
 }
+
+.btn-outline-danger {
+    color: #ffc300;
+    border-color: transparent;
+    padding: 0%;
+}
+.btn-outline-danger-x {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+.bi-arrow-right-circle-fill::before {
+    content: "";
+}
+.bi-x-circle-fill::before {
+    content: "\f622";
+}
+
+/****/
+
 
 #Nohay{
     margin-top: 5%;
@@ -82,23 +113,38 @@ thead {
     text-align: center;
 }
 
-.comentario-nuevo{
-    margin-top: 5%;
-    width: 40%;
-    height: 100%;
-}
-
 .cabecera{
     display: flex;
+    justify-content: space-between;
 }
 
 .radiobutton{
     width: min-content;
     align-self: center;
-    margin-left: 3%;
 }
 
 
 mat-radio-button {
     margin-top: 14px;
+}
+
+div#opciones-extras {
+    display: grid;
+}
+
+mat-card.mat-card {
+    padding: 5% 7%;
+}
+
+.comentario {
+    margin-top: 15%;
+    width: 100% !important;
+}
+
+textarea {
+    background-color: rgb(254 254 254);
+}
+textarea.mat-input-element {
+    padding: 2px 0;
+    margin: -5px 0;
 }

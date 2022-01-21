@@ -13,7 +13,7 @@ export class PopupComentarioComponent implements OnInit {
   contador =0;
   comentarios : any []=[];
   comentariosMostrar : any []=[];
-
+  listaConvenios : String []=[];
   tamanoReal : any []=[];
   limite=0;
   limite2=0;
@@ -167,5 +167,5 @@ export class PopupComentarioComponent implements OnInit {
         }
       }
   }
-
+    
 }

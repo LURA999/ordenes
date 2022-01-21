@@ -188,7 +188,6 @@ background: #ff797999;
   font-size: 100%;
   color: white;
   font-weight: 400;
-  border: 1px solid black;
 }
 .btnb:hover{
   background-color: #066bd8;
@@ -199,8 +198,6 @@ background: #ff797999;
   background-color: #0c82ff;
   color: white;
   margin-top: 10%;
-  border: 1px solid black;
-
 }
 .btn:hover{
   background-color: #1167b8;
@@ -271,11 +268,9 @@ mat-label{
 }
 
 .btn-c{
-  padding: 15%;
   background: #4553ff;
   font-size: smaller;
   outline: none;
-  border: 1px solid black;
   color: white;
 }
 
@@ -386,11 +381,9 @@ mat-label{
 @media screen and (max-width: 393px){
   table td{
     font-size: 40%;
-    border:1% solid black;
   }
   table th{
     font-size: 40%;
-    border:1% solid black;
   }
   #existe{
     font-size: 40%;
