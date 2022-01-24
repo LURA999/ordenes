@@ -34,11 +34,7 @@ textarea{
     text-align: center;
 }
 
-.btn-editar{
-    color: white; 
-    border:transparent; 
-    background-color: black;
-}
+
 .btn-s{
     display:flex; 
     float:right; 
@@ -49,6 +45,14 @@ textarea{
     border-radius: 50%;
     background: white;
     cursor: pointer;
+    outline: none;
+}
+
+.btn-editar{
+    color: white; 
+    border:transparent; 
+    background-color: black;
+    outline: none;
 }
 
 .btn-editar:active{
@@ -60,6 +64,7 @@ textarea{
     color: white; 
     border:transparent; 
     background-color: red;
+    outline: none;
 }
 
 thead {
@@ -91,6 +96,7 @@ thead {
     color: #ffc300;
     border-color: transparent;
     padding: 0%;
+    outline: none;
 }
 .btn-outline-danger-x {
     color: #dc3545;
@@ -105,13 +111,12 @@ thead {
 
 /****/
 
-
+/*css cuando no hay comentarios*/
 #Nohay{
-    margin-top: 5%;
-    margin-left: 170%;
-    display: flex;
     text-align: center;
 }
+
+/*Empieza el codigo de la cabecera del dialog*/
 
 .cabecera{
     display: flex;
@@ -122,7 +127,6 @@ thead {
     width: min-content;
     align-self: center;
 }
-
 
 mat-radio-button {
     margin-top: 14px;
@@ -148,3 +152,5 @@ textarea.mat-input-element {
     padding: 2px 0;
     margin: -5px 0;
 }
+
+

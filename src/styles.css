@@ -44,5 +44,10 @@ div.flatpickr-calendar{
   background-color: #00b2ff;
 }
 
+/*css del calendario*/
+button.mat-focus-indicator.mat-icon-button.mat-button-base{
+  outline: none !important;
+}
+
 
 

@@ -9,8 +9,8 @@ export class ComentarioService {
   local=environment.api;
 
   constructor(private http : HttpClient) { }
-  insertComentario(cve:  String, clave_serv : String, comentario : String, nombre :String, correo :String){
-    return this.http.post(this.local+'Comentarios.php?cve='+cve+'&clave_serv='+clave_serv+'&comentario='+comentario+'&nombre='+nombre+'&correo='+correo,  {responseType: 'text'});
+  insertComentario(cve:  String, clave_serv : String, comentario : String, nombre :String, correo :String, categoria : number){
+    return this.http.post(this.local+'Comentarios.php?cve='+cve+'&clave_serv='+clave_serv+'&comentario='+comentario+'&nombre='+nombre+'&correo='+correo+'&tipo='+categoria,  {responseType: 'text'});
   }
 
   getAllServCliente(cve:String, fecha:String){

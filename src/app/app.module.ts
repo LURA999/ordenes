@@ -16,14 +16,10 @@ import { HomeComponent } from './Components/home/home.component';
 import { NavbarService } from './services/navbar.service';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-
-
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { ListaClientessComponent } from './Components/lista-clientess/lista-clientess.component';
 import { getSpanishPaginatorIntl } from './Components/lista-clientess/spanish-paginator-intl';
-
-
 import { MatInputModule } from "@angular/material/input";
 import { MatListModule } from "@angular/material/list";
 import { MatPaginatorModule } from "@angular/material/paginator";
@@ -37,8 +33,11 @@ import { MatButtonModule  } from "@angular/material/button";
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from "@angular/material/form-field";
-//import { LoaderComponent } from './components/shared/loader/loader.component';
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
+//components;
 import { LoaderService } from './services/loader.service';
 import { LoaderInterceptor } from './interceptors/loarder.interceptor';
 import { LoaderComponent } from './components/shared/loader/loader.component';
@@ -47,8 +46,8 @@ import { AbcUsuarioComponent } from "./Components/abc-usuario/abc-usuario.compon
 import { PopupComentarioComponent } from './Components/popup-comentario/popup-comentario.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { EditarComentarioComponent } from './Components/editar-comentario/editar-comentario.component';
-import { ConvenioComponent } from './Components/convenio/convenio.component';
 import { NgDialogAnimationService } from 'ng-dialog-animation';
+
 
 
 @NgModule({
@@ -63,7 +62,6 @@ import { NgDialogAnimationService } from 'ng-dialog-animation';
     AbcUsuarioComponent,
     PopupComentarioComponent,
     EditarComentarioComponent,
-    ConvenioComponent,
   ],
   entryComponents:[PopupComentarioComponent],
   imports: [
@@ -90,6 +88,8 @@ import { NgDialogAnimationService } from 'ng-dialog-animation';
     MatRadioModule,
     MatCardModule,
     MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatProgressSpinnerModule,
     FlatpickrModule.forRoot(),
     CalendarModule.forRoot({
@@ -98,9 +98,13 @@ import { NgDialogAnimationService } from 'ng-dialog-animation';
     }),
   ],
   providers: [NgDialogAnimationService,
-    NavbarService,
+    NavbarService,    
+    MatDatepickerModule,
+
     { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() }, 
-    LoaderService,{provide: HTTP_INTERCEPTORS, useClass:LoaderInterceptor, multi: true} ],
+    LoaderService,
+    {provide: HTTP_INTERCEPTORS, useClass:LoaderInterceptor, multi: true },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-MX' }    ],
 
   bootstrap: [AppComponent]
 })

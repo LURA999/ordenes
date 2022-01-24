@@ -11,16 +11,16 @@
     <div class="comentario-nuevo"> 
         <mat-form-field class="comentario" color="accent" appearance="legacy">
             <mat-label>Ingrese un comentario</mat-label>
-            <textarea class="comentario2" matInput style = "resize: none;" rows="10" (keyup)="onKey($event)" maxlength="250" #texto></textarea>
+            <textarea class="comentario2" matInput style = "resize: none;" rows="10" (keyup)="onKey(texto.value,pagoValue.value,fechaValue.value,select.value)" maxlength="250" #texto></textarea>
         </mat-form-field>
         <div class= "font">{{contador}}/250</div><br>
-        <button  [disabled]="contador==0"type="submit" (click)="actualizarComentarios(texto.value)"  mat-raised-button color="warn" style="color: white;">Comentar</button>
+        <button [disabled]="activo" type="submit" (click)="actualizarComentarios(texto.value,pagoValue.value,fechaValue.value,select.value)"  mat-raised-button color="warn" style="outline: none; color: white;">Comentar</button>
     </div>
     
     <div class="radiobutton">
         <span>Tipo de comentario</span>
         <section class= "seccion-radiob">
-            <mat-radio-group >
+            <mat-radio-group (click)="radiobutton($event.path[2].innerText)" (click)="onKey(texto.value,pagoValue.value,fechaValue.value,select.value)">
             <mat-radio-button class="example-radio-button" value="comentario" checked="true">Comentario</mat-radio-button>
             <mat-radio-button class="example-radio-button" value="pago">Pago</mat-radio-button>
             <mat-radio-button class="example-radio-button" value="convenio">Convenio</mat-radio-button>
@@ -28,36 +28,48 @@
         </section>
     </div>
 
-    <mat-card disabled>
+    <mat-card>
         <mat-card-title>Mas opciones</mat-card-title>
         <mat-card-subtitle>seleccione convenio o pago</mat-card-subtitle>
         <div id="opciones-extras">
-            <mat-form-field id="select" color="accent" appearance="legacy">
+                <ng-container *ngIf="listaConvenios.length == 0" >
+                <mat-form-field  color="accent" appearance="legacy">
                 <mat-label>Lista de convenios</mat-label>
-                <div *ngIf="listaConvenios.length == 0">
-                    <mat-select>
-                        <mat-option>No hay convenios</mat-option>
+                    <mat-select #select disabled (selectionChange)="onKey(texto.value,pagoValue.value,fechaValue.value,select.value)">
+                        <mat-option value="1">opcion1</mat-option>
+                        <mat-option value="2">opcion2</mat-option>
+                        <mat-option value="3">opcion3</mat-option>
                     </mat-select>
-                </div>
-                <div *ngIf="listaConvenios.length > 0">
-                    <mat-select *ngFor="let convenio of listaConvenios">
+                </mat-form-field>
+                </ng-container>
+                
+                <ng-container *ngIf="listaConvenios.length > 0">
+                <mat-form-field color="accent" appearance="legacy">
+                    <mat-select #select *ngFor="let convenio of listaConvenios" disabled>
                         <mat-option [value] = "convenio.id">Este es un ejemplo2</mat-option>
                     </mat-select>
-                </div>
-                
+                </mat-form-field>
+                </ng-container>
+            
 
-            </mat-form-field>
+          
+            <mat-form-field #inputFecha class="convenio" color="accent" appearance="legacy">
+                <mat-label>Elige una fecha</mat-label>
+                <input #fechaValue matInput 
+                [matDatepicker]="picker" disabled (dateChange)="dateChange($event,fechaValue.value)"
+                (dateChange)="onKey(texto.value,pagoValue.value,fechaValue.value,select.value)">
+                <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+                <mat-datepicker #picker disabled="true"></mat-datepicker>
+              </mat-form-field>
 
-            <mat-form-field id="convenio" color="accent" appearance="legacy">
-                <mat-label>Fecha de convenio</mat-label>
-                <input matInput>
-            </mat-form-field>
 
-            <mat-form-field id="cantidad" color="accent" appearance="legacy" floatLabel="always">
-                <mat-label>Ingrese pago</mat-label>
-                <input matInput type="number" placeholder="0">
+            <mat-form-field #inputPago class="cantidad" color="accent" appearance="legacy" floatLabel="always">
+            <mat-label>Ingrese pago</mat-label>
+                <input matInput type="number" placeholder="0" disabled #pagoValue
+                (keyup)="onKey(texto.value,pagoValue.value,fechaValue.value,select.value)">
                 <span matPrefix>$&nbsp;</span>
             </mat-form-field>
+
         </div>
     </mat-card>
     </div>
@@ -79,13 +91,13 @@
                     <td scope="col">Mas opciones</td>
                 </tr>
             </thead>
-            <ng-container *ngIf="comentarios.length ==0; else elseTemplate">
-                <div id="Nohay">No hay comentarios</div>
-            </ng-container>
-            <ng-template #elseTemplate>
                 <tbody *ngFor="let c of comentariosMostrar; let i = index">
                     <tr class="fila{{i}}">
-                    <td>No</td>
+                    <td>
+                        <div *ngIf="c.categoria == 0"> Com.</div>
+                        <div *ngIf="c.categoria == 1">Pago</div>
+                        <div *ngIf="c.categoria == 2">Con.</div>
+                    </td>
                     <td>{{c.nombre}}</td>
                     <td  style="text-align: justify;"><textarea readonly="yes" style="border:none; resize: none;
                         background: none; outline: none; height: 40px;">{{c.comentario}}</textarea></td>
@@ -113,12 +125,13 @@
                         </div>
                     </ng-template>
                     </td>
-
                     </tr>
                 </tbody>
-            </ng-template>
         </table>
-        </div>
+        <ng-container *ngIf="comentarios.length ==0">
+            <div id="Nohay">No hay comentarios</div>
+        </ng-container>
+      </div>
         
         <div class="row" *ngIf="comentarios.length > 0 " >
         <div class="col-md-12 text-center">
@@ -139,5 +152,5 @@
 
 
     <div>
-        <button mat-dialog-close="false" mat-raised-button color ="accent">Cerrar</button>
+        <button mat-dialog-close="false" mat-raised-button style="outline: none;" color ="accent">Cerrar</button>
     </div>
