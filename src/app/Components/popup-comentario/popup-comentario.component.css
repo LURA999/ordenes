@@ -143,6 +143,16 @@ textarea.mat-input-element {
     margin: -5px 0;
 }
 
+#Comentar{
+    outline: none; 
+    
+}
+
+#Comentar:enabled{
+    color: white;
+    background: rgb(255, 60, 0);
+}
+
 /*ELEMENTOS DE TABS*/
 
 .btnb{
@@ -175,16 +185,4 @@ background-color: #f0b70e;
     width:100%;
 }
 
-.btn-c{
-    padding: 15%;
-    background: #4553ff;
-    font-size: smaller;
-    outline: none;
-    border: 1px solid black;
-    color: white;
-    border-radius: 1px;
-  }
-  
-  .btn-c:hover{
-    background: #363fa5;
-  }
+

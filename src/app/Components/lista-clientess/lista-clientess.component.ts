@@ -299,9 +299,7 @@ async filtrar(valor :String) {
           console.log(this.subcliente[p]);
         }
       }
-
-
-       //  await location.reload();
+        await location.reload();
         }
 
     };

@@ -14,7 +14,7 @@
             <textarea class="comentario2" matInput style = "resize: none;" rows="10" (keyup)="onKey(texto.value,pagoValue.value,fechaValue.value,select.value)" maxlength="250" #texto></textarea>
         </mat-form-field>
         <div class= "font">{{contador}}/250</div><br>
-        <button [disabled]="activo" type="submit" (click)="actualizarComentarios(texto.value,pagoValue.value,fechaValue.value,select.value)"  mat-raised-button style="outline: none; color: white; background-color: rgb(255, 60, 0);">Comentar</button>
+        <button id= "Comentar" [disabled]="activo" type="submit" (click)="actualizarComentarios(texto.value,pagoValue.value,fechaValue.value,select.value)"  mat-raised-button>Comentar</button>
     </div>
     
     <div class="radiobutton">
