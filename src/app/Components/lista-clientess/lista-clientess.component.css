@@ -198,6 +198,8 @@ background: #ff797999;
   background-color: #0c82ff;
   color: white;
   margin-top: 10%;
+  box-shadow: 1px 2px 2px #ccc;
+  border: none;
 }
 .btn:hover{
   background-color: #1167b8;
@@ -268,10 +270,15 @@ mat-label{
 }
 
 .btn-c{
+  padding: 15%;
   background: #4553ff;
   font-size: smaller;
   outline: none;
+  border: 1px solid black;
   color: white;
+  border-radius: 4px;
+  box-shadow: 1px 2px 2px #ccc;
+  border: none;
 }
 
 .btn-c:hover{

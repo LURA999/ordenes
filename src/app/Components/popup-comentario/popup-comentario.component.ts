@@ -129,6 +129,15 @@ export class PopupComentarioComponent implements OnInit {
   }
   }
 
+  async todosServCliente2(opc : number, id : number){
+    await this.serviceComent.buscarId(opc,this.data.clave, this.data.fecha, id).subscribe((resp :any) =>{
+    this.comentarios = resp;
+    this.comentariosMostrar = [];
+    console.log(this.comentarios)
+    this.paginar(this.comentarios)
+  });
+ }
+
   /**Para cargar cada pestaña cuando se elige */
  async tab(opc: number){
     switch(opc){
@@ -301,5 +310,16 @@ export class PopupComentarioComponent implements OnInit {
         }
       break;   
     }
+  }
+
+  async filtrar(e){
+    if(e == " " || e == undefined || e==""){
+      this.todosServCliente(this.tabCategoria)
+    }else{
+
+    await this.todosServCliente2(this.tabCategoria, e)
+
+    }
+
   }
 }

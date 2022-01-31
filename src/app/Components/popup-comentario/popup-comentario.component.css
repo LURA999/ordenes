@@ -87,29 +87,17 @@ thead {
 
 /*Boton de atras*/
 .btn-list{
-    width: 40px;
-    height: 40px;
     border-radius: 50%;
     background: white;
     cursor: pointer;
+    outline: none;    
+    border:none;
 }
 
-.btn-outline-danger {
-    color: #ffc300;
-    border-color: transparent;
-    padding: 0%;
-    outline: none;
-}
-.btn-outline-danger-x {
-    color: #dc3545;
-    border-color: #dc3545;
-}
-.bi-arrow-right-circle-fill::before {
-    content: "";
-}
-.bi-x-circle-fill::before {
-    content: "\f622";
-}
+.flechas:disabled {
+    fill: #ccc;
+  }
+
 
 /****/
 
@@ -155,10 +143,48 @@ textarea.mat-input-element {
     margin: -5px 0;
 }
 
-/*TABS Comentarios*/
+/*ELEMENTOS DE TABS*/
 
+.btnb{
+    margin-left: 1rem;
+    background-color: #ffbe00;
+    color: white;
+}
+
+.subcabecera{
+    margin-top: 2%;
+    margin-bottom: 3%;
+}
+
+#buscador {
+    overflow: visible;
+    OUTLINE: none;
+    border-left: transparent;
+    border-right: transparent;
+    border-top: transparent;
+    border-bottom: 0.1px solid #8f8e8e;
+    border-radius: 5px 5px 0 0;
+    padding: 10px;
+}
+
+.btnb:hover{
+background-color: #f0b70e;
+}
 
 .table {
     width:100%;
 }
 
+.btn-c{
+    padding: 15%;
+    background: #4553ff;
+    font-size: smaller;
+    outline: none;
+    border: 1px solid black;
+    color: white;
+    border-radius: 1px;
+  }
+  
+  .btn-c:hover{
+    background: #363fa5;
+  }

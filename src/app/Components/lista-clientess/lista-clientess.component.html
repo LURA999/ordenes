@@ -28,7 +28,7 @@
 
     <div class="estado">
      <mat-label class="selectb conector">Y...&nbsp;</mat-label>
-      <mat-form-field appearance="fill">
+      <mat-form-field  appearance="fill">
       <mat-label >Estado</mat-label>
         <mat-select class="selecthead" (selectionChange)="verEstado($event.value)" >
           <mat-option [value]="5">Todos</mat-option>
@@ -45,7 +45,8 @@
     <div class="cargar">
       <label class= "btn"> 
         Cargar Excel
-      <input class="subir " (change)= "onFileChange($event)" style="display: none !important" type="file" multiple="false"/>
+      <input class="subir " (change)= "onFileChange($event)" style="display: none !important" type="file" multiple="false"
+      />
       </label>
     </div> 
   
@@ -142,7 +143,7 @@
                   {{nested.Intereses}}
                   </div> 
                   <div *ngIf="idx > 0">
-                    <button mat-raised-button class="btn-c" (click)="abrirComentario(element['Clave'],element.Clave
+                    <button class="btn-c" (click)="abrirComentario(element['Clave'],element.Clave
                     , nested.Fecha)">Comentar</button>
                   </div>
                   </div>
