@@ -35,7 +35,7 @@
                 <ng-container *ngIf="listaConvenios.length == 0" >
                 <mat-form-field  color="accent" appearance="legacy">
                 <mat-label>Lista de convenios</mat-label>
-                    <mat-select #select disabled (selectionChange)="onKey(texto.value,pagoValue.value,fechaValue.value,select.value)">
+                    <mat-select #select disabled>
                         <mat-option>No hay convenios</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -44,7 +44,7 @@
                 <ng-container *ngIf="listaConvenios.length > 0">
                 <mat-form-field color="accent" appearance="legacy">
                     <mat-label>Lista de convenios</mat-label>
-                    <mat-select #select disabled>
+                    <mat-select #select disabled  (selectionChange)="onKey(texto.value,pagoValue.value,fechaValue.value,select.value)">
                         <mat-option *ngFor="let con of listaConvenios"  [value]= "con.idconvenio">conv. {{con.idconvenio}}</mat-option>
                     </mat-select>
                 </mat-form-field>

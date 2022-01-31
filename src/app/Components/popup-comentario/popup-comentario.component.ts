@@ -286,7 +286,8 @@ export class PopupComentarioComponent implements OnInit {
         }
       break;
       case 1:
-        if(this.contador == 0 || pago == ""  || select == undefined || this.contador == 0 || pago == undefined ||select == "" ){
+        if(this.contador == 0 || pago == ""  || select == undefined || this.contador == 0 || pago == undefined ||select == "" 
+        || fecha == "" || fecha == undefined){
           this.activo = true;
         }else{
           this.activo = false;
