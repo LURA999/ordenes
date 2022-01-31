@@ -33,6 +33,7 @@ import { MatButtonModule  } from "@angular/material/button";
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatTabsModule } from "@angular/material/tabs";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from '@angular/material/core';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
@@ -90,6 +91,7 @@ import { NgDialogAnimationService } from 'ng-dialog-animation';
     MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatTabsModule,
     MatProgressSpinnerModule,
     FlatpickrModule.forRoot(),
     CalendarModule.forRoot({

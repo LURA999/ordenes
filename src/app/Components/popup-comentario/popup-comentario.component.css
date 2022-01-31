@@ -34,7 +34,9 @@ textarea{
     text-align: center;
 }
 
-
+.table{
+    width: auto;
+}
 .btn-s{
     display:flex; 
     float:right; 
@@ -153,4 +155,10 @@ textarea.mat-input-element {
     margin: -5px 0;
 }
 
+/*TABS Comentarios*/
+
+
+.table {
+    width:100%;
+}
 

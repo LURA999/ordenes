@@ -36,28 +36,26 @@
                 <mat-form-field  color="accent" appearance="legacy">
                 <mat-label>Lista de convenios</mat-label>
                     <mat-select #select disabled (selectionChange)="onKey(texto.value,pagoValue.value,fechaValue.value,select.value)">
-                        <mat-option value="1">opcion1</mat-option>
-                        <mat-option value="2">opcion2</mat-option>
-                        <mat-option value="3">opcion3</mat-option>
+                        <mat-option>No hay convenios</mat-option>
                     </mat-select>
                 </mat-form-field>
                 </ng-container>
                 
                 <ng-container *ngIf="listaConvenios.length > 0">
                 <mat-form-field color="accent" appearance="legacy">
-                    <mat-select #select *ngFor="let convenio of listaConvenios" disabled>
-                        <mat-option [value] = "convenio.id">Este es un ejemplo2</mat-option>
+                    <mat-label>Lista de convenios</mat-label>
+                    <mat-select #select disabled>
+                        <mat-option *ngFor="let con of listaConvenios"  [value]= "con.idconvenio">conv. {{con.idconvenio}}</mat-option>
                     </mat-select>
                 </mat-form-field>
                 </ng-container>
-            
 
-          
-            <mat-form-field #inputFecha class="convenio" color="accent" appearance="legacy">
-                <mat-label>Elige una fecha</mat-label>
+            <mat-form-field #inputFecha class="convenio" color="accent" floatLabel="always" appearance="legacy">
+                <mat-label>Ingrese una fecha</mat-label>
                 <input #fechaValue matInput 
                 [matDatepicker]="picker" disabled (dateChange)="dateChange($event,fechaValue.value)"
-                (dateChange)="onKey(texto.value,pagoValue.value,fechaValue.value,select.value)">
+                (dateChange)="onKey(texto.value,pagoValue.value,fechaValue.value,select.value)" autocomplete="new-text"
+                placeholder="DD-MM-AAAA" >
                 <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
                 <mat-datepicker #picker disabled="true"></mat-datepicker>
               </mat-form-field>
@@ -73,82 +71,307 @@
         </div>
     </mat-card>
     </div>
+    <hr>
+    <!-- Grupo de TABS -->
+    <mat-tab-group (selectedIndexChange)="tab($event)" color="accent">
+        <!-- Aqui empieza la primera pestaña, TAB TODOS-->
+        <mat-tab label="Todos">
+          <ng-template matTabContent>
+            <div class="tab">
+                <table class="table table-hover table-container" style="width: 100%;">
+                    <thead>
+                        <tr class="head-tabla">
+                            <td scope="col">No</td>
+                            <td scope="col">Usuario</td>
+                            <td scope="col">Comentario</td>
+                            <td scope="col">Fecha de public.</td>
+                            <td scope="col">Fecha para pagar</td>
+                            <td scope="col">Cantidad para pagar</td>
+                            <td scope="col">Cantidad pagada</td>
+                            <td scope="col">Id convenio</td>
+                           <!-- <td scope="col">Mas opciones</td> -->
+                        </tr>
+                    </thead>
+                        <tbody *ngFor="let c of comentariosMostrar; let i = index">
+                            <tr class="fila{{i}}">
+                            <td>
+                                <div *ngIf="c.categoria == 0">{{c.idcomentarios}}Com.</div>
+                                <div *ngIf="c.categoria == 1">{{c.idpagos}}Pago</div>
+                                <div *ngIf="c.categoria == 2">{{c.idconvenio}}Con.</div>
+                            </td>
+                            <td>{{c.nombre}}</td>
+                            <td  style="text-align: justify;"><textarea readonly="yes" style="border:none; resize: none;
+                                background: none; outline: none; height: 40px;">{{c.comentario}}</textarea></td>
+                            <td>{{c.fecha}}</td>
+                            <td> 
+                                <div class="celda-vacia">{{ c.fechac == "" ||c.fechac == undefined ? '-': c.fechac}}</div>
+                            </td>
+                            <td> 
+                                <div class="celda-vacia">{{ c.cantidadc == "" ||c.cantidadc == undefined ? '-': c.cantidadc}}</div>
+                            </td>
+                            <td> 
+                                <div class="celda-vacia">{{ c.cantidadp == "" ||c.cantidadp == undefined ? '-': c.cantidadp}}</div>
+                            </td>
+                            <td> 
+                                <div class="celda-vacia">{{ c.clav_conv == "" ||c.clav_conv == undefined ? '-': c.clav_conv}}</div>
+                            </td>
+                           <!-- <td>
+                            <ng-container *ngIf="email != c.correo; else elseTemplate">
+                                <ng-container *ngIf="nivel == 1; else elseTemplate">
+                                    <div class="btns-eb">
+                                        <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fecha,c.cantidadp,'')">Editar</button>
+                                        <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
+                                    </div>
+                                </ng-container>
+                                <ng-template #elseTemplate>
+                                    <div>No puedes editar</div>
+                                </ng-template>
+                            </ng-container>
+                            <ng-template #elseTemplate>
+                                <div class="btns-eb">
+                                    <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fecha,c.cantidadp,'')">Editar</button>
+                                    <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
+                                </div>
+                            </ng-template>
+                            </td>-->
+                            </tr>
+                        </tbody>
+                </table>
+                <ng-container *ngIf="comentarios.length ==0">
+                    <div id="Nohay">No hay comentarios</div>
+                </ng-container>
+              </div>
+                
+                <div class="row" *ngIf="comentarios.length > 0 " >
+                <div class="col-md-12 text-center">
+                    
+                    <button src="assets/arrow-left-circle.svg" class="btn-list btn-outline-danger" [disabled]="!btnPrev" (click)="previo()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                        </svg>
+                    </button>
+                    <span style="margin-left: 10px; margin-right: 10px; ">{{actualPage}} de {{totalPages}}</span>
+                    <button src="http://www.w3.org/2000/svg" class="btn-list btn-outline-danger" [disabled]="!btnNext" (click)="siguiente()">
+                        <svg xmlns="assets/arrow-left-circle-fill.svg" fill="currentColor" class="bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                            <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
+                          </svg>
+                    </button>
+                    </div>
+                </div>       
+            </ng-template>
+        </mat-tab>
+        <!-- TAB DE PAGOS-->
+        <mat-tab label="Pagos">
+          <ng-template matTabContent>
+            <div class="tab">
+                <table class="table table-hover table-container" style="width: 100%;">
+                    <thead>
+                        <tr class="head-tabla">
+                            <td scope="col">No</td>
+                            <td scope="col">Usuario</td>
+                            <td scope="col">Comentario</td>
+                            <td scope="col">Fecha de public.</td>
+                            <td scope="col">Fecha Asig.</td>
+                            <td scope="col">Cantidad pagada</td>
+                            <td scope="col">No. conv. pagado</td>
+                            <td scope="col">Mas opciones</td>
+                        </tr>
+                    </thead>
+                        <tbody *ngFor="let c of comentariosMostrar; let i = index">
+                            <tr class="fila{{i}}">
+                            <td>{{c.idpagos}}</td>
+                            <td>{{c.nombre}}</td>
+                            <td  style="text-align: justify;"><textarea readonly="yes" style="border:none; resize: none;
+                                background: none; outline: none; height: 40px;">{{c.comentario}}</textarea></td>
+                            <td>{{c.fecha}}</td>
+                            <td>{{c.fechap}}</td>
+                            <td>{{c.cantidadp}}</td>
+                            <td>{{c.clav_conv}}</td>
+                            <td>
+                            <ng-container *ngIf="email != c.correo; else elseTemplate">
+                                <ng-container *ngIf="nivel == 1; else elseTemplate">
+                                    <div class="btns-eb">
+                                        <button mat-raised-button class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fechap,c.fecha,c.clav_conv, c.cantidadp)">Editar</button>
+                                        <button mat-raised-button class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
+                                    </div>
+                                </ng-container>
+                                <ng-template #elseTemplate>
+                                    <div>No puedes editar</div>
+                                </ng-template>
+                            </ng-container>
+                            <ng-template #elseTemplate>
+                                <div class="btns-eb">
+                                    <button mat-raised-button class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fechap,c.fecha,c.clav_conv,c.cantidadp)">Editar</button>
+                                    <button mat-raised-button class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
+                                </div>
+                            </ng-template>
+                            </td>
+                            </tr>
+                        </tbody>
+                </table>
+                <ng-container *ngIf="comentarios.length ==0">
+                    <div id="Nohay">No hay comentarios</div>
+                </ng-container>
+              </div>
+                
+                <div class="row" *ngIf="comentarios.length > 0 " >
+                <div class="col-md-12 text-center">
+                    
+                    <button src="assets/arrow-left-circle.svg" class="btn-list btn-outline-danger" [disabled]="!btnPrev" (click)="previo()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                        </svg>
+                    </button>
+                    <span style="margin-left: 10px; margin-right: 10px; ">{{actualPage}} de {{totalPages}}</span>
+                    <button src="http://www.w3.org/2000/svg" class="btn-list btn-outline-danger" [disabled]="!btnNext" (click)="siguiente()">
+                        <svg xmlns="assets/arrow-left-circle-fill.svg" fill="currentColor" class="bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                            <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
+                          </svg>
+                    </button>
+                    </div>
+                </div>  
+          </ng-template>
+        </mat-tab>
+        <!-- TAB DE CONVENIOS -->
+        <mat-tab label="Convenios">
+          <ng-template matTabContent>
+            <div class="tab">
+                <table class="table table-hover table-container" style="width: 100%;">
+                    <thead>
+                        <tr class="head-tabla">
+                            <td scope="col">No.</td>
+                            <td scope="col">Usuario</td>
+                            <td scope="col">Comentario</td>
+                            <td scope="col">Fecha de public.</td>
+                            <td scope="col">Fecha para pagar</td>
+                            <td scope="col">Cantidad para pagar</td>
+                            <td scope="col">Mas opciones</td>
+                        </tr>
+                    </thead>
+                        <tbody *ngFor="let c of comentariosMostrar; let i = index">
+                            <tr class="fila{{i}}">
+                            <td>{{c.idconvenio}}</td>
+                            <td>{{c.nombre}}</td>
+                            <td  style="text-align: justify;"><textarea readonly="yes" style="border:none; resize: none;
+                                background: none; outline: none; height: 40px;">{{c.comentario}}</textarea></td>
+                            <td>{{c.fecha}}</td>
+                            <td>{{c.fechac}}</td>
+                            <td>{{c.cantidadc}}</td>
+                            <td>
+                            <ng-container *ngIf="email != c.correo; else elseTemplate">
+                                <ng-container *ngIf="nivel == 1; else elseTemplate">
+                                    <div class="btns-eb">
+                                        <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fechac,c.cantidadc,c.fecha,'')">Editar</button>
+                                        <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
+                                    </div>
+                                </ng-container>
+                                <ng-template #elseTemplate>
+                                    <div>No puedes editar</div>
+                                </ng-template>
+                            </ng-container>
+                            <ng-template #elseTemplate>
+                                <div class="btns-eb">
+                                    <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fechac,c.cantidadc,c.fecha,'')">Editar</button>
+                                    <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
+                                </div>
+                            </ng-template>
+                            </td>
+                            </tr>
+                        </tbody>
+                </table>
+                <ng-container *ngIf="comentarios.length ==0">
+                    <div id="Nohay">No hay comentarios</div>
+                </ng-container>
+              </div>
+                
+                <div class="row" *ngIf="comentarios.length > 0 " >
+                <div class="col-md-12 text-center">
+                    
+                    <button src="assets/arrow-left-circle.svg" class="btn-list btn-outline-danger" [disabled]="!btnPrev" (click)="previo()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                        </svg>
+                    </button>
+                    <span style="margin-left: 10px; margin-right: 10px; ">{{actualPage}} de {{totalPages}}</span>
+                    <button src="http://www.w3.org/2000/svg" class="btn-list btn-outline-danger" [disabled]="!btnNext" (click)="siguiente()">
+                        <svg xmlns="assets/arrow-left-circle-fill.svg" fill="currentColor" class="bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                            <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
+                          </svg>
+                    </button>
+                    </div>
+                </div>  
+          </ng-template>
+        </mat-tab>
+        <!--TAB DE COMENTARIOS-->
+        <mat-tab label="Comentarios">
+            <ng-template matTabContent>
+                <div class="tab">
+                    <table class="table table-hover table-container" style="width: 100%;">
+                        <thead>
+                            <tr class="head-tabla">
+                                <td scope="col">No.</td>
+                                <td scope="col">Usuario</td>
+                                <td scope="col">Comentario</td>
+                                <td scope="col">Fecha de public.</td>
+                                <td scope="col">Mas opciones</td>
+                            </tr>
+                        </thead>
+                            <tbody *ngFor="let c of comentariosMostrar; let i = index">
+                                <tr class="fila{{i}}">
+                                <td>{{c.idcomentarios}}</td>
+                                <td>{{c.nombre}}</td>
+                                <td  style="text-align: justify;"><textarea readonly="yes" style="border:none; resize: none;
+                                    background: none; outline: none; height: 40px;">{{c.comentario}}</textarea></td>
+                                <td>{{c.fecha}}</td>       
+                                <td>
+                                <ng-container *ngIf="email != c.correo; else elseTemplate">
+                                    <ng-container *ngIf="nivel == 1; else elseTemplate">
+                                        <div class="btns-eb">
+                                            <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fecha,'')">Editar</button>
+                                            <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
+                                        </div>
+                                    </ng-container>
+                                    <ng-template #elseTemplate>
+                                        <div>No puedes editar</div>
+                                    </ng-template>
+                                </ng-container>
+                                <ng-template #elseTemplate>
+                                    <div class="btns-eb">
+                                        <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fecha,'')">Editar</button>
+                                        <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
+                                    </div>
+                                </ng-template>
+                                </td>
+                                </tr>
+                            </tbody>
+                    </table>
+                    <ng-container *ngIf="comentarios.length ==0">
+                        <div id="Nohay">No hay comentarios</div>
+                    </ng-container>
+                  </div>
+                    
+                    <div class="row" *ngIf="comentarios.length > 0 " >
+                    <div class="col-md-12 text-center">
+                        
+                        <button src="assets/arrow-left-circle.svg" class="btn-list btn-outline-danger" [disabled]="!btnPrev" (click)="previo()">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                            </svg>
+                        </button>
+                        <span style="margin-left: 10px; margin-right: 10px; ">{{actualPage}} de {{totalPages}}</span>
+                        <button src="http://www.w3.org/2000/svg" class="btn-list btn-outline-danger" [disabled]="!btnNext" (click)="siguiente()">
+                            <svg xmlns="assets/arrow-left-circle-fill.svg" fill="currentColor" class="bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                                <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
+                              </svg>
+                        </button>
+                        </div>
+                    </div>  
+            </ng-template>
+          </mat-tab>
+      </mat-tab-group>
 
     <hr>
-    <div class="otros-comentarios">
-        <span class="font">Comentarios:</span>
-        <table class="table table-hover table-container" style="width: 100%;">
-            <thead>
-                <tr class="head-tabla">
-                    <td scope="col">Tipo</td>
-                    <td scope="col">Usuario</td>
-                    <td scope="col">Comentario</td>
-                    <td scope="col">Fecha de public.</td>
-                    <td scope="col">Fecha para pagar</td>
-                    <td scope="col">Cantidad para pagar</td>
-                    <td scope="col">Cantidad pagada</td>
-                    <td scope="col">Id convenio</td>
-                    <td scope="col">Mas opciones</td>
-                </tr>
-            </thead>
-                <tbody *ngFor="let c of comentariosMostrar; let i = index">
-                    <tr class="fila{{i}}">
-                    <td>
-                        <div *ngIf="c.categoria == 0"> Com.</div>
-                        <div *ngIf="c.categoria == 1">Pago</div>
-                        <div *ngIf="c.categoria == 2">Con.</div>
-                    </td>
-                    <td>{{c.nombre}}</td>
-                    <td  style="text-align: justify;"><textarea readonly="yes" style="border:none; resize: none;
-                        background: none; outline: none; height: 40px;">{{c.comentario}}</textarea></td>
-                    <td>{{c.fecha}}</td>
-                    <td>Fecha pp</td>
-                    <td>cantidad pp</td>
-                    <td>cantidad pag</td>
-                    <td>id conv</td>
-                    <td>
-                    <ng-container *ngIf="email != c.correo; else elseTemplate">
-                        <ng-container *ngIf="nivel == 1; else elseTemplate">
-                            <div class="btns-eb">
-                                <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentario,c.clave_serv,c.fecha)">Editar</button>
-                                <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentario,c.clave_serv,c.fecha)">Borrar</button>
-                            </div>
-                        </ng-container>
-                        <ng-template #elseTemplate>
-                            <div>No puedes editar</div>
-                        </ng-template>
-                    </ng-container>
-                    <ng-template #elseTemplate>
-                        <div class="btns-eb">
-                            <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentario,c.clave_serv,c.fecha)">Editar</button>
-                            <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentario,c.clave_serv,c.fecha)">Borrar</button>
-                        </div>
-                    </ng-template>
-                    </td>
-                    </tr>
-                </tbody>
-        </table>
-        <ng-container *ngIf="comentarios.length ==0">
-            <div id="Nohay">No hay comentarios</div>
-        </ng-container>
-      </div>
-        
-        <div class="row" *ngIf="comentarios.length > 0 " >
-        <div class="col-md-12 text-center">
-            
-            <button src="assets/arrow-left-circle.svg" class="btn-list btn-outline-danger" [disabled]="!btnPrev" (click)="previo()">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi-arrow-left-circle-fill" viewBox="0 0 16 16">
-                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
-                </svg>
-            </button>
-            <span style="margin-left: 10px; margin-right: 10px; ">{{actualPage}} de {{totalPages}}</span>
-            <button src="http://www.w3.org/2000/svg" class="btn-list btn-outline-danger" [disabled]="!btnNext" (click)="siguiente()">
-                <svg xmlns="assets/arrow-left-circle-fill.svg" fill="currentColor" class="bi-arrow-right-circle-fill" viewBox="0 0 16 16">
-                    <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
-                  </svg>
-            </button>
-            </div>
-        </div>
+    
 
 
     <div>

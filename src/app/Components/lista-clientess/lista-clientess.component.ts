@@ -89,7 +89,7 @@ export class ListaClientessComponent implements OnInit {
 
   /** 
    * ESTE ES EL ENGCARGADO PARA LA TABLA
-   * DE HACER FILTROS CUANDO PRESIONAS NEXT Y PREVIOUS Y TAMBIEN SIRVE 
+   * DE HACER FILTROS CUANDO PRsESIONAS NEXT Y PREVIOUS Y TAMBIEN SIRVE 
    * PARA EL INICIO
    */
 
@@ -282,7 +282,6 @@ async filtrar(valor :String) {
               await this.sLoader.insertClientes(this.cliente).toPromise();
            }
           }catch(Exception){}
-
           try{
           if(this.excel[p][9] !== undefined && repetido[0].total ==0 || this.excel[p][9] == "" && repetido[0].total ==0 ){
             await this.sLoader.insertClientesServ(this.excel[p][0], this.ExcelDateToJSDate(this.excel[p][9]).toLocaleString(),this.excel[p][10],this.excel[p][11],this.excel[p][12]).toPromise();
@@ -328,7 +327,7 @@ async filtrar(valor :String) {
     return Object.keys(object);
   }
 
-  /**Sirve para que la lista no se active */
+  /**Sirve para que la lista principal no se active */
   CLICK(event){
     event.stopPropagation();
   }
@@ -435,12 +434,13 @@ async filtrar(valor :String) {
     return excel
   }
   /*abrir el modulo comentario*/
-  abrirComentario(clave : String, fecha : String){
+  abrirComentario(idCliente:String, clave : String, fecha : String){
     this.dialog.open(PopupComentarioComponent,
     {animation: { to: "bottom"},
     data: 
-      {name: 
-        localStorage.getItem("name"), 
+      {
+        claveC: idCliente,
+        name: localStorage.getItem("name"), 
         clave: clave, 
         fecha: fecha, 
         email: localStorage.getItem("email")

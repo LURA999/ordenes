@@ -1,17 +1,98 @@
 <div class="container2" style="text-align: center;">
 
-<h1 style="font:500 20px/32px Roboto, 'Helvetica Neue', sans-serif">Edite su comentario</h1>
-<form>
-<div>
-<textarea id="texto"style = "resize: none;" name="comentarios" (keyup)="onKey($event)" maxlength="250"  cols="40" rows="5" #nuevocomentario></textarea>
-<div class= "font">{{contador}}/250</div><br>
-</div>
+<h1 style="font:500 20px/32px Roboto, 'Helvetica Neue', sans-serif">Actualizando datos </h1>
 
-<br>
-<div id="botones">
-<input type="submit" [disabled]="contador==0" value="Editar" class="btn btn-editar" mat-button mat-dialog-close="false" (click)="editar(nuevocomentario.value)">&nbsp;
-<input type="submit" value="Cancelar" class="btn btn-cancelar" mat-button mat-dialog-close="false"> 
-</div>
-</form>
+<div>
+    <ng-container *ngIf="data.opc == 10; else elseTemplate">
+      <!--Solo modificas la seccion de comentarios-->
+        <div>
+            <div class="comentario-nuevo">
+                  <mat-form-field class="comentario" appearance="legacy">
+                    <mat-label  >Actualice su comentario</mat-label>
+                    <textarea  style = "resize: none;" name="comentarios" (keyup)="onKey($event)" maxlength="250"  cols="40" rows="12" matInput #nuevocomentario>{{data.mensaje}}</textarea>
+                  </mat-form-field>
+                <div class= "font">{{contador}}/250</div><br>
+            </div>
+            <br>
+            <div id="botones">
+                <input type="submit" [disabled]="contador==0" value="Editar" class="btn btn-editar" mat-button mat-dialog-close="false" (click)="editar(nuevocomentario.value)" mat-dialog-close="false">&nbsp;
+                <input value="Cancelar" class="btn btn-cancelar" mat-button mat-dialog-close="false"> 
+            </div>
+        </div>
+    </ng-container>
+    <ng-template #elseTemplate>
+        <ng-container *ngIf="data.opc == 1; else elseTemplate">
+          <!-- Modificas le seccion de convenios-->
+            <div>
+                <div id="opcion">
+                    <mat-form-field #inputFecha class="comentario" floatLabel="always" appearance="legacy">
+                          <mat-label >Fecha para pagar</mat-label>
+                          <input   matInput type="text" floatLabel="always"
+                          [matDatepicker]="picker" (dateChange)="dateChange($event,fecha.value)"  [formControl] = "date1"
+                          [value]="data.fecha" placeholder="DD-MM-AAAA"   #fecha>
+                          <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+                        <mat-datepicker #picker ></mat-datepicker>
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy">
+                        <mat-label>Cantidad para pagar</mat-label>
+                        <input matInput type="number" placeholder="0" [value]="data.cantidad" #cantidad>
+                        <span matPrefix>$&nbsp;</span>
+                      </mat-form-field>
+                      <div class="comentario-nuevo">
+                      <mat-form-field appearance="legacy">
+                        <mat-label  >Edite el comentario</mat-label>
+                        <textarea  style = "resize: none;" name="comentarios" (keyup)="onKey($event)" maxlength="250"  cols="40" rows="5" matInput #nuevocomentario>{{data.mensaje}}</textarea>
+                      </mat-form-field>
+                    </div>
+                      <div class= "font">{{contador}}/250</div><br>
+                </div>
+                <br>
+                <div id="botones">
+                    <input type="submit" [disabled]="contador==0 || cantidad.value==0 || fecha.value==0" value="Editar" class="btn btn-editar" mat-button  (click)="editar(nuevocomentario.value, fecha.value,cantidad.value)" mat-dialog-close="false">&nbsp;
+                    <input value="Cancelar" class="btn btn-cancelar" mat-button mat-dialog-close="false"> 
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <div>
+            <div id="opcion">
+              <!--Modificas la seccion de pagos-->
+                <mat-form-field #inputFecha class="comentario"  floatLabel="always" appearance="legacy">
+                      <mat-label>Ingrese una fecha</mat-label>
+                      <input type="text" #fechaValue matInput floatLabel="always"
+                      [matDatepicker]="picker" (dateChange)="dateChange($event,fechaValue.value)"
+                      [value]="data.fecha"  placeholder="DD-MM-AAAA" [formControl] = "date2">
+                      <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+                    <mat-datepicker #picker ></mat-datepicker>
+                  </mat-form-field>
+                  <mat-form-field appearance="legacy">
+                    <mat-label>Lista de convenios</mat-label>
+                    <mat-select  [(value)]="data.idconvenio"  #select>
+                      <mat-option *ngFor="let con of data.listaConvenios"  [value]= "con.idconvenio">conv. {{con.idconvenio}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field appearance="legacy">
+                    <mat-label>Cantidad pagada</mat-label>
+                    <input matInput type="number" placeholder="0" [value]="data.cantidadc" #cantidad>
+                    <span matPrefix>$&nbsp;</span>
+                  </mat-form-field>
+                  <div class="comentario-nuevo">
+                  <mat-form-field appearance="legacy">
+                    <mat-label  >Edite el comentario</mat-label>
+                    <textarea  style = "resize: none;" name="comentarios" (keyup)="onKey($event)" maxlength="250"  cols="40" rows="5" matInput #nuevocomentario>{{data.mensaje}}</textarea>
+                  </mat-form-field>
+                </div>
+                  <div class= "font">{{contador}}/250</div><br>
+            </div>
+            <br>
+            <div id="botones">
+                <input type="submit" [disabled]="contador==0 || cantidad.value==0 || fechaValue.value==0 || select.value == 0" value="Editar" class="btn btn-editar" mat-button mat-dialog-close="false" (click)="editar(nuevocomentario.value,fechaValue.value,cantidad.value,select.value)">&nbsp;
+                <input value="Cancelar" class="btn btn-cancelar" mat-button mat-dialog-close="false"> 
+            </div>
+        </div>
+        </ng-template>
+        
+    </ng-template>
+        </div>
 
 </div>

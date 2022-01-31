@@ -1,3 +1,7 @@
+textarea{
+    width: 100%;
+    height: 100%;
+}
 .btn{
     background-color: rgb(238, 235, 235);
     border: 1px solid black;
@@ -47,4 +51,22 @@
 
 .container2{
     padding: 30px;
+}
+
+#opcion{
+    display: inline-grid;
+    align-self: center;
+}
+/*100% de ancho del textarea de angular material*/
+
+.comentario{
+    margin-top: 5%;
+    width: 100%; 
+}
+textarea {
+    background-color: rgb(254 254 254);
+}
+textarea.mat-input-element {
+    padding: 2px 0;
+    margin: -5px 0;
 }

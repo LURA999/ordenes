@@ -19,6 +19,7 @@ export class PopupComentarioComponent implements OnInit {
   comentariosMostrar : any []=[];
   listaConvenios : String []=[];
   categoria : number=0;
+  tabCategoria : number=0;
   tamanoReal : any []=[];
   btnNext: boolean;
   btnPrev: boolean;
@@ -26,9 +27,7 @@ export class PopupComentarioComponent implements OnInit {
   totalPages: number;
   currentElement: number;
   lastElement: number;
-  nombre = localStorage.getItem('name')
-  nivel = localStorage.getItem('level')
-  email = localStorage.getItem('email')
+  nivel =localStorage.getItem("level") 
   @ViewChild('inputFecha') inputFecha;
   @ViewChild('picker') calendario;
   @ViewChild('inputPago') inputPago;
@@ -42,7 +41,8 @@ export class PopupComentarioComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private serviceComent :ComentarioService,
   public dialog: MatDialog){
-    this.todosServCliente();
+    /**Para llenar la tabla */
+    this.todosServCliente(this.tabCategoria);
   }
 
   ngOnInit(): void {
@@ -80,8 +80,7 @@ export class PopupComentarioComponent implements OnInit {
     }
 
   }
-
-
+  
   /**Cuenta las veces que tecleas */
   onKey(e:String, pago:String,fecha:String, select:String){
     this.contador = e.length
@@ -91,6 +90,7 @@ export class PopupComentarioComponent implements OnInit {
   /**Es para habilitar o deshabilitar para mas campos*/
   radiobutton(e){
     switch(e){
+      /**Los 3 primeros son para el calendario, los otros son dos son para el pago, el ultimo parametro espara el select */
       case "Comentario":
         this.categoria = 0;
         this.card(true,true,"-disabled",true,"-disabled",true);
@@ -105,66 +105,105 @@ export class PopupComentarioComponent implements OnInit {
         break;
     }
   }
+
 /**Metodo que ayuda a activar o desactivar y variantes de los inputs inactivos */
   card(calendario:Boolean, fecha:Boolean, fecha2:String, pago:Boolean,pago2 : String, select :Boolean){
     this.calendario.disabled = calendario;
     this.inputFecha._inputContainerRef.nativeElement.firstChild.disabled=fecha;
-    this.inputFecha._elementRef.nativeElement.className = "mat-form-field convenio ng-tns-c42-9 mat-accent mat-form-field-type-mat-input mat-form-field-appearance-legacy mat-form-field-can-float mat-form-field-has-label mat-form-field-hide-placeholder mat-form-field"+fecha2;
+    this.inputFecha._elementRef.nativeElement.className = "mat-form-field convenio ng-tns-c42-8 mat-accent mat-form-field-type-mat-input mat-form-field-appearance-legacy mat-form-field-can-float mat-form-field-should-float mat-form-field-has-label mat-form-field"+fecha2;
     this.inputPago._elementRef.nativeElement.className = "mat-form-field cantidad ng-tns-c42-10 mat-accent mat-form-field-type-mat-input mat-form-field-appearance-legacy mat-form-field-can-float mat-form-field-should-float mat-form-field-has-label mat-form-field"+pago2;
     this.inputPago._inputContainerRef.nativeElement.firstChild.disabled = pago;
     this.select._disabled = select;
   }
 
-  async todosServCliente(){
-   await this.serviceComent.getAllServCliente(this.data.clave, this.data.fecha).subscribe((resp :any) =>{
+  async todosServCliente(opc : number){
+     await this.serviceComent.getAllServCliente(opc,this.data.clave, this.data.fecha).subscribe((resp :any) =>{
      this.comentarios = resp;
      this.comentariosMostrar = [];
      this.paginar(this.comentarios)
    });
-  
-  }
-
-  /**Esta funcion ayuda a insertar un comentario nuevo y actualiza de nuevos los campos para mostrarlos */
-  async actualizarComentarios(textArea : String, pago:String,fecha:String, select:String){
-    /*await this.serviceComent.insertComentario(this.data.clave,this.data.fecha,textArea,this.data.name, this.email, this.categoria
-      ,clave_conv,fechapp,cantidadp,fechap,cantidadc).toPromise();*/
-    
-    await this.serviceComent.getAllServCliente(this.data.clave, this.data.fecha).subscribe((resp :any) =>{
-      this.comentarios = resp;
-      this.comentariosMostrar = [];
-      this.paginar(this.comentarios)
+   if(this.tabCategoria == 1 || this.tabCategoria == 0){
+    await this.serviceComent.getAllServCliente(1,this.data.clave, this.data.fecha).subscribe((resp :any) =>{
+      this.listaConvenios = resp;
     });
   }
+  }
 
-  async editarComentario(e:String,idcomentario : String,clave_serv : String,fecha : String){
+  /**Para cargar cada pestaña cuando se elige */
+ async tab(opc: number){
+    switch(opc){
+      case 0:
+        this.tabCategoria = 0;
+        await this.todosServCliente(0)
+        break;
+      case 1:
+        this.tabCategoria = 3;
+        await this.todosServCliente(3)
+        break;
+      case 2:
+        this.tabCategoria = 1;
+       await this.todosServCliente(1)
+        break;
+      case 3:
+        this.tabCategoria = 10;
+        await this.todosServCliente(10)
+        break;
+    }
+  }
+
+  /**Esta funcion ayuda a insertar un comentario nuevo y actualiza los campos del modulo para mostrar  */
+  async actualizarComentarios(textArea : String, pago:String,fecha:String, select:String){
+    await this.serviceComent.insertComentario(this.data.clave,this.data.fecha,textArea,this.data.name, this.data.email, this.categoria
+      ,select,fecha+" 0:00:00",pago).toPromise();
+      this.todosServCliente(this.tabCategoria);
+  }
+
+  async editarComentario(e:String,idcomentario : String,clave_serv : String,fecha : String, cantidad :String,idconvenio : String, cantidadc : String){
+    if(this.tabCategoria != 10){
+      fecha = fecha.split(" ")[0];
+      var fecha2 = fecha.split('/');
+      fecha = fecha2[2]+"/"+fecha2[1]+"/"+fecha2[0]
+      }
+      console.log("Comenntario "+e +"\nid "+idcomentario +"\nclave serv "+clave_serv+"\nfecha "+fecha+"\nCantidad "+ cantidad +"\nidconv "+idconvenio+"\ncantidad pagada "+cantidadc)
+
      this.dialogRef = this.dialog.open(EditarComentarioComponent, 
-      {data: {mensaje: e, idcomentario: idcomentario, clave_serv: clave_serv, fecha: fecha},width:"500px",
+      {data: {opc : this.tabCategoria,mensaje: e, idcomentario: idcomentario, clave_serv: clave_serv, fecha: fecha ,cantidad:cantidad, listaConvenios:this.listaConvenios, idconvenio:idconvenio, cantidadc:cantidadc},width:"500px",
       panelClass: ['animate__animated','animate__slideInLeft']});
       this.dialogRef.afterClosed().subscribe(result => {
-        this.todosServCliente()
+   
+
+        this.todosServCliente(this.tabCategoria)
       });
+
+
  }
 
 
   async deleteComentario(idcomentario : String,clave_serv : String,fecha : String){
+    let titulo : String;
+    if(this.tabCategoria == 1){
+      titulo = "Si borras este convenio, borraras todos los pagos relacionados.\n\n¿Estas seguro?"
+    }else{
+      titulo = "¿Esta seguro de eliminarlo?"
+    }
     Swal.fire({
       icon: 'question',
-      title: '¿Esta seguro de eliminar el comentario?',
+      title: titulo,
       showConfirmButton: true,
       confirmButtonText: 'Confirmar',
       showDenyButton: true,
       denyButtonText: 'Cancelar'
     }).then((result)=>{
       if(result.isConfirmed){
-      this.eliminarComentario(idcomentario,clave_serv,fecha);
+       this.eliminarComentario(this.tabCategoria,idcomentario,clave_serv,fecha);
     }
     });
   }
 
-  /**Se separo este metodo del metodo delete comentario, para que funcionara */
-  async eliminarComentario(idcomentario,clave_serv,fecha){
-    await this.serviceComent.deleteComentario(idcomentario,clave_serv,fecha).toPromise();
-    await this.todosServCliente();
+/**Se separo este metodo del metodo delete comentario, para que funcionara */
+  async eliminarComentario(opc:number,idcomentario,clave_serv,fecha){
+    await this.serviceComent.deleteComentario(opc,idcomentario,clave_serv,fecha).toPromise();
+    await this.todosServCliente(this.tabCategoria);
   }
 
 /**Para que no supere el numero de renglones en la pagina */
@@ -247,8 +286,7 @@ export class PopupComentarioComponent implements OnInit {
         }
       break;
       case 1:
-        if(this.contador == 0 || pago == ""  || fecha == "" || select == undefined ||
-        this.contador == 0 || pago == undefined  || fecha == undefined ||select == "" ){
+        if(this.contador == 0 || pago == ""  || select == undefined || this.contador == 0 || pago == undefined ||select == "" ){
           this.activo = true;
         }else{
           this.activo = false;
@@ -260,9 +298,7 @@ export class PopupComentarioComponent implements OnInit {
         }else{
           this.activo = false;
         }
-      break;
-      
+      break;   
     }
   }
-    
 }
