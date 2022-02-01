@@ -150,16 +150,10 @@ export class ListaClientessComponent implements OnInit {
     this.paginator.hidePageSize= await true;
     this.paginator.length = await this.subcliente.length;
 
-  //this.dataSource2 = await new MatTableDataSource(this.ELEMENT_DATA);
-   // this.dataSource2.paginator = await this.paginator2;
-  //  this.paginator2.hidePageSize=  true;
-  //this.paginator2.length = await this.ELEMENT_DATA.length;
   }
 
   ngOnInit(){ 
-    this.existe= document.getElementById("existe").style.display = "none";
-    this.existe= document.getElementById("existe-conv").style.display = "block";
-    this.existeBarra=document.getElementById("barra-paginator").style.display = "true";  
+
   }
 
   /* CUANDO PRESIONAS EL BOTON DE NEXT Y PREVIOUS */
@@ -279,26 +273,16 @@ async filtrar(valor :String) {
               this.cliente.celular2=this.excel[p][6];
               this.cliente.ciudad=this.excel[p][7];
               this.cliente.estado= await this.estadoExcel(this.excel[p][8]);
-              await this.sLoader.insertClientes(this.cliente).toPromise();
+            await this.sLoader.insertClientes(this.cliente).toPromise();
            }
           }catch(Exception){}
           try{
           if(this.excel[p][9] !== undefined && repetido[0].total ==0 || this.excel[p][9] == "" && repetido[0].total ==0 ){
+            console.log(this.excel[p][0], this.ExcelDateToJSDate(this.excel[p][9]).toLocaleString(),this.excel[p][10],this.excel[p][11],this.excel[p][12])
             await this.sLoader.insertClientesServ(this.excel[p][0], this.ExcelDateToJSDate(this.excel[p][9]).toLocaleString(),this.excel[p][10],this.excel[p][11],this.excel[p][12]).toPromise();
           }
         }catch(Exception){}
          }
-        for(let x=0; x<this.acumClientesCVE.length; x++){
-         for(let y = 0; y<this.subcliente.length; y++){
-          if(this.acumClientesCVE[x] === this.subcliente[y]){
-            this.subcliente[y].pop();
-          }       
-        }
-
-        for(let p=0; p<this.subcliente.length; p++){
-          console.log(this.subcliente[p]);
-        }
-      }
         await location.reload();
         }
 

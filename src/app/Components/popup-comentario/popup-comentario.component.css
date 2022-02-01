@@ -86,7 +86,7 @@ thead {
 
 
 /*Boton de atras*/
-.btn-list{
+.btn-list {
     border-radius: 50%;
     background: white;
     cursor: pointer;
@@ -94,9 +94,11 @@ thead {
     border:none;
 }
 
-.flechas:disabled {
-    fill: #ccc;
-  }
+
+ #path:disabled{
+    fill: #f44336 !important;
+}
+
 
 
 /****/
