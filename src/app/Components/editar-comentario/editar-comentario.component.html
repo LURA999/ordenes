@@ -25,9 +25,9 @@
           <!-- Modificas le seccion de convenios-->
             <div>
                 <div id="opcion">
-                    <mat-form-field #inputFecha class="comentario" floatLabel="always" appearance="legacy">
+                    <mat-form-field  color="primary" #inputFecha class="comentario" floatLabel="always" appearance="legacy">
                           <mat-label >Fecha para pagar</mat-label>
-                          <input   matInput type="text" floatLabel="always"
+                          <input  color="primary" matInput type="text" floatLabel="always"
                           [matDatepicker]="picker" (dateChange)="dateChange($event,fecha.value)"  [formControl] = "date1"
                           [value]="data.fecha" placeholder="DD-MM-AAAA"   #fecha>
                           <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>

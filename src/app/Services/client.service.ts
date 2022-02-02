@@ -11,8 +11,8 @@ export class ClientService {
 
   constructor(private http : HttpClient) { }
 
-  getAll(){
-    return this.http.get(this.local+'Cliente/Cliente.php?todo='+true);
+  getAll(opc:number){
+    return this.http.get(this.local+'Cliente/Cliente.php?todo='+true+'&opc='+opc);
   }
 
   /**Esta consulta puede consultar todas las ciudades registras, 

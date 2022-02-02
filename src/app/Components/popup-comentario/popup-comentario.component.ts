@@ -167,7 +167,7 @@ export class PopupComentarioComponent implements OnInit {
       this.todosServCliente(this.tabCategoria);
   }
 
-  async editarComentario(e:String,idcomentario : String,clave_serv : String,fecha : String, cantidad :String,idconvenio : String, cantidadc : String){
+  async editarComentario(e:String,idcomentario : String,clave_serv : String,fecha : String, cantidad :String,idconvenio : String, cantidadc : String,id:String){
     if(this.tabCategoria != 10){
       fecha = fecha.split(" ")[0];
       var fecha2 = fecha.split('/');
@@ -179,9 +179,14 @@ export class PopupComentarioComponent implements OnInit {
       {data: {opc : this.tabCategoria,mensaje: e, idcomentario: idcomentario, clave_serv: clave_serv, fecha: fecha ,cantidad:cantidad, listaConvenios:this.listaConvenios, idconvenio:idconvenio, cantidadc:cantidadc},width:"500px",
       panelClass: ['animate__animated','animate__slideInLeft']});
       this.dialogRef.afterClosed().subscribe(result => {
-   
-
-        this.todosServCliente(this.tabCategoria)
+        for (const key in result) {
+          if (Object.prototype.hasOwnProperty.call(result, key)) {
+            const element = result[key];
+            console.log("No. "+id);
+            console.log(element)
+          }
+        }
+     //   this.todosServCliente(this.tabCategoria)
       });
 
 
@@ -316,7 +321,7 @@ export class PopupComentarioComponent implements OnInit {
     if(e == " " || e == undefined || e==""){
       this.todosServCliente(this.tabCategoria)
     }else{
-
+      console.log(this.data)
     await this.todosServCliente2(this.tabCategoria, e)
 
     }

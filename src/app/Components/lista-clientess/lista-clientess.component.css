@@ -99,7 +99,7 @@ table {
     color: #77072D;
     border: 1px solid rgb(187, 187, 187);
     background-color: none;
-    border-radius: 50% 50% 0 0;
+    border-radius: 10px 10px 0 0;
   }
 
   .cdk-row:hover  {
@@ -125,6 +125,8 @@ table {
   color: #0c82ff;
 }
 
+
+/*Botones de la tabla angular  material*/
 
 /*Mensaje cuando no hay clientes*/
 
@@ -310,7 +312,6 @@ mat-label{
 /** Tabla convenios*/
  .tab-convenio{
    margin-top: 10%;
-   width: 30%;
  }
 
 

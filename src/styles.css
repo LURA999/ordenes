@@ -49,3 +49,24 @@ button.mat-focus-indicator.mat-icon-button.mat-button-base{
   outline: none !important;
 }
 
+.mat-tab-body-content {
+  overflow: hidden !important;
+}
+
+/*Modificacion del mat-paginator*/
+
+.mat-paginator-range-label {
+  margin: 0 !important;
+}
+
+.mat-paginator-outer-container {
+  margin-left: 80px;
+}
+
+button.mat-focus-indicator.mat-tooltip-trigger.mat-paginator-navigation-previous {
+  right: 90%;
+}
+  
+button.mat-focus-indicator.mat-tooltip-trigger.mat-paginator-navigation-next {
+  right: 10%;
+}

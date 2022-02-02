@@ -33,8 +33,11 @@ export class ListaClientessComponent implements OnInit {
   sub$ = new Subscription();
   subcliente: any;
   subclienteS: any;
+  clientesViejo : any;
+  clientesViejoS : any;
   aux:any;
   data : any []=[];
+  data2 : any []=[];
   cliente: ClienteModel;
   ciudades: any;
   ciudad:String;
@@ -46,10 +49,15 @@ export class ListaClientessComponent implements OnInit {
   load : Boolean =false;
   inicio : number=0;
   fin : number=10;
+  inicio2 : number=0;
+  fin2 : number=10;
+
   acumClientesCVE : String [] =[];
-  displayedColumns2: string[] = ['id','cliente', 'estado'];
+  displayedColumns2: string[] = ['Id','Cliente', 'Convenio'];
   dataSource2 : any;
   tablaConvenios : any[] = [];
+
+
   displayedColumns = [
     'Clave',
     'Nombre',
@@ -62,6 +70,8 @@ export class ListaClientessComponent implements OnInit {
     'Estado',
     'Estatus'
   ];
+
+
   focused: boolean;
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChild('paginator2') paginator2: MatPaginator;
@@ -84,7 +94,9 @@ export class ListaClientessComponent implements OnInit {
    await this.cargarInicio();
   }
   async totalClientes(){
-    this.subcliente =  await this.sService.getAll().toPromise();
+    this.subcliente =  await this.sService.getAll(1).toPromise();
+    this.clientesViejo =  await this.sService.getAll(0).toPromise();
+
   }
 
   /** 
@@ -150,35 +162,83 @@ export class ListaClientessComponent implements OnInit {
     this.paginator.hidePageSize= await true;
     this.paginator.length = await this.subcliente.length;
 
+
+    while ( this.inicio2 <this.fin2 + 2 && this.inicio2 < this.clientesViejo.length) {
+      if(this.inicio2 < this.fin2){
+        this.data2[this.inicio2] =(    
+            {
+              'info.dependent': 'parent',
+              'Id': this.clientesViejo[this.inicio2].idcliente,
+              'Cliente': this.clientesViejo[this.inicio2].nombre,
+              'Convenio': this.clientesViejo[this.inicio2].colonia,
+              //nested:[{'Fecha':'','Servicio':'','Saldo':'','Intereses':'', '':''}]
+            });
+        /*   this.clientesViejoS = await this.sService.getServicios(this.clientesViejo[this.inicio].idcliente).toPromise();
+             for await(const obj of this.clientesViejoS) {
+              this.data2[this.inicio].nested.push (
+              {
+                'Fecha': obj.clave_serv,
+                'Servicio': obj.servicio,
+                'Saldo': obj.cantidad,
+                'Intereses': obj.interes,
+                '': '',
+              })
+          }*/
+          this.inicio2++      
+      }else{
+     /*   if(this.inicio < this.subcliente.length){
+          this.data[this.inicio] =(    
+            {
+              'info.dependent': 'parent',
+              'Clave cliente': "",
+              'Nombre': "",
+              'Colonia': "",
+              'Calle': "",
+              'Num': "",
+              'Celular 1': "",
+              'Celular 2': "",
+              'Ciudad': "",
+              'Estado': "",
+              nested:[{'Fecha':'','Servicio':'','Saldo':'','Intereses':'', '':''}]
+            });
+          } 
+          this.inicio++*/
+        }
+      }
+
+  this.dataSource2 = await new MatTableDataSource(this.data2);
+  this.dataSource2.paginator = await this.paginator2;    
+  this.paginator2.hidePageSize= await true;
+  this.paginator2.length = await this.clientesViejo.length;
   }
 
   ngOnInit(){ 
-
+    this.existe= document.getElementById("existe").style.display = "none";
+    this.existe= document.getElementById("existe-conv").style.display = "block";
+    this.existeBarra=document.getElementById("barra-paginator").style.display = "true";  
   }
 
-  /* CUANDO PRESIONAS EL BOTON DE NEXT Y PREVIOUS */
-async pageEvents(event: any) {
+  /* CUANDO PRESIONAS EL BOTON DE NEXT Y PREVIOUS  */
+async pageEvents(event: any,inicio,fin,dataSource,data) {
   if(event.previousPageIndex > event.pageIndex) {
-    this.inicio = (this.inicio-(this.inicio%10)) - 20;
-    if(this.inicio < 0){
-      this.inicio = 0;
+    inicio = (inicio-(inicio%10)) - 20;
+    if(inicio < 0){
+      inicio = 0;
     }
-    this.fin =  (this.fin - (this.fin%10)) - 10;
-    this.dataSource=null; 
-    this.data=[];
+    fin =  (fin - (fin%10)) - 10;
+    dataSource=null; 
+    data=[];
     await this.cargarInicio();
   } else {
-    this.inicio = this.fin;
-    this.fin = this.fin + 10;
-    this.dataSource=null;
-    this.data=[];
+    inicio = fin;
+    fin = this.fin + 10;
+    dataSource=null;
+    data=[];
     await this.cargarInicio();
   }
 }
 
-async pageEvents2(event: any) {
-  
-}
+
   /* BUSCAR CLAVE DE USUARIO */
 async filtrar(valor :String) {
   let iniciof : number =0;
@@ -273,17 +333,29 @@ async filtrar(valor :String) {
               this.cliente.celular2=this.excel[p][6];
               this.cliente.ciudad=this.excel[p][7];
               this.cliente.estado= await this.estadoExcel(this.excel[p][8]);
-            await this.sLoader.insertClientes(this.cliente).toPromise();
+              await this.sLoader.insertClientes(this.cliente).toPromise();
            }
           }catch(Exception){}
           try{
           if(this.excel[p][9] !== undefined && repetido[0].total ==0 || this.excel[p][9] == "" && repetido[0].total ==0 ){
-            console.log(this.excel[p][0], this.ExcelDateToJSDate(this.excel[p][9]).toLocaleString(),this.excel[p][10],this.excel[p][11],this.excel[p][12])
             await this.sLoader.insertClientesServ(this.excel[p][0], this.ExcelDateToJSDate(this.excel[p][9]).toLocaleString(),this.excel[p][10],this.excel[p][11],this.excel[p][12]).toPromise();
           }
         }catch(Exception){}
          }
-        await location.reload();
+        for(let x=0; x<this.acumClientesCVE.length; x++){
+         for(let y = 0; y<this.subcliente.length; y++){
+          if(this.acumClientesCVE[x] === this.subcliente[y]){
+            
+          }       
+        }
+
+        for(let p=0; p<this.subcliente.length; p++){
+          console.log(this.subcliente[p]);
+        }
+      }
+
+
+       await location.reload();
         }
 
     };

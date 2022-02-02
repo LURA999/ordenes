@@ -84,23 +84,6 @@ thead {
     background: #FFF0BF;
 }
 
-
-/*Boton de atras*/
-.btn-list {
-    border-radius: 50%;
-    background: white;
-    cursor: pointer;
-    outline: none;    
-    border:none;
-}
-
-
- #path:disabled{
-    fill: #f44336 !important;
-}
-
-
-
 /****/
 
 /*css cuando no hay comentarios*/
@@ -180,11 +163,32 @@ textarea.mat-input-element {
 }
 
 .btnb:hover{
-background-color: #f0b70e;
+background-color: #ffdb6e;
 }
 
 .table {
     width:100%;
 }
 
+.btn-list {
+    border-radius: 50%;
+    background: white;
+    cursor: initial;
+    outline: none;    
+    border:none;
+}
+
+.btn-list:disabled {
+    cursor: initial;
+}
+
+.btn-list:disabled svg{
+    fill:#ffe79e;
+    cursor:initial;
+
+}
+.btn-list svg{
+    cursor: pointer;
+    fill:#ffc300;
+}
 

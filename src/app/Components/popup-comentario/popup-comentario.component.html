@@ -158,14 +158,14 @@
                 <div class="col-md-12 text-center">
                     
                     <button class="btn-list" [disabled]="!btnPrev" (click)="previo()">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" fill="currentColor"  viewBox="0 0 16 16">
-                            <path style="fill:#ffc300;" [disabled]="!btnPrev"  d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px"  viewBox="0 0 16 16">
+                            <path  d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
                           </svg>
                     </button>
                     <span style="margin-left: 10px; margin-right: 10px; ">{{actualPage}} de {{totalPages}}</span>
                     <button  class="btn-list" [disabled]="!btnNext" (click)="siguiente()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" fill="currentColor" viewBox="0 0 16 16">
-                        <path style="fill:#ffc300;"  d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px"  viewBox="0 0 16 16">
+                        <path  d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
                       </svg></button>
                     </div>
                 </div>       
@@ -193,7 +193,7 @@
                             <td>{{c.idpagos}}</td>
                             <td>{{c.nombre}}</td>
                             <td  style="text-align: justify;"><textarea readonly="yes" style="border:none; resize: none;
-                                background: none; outline: none; height: 40px;">{{c.comentario}}</textarea></td>
+                                background: none; outline: none; height: 40px;" >{{c.comentario}}</textarea></td>
                             <td>{{c.fecha}}</td>
                             <td>{{c.fechap}}</td>
                             <td>{{c.cantidadp}}</td>
@@ -202,7 +202,7 @@
                             <ng-container *ngIf="email != c.correo; else elseTemplate">
                                 <ng-container *ngIf="nivel == 1; else elseTemplate">
                                     <div class="btns-eb">
-                                        <button mat-raised-button class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fechap,c.fecha,c.clav_conv, c.cantidadp)">Editar</button>
+                                        <button mat-raised-button class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fechap,c.fecha,c.clav_conv, c.cantidadp,c.idpagos)">Editar</button>
                                         <button mat-raised-button class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
                                     </div>
                                 </ng-container>
@@ -212,7 +212,7 @@
                             </ng-container>
                             <ng-template #elseTemplate>
                                 <div class="btns-eb">
-                                    <button mat-raised-button class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fechap,c.fecha,c.clav_conv,c.cantidadp)">Editar</button>
+                                    <button mat-raised-button class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fechap,c.fecha,c.clav_conv,c.cantidadp,c.idpagos)">Editar</button>
                                     <button mat-raised-button class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
                                 </div>
                             </ng-template>
@@ -229,14 +229,14 @@
                 <div class="col-md-12 text-center">
                     
                     <button class="btn-list" [disabled]="!btnPrev" (click)="previo()">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" fill="currentColor"  viewBox="0 0 16 16">
-                            <path style="fill:#ffc300;" [disabled]="!btnPrev"  d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                        <svg class="flecha-svg" xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" fill="#ffc300"  viewBox="0 0 16 16">
+                            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
                           </svg>
                     </button>
                     <span style="margin-left: 10px; margin-right: 10px; ">{{actualPage}} de {{totalPages}}</span>
                     <button  class="btn-list" [disabled]="!btnNext" (click)="siguiente()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" fill="currentColor" viewBox="0 0 16 16">
-                        <path style="fill:#ffc300;"  d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
+                    <svg  xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" viewBox="0 0 16 16">
+                        <path  d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
                       </svg></button>
                     </div>
                 </div>    
@@ -246,7 +246,7 @@
         <mat-tab label="Convenios">
           <ng-template matTabContent>
             <div class="tab">
-                <table class="table table-hover table-container" style="width: 100%;">
+                <table class="table table-hover" style="width: 100%;">
                     <thead>
                         <tr class="head-tabla">
                             <td scope="col">No.</td>
@@ -265,13 +265,13 @@
                             <td  style="text-align: justify;"><textarea readonly="yes" style="border:none; resize: none;
                                 background: none; outline: none; height: 40px;">{{c.comentario}}</textarea></td>
                             <td>{{c.fecha}}</td>
-                            <td>{{c.fechac}}</td>
+                            <td >{{c.fechac}}</td>
                             <td>{{c.cantidadc}}</td>
                             <td>
                             <ng-container *ngIf="email != c.correo; else elseTemplate">
                                 <ng-container *ngIf="nivel == 1; else elseTemplate">
                                     <div class="btns-eb">
-                                        <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fechac,c.cantidadc,c.fecha,'')">Editar</button>
+                                        <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fechac,c.cantidadc,c.fecha,'',c.idconvenio)">Editar</button>
                                         <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
                                     </div>
                                 </ng-container>
@@ -281,7 +281,7 @@
                             </ng-container>
                             <ng-template #elseTemplate>
                                 <div class="btns-eb">
-                                    <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fechac,c.cantidadc,c.fecha,'')">Editar</button>
+                                    <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fechac,c.cantidadc,c.fecha,'',c.idconvenio)">Editar</button>
                                     <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
                                 </div>
                             </ng-template>
@@ -298,14 +298,14 @@
                 <div class="col-md-12 text-center">
                     
                     <button class="btn-list" [disabled]="!btnPrev" (click)="previo()">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" fill="currentColor"  viewBox="0 0 16 16">
-                            <path style="fill:#ffc300;" [disabled]="!btnPrev"  d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" viewBox="0 0 16 16">
+                            <path  d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
                           </svg>
                     </button>
                     <span style="margin-left: 10px; margin-right: 10px; ">{{actualPage}} de {{totalPages}}</span>
                     <button  class="btn-list" [disabled]="!btnNext" (click)="siguiente()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" fill="currentColor" viewBox="0 0 16 16">
-                        <path style="fill:#ffc300;"  d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" viewBox="0 0 16 16">
+                        <path  d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
                       </svg></button>
                     </div>
                 </div>    
@@ -336,7 +336,7 @@
                                 <ng-container *ngIf="email != c.correo; else elseTemplate">
                                     <ng-container *ngIf="nivel == 1; else elseTemplate">
                                         <div class="btns-eb">
-                                            <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fecha,'')">Editar</button>
+                                            <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fecha,'','')">Editar</button>
                                             <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
                                         </div>
                                     </ng-container>
@@ -346,7 +346,7 @@
                                 </ng-container>
                                 <ng-template #elseTemplate>
                                     <div class="btns-eb">
-                                        <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fecha,'')">Editar</button>
+                                        <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fecha,'','')">Editar</button>
                                         <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
                                     </div>
                                 </ng-template>
@@ -363,25 +363,29 @@
                     <div class="col-md-12 text-center">
                         
                         <button class="btn-list" [disabled]="!btnPrev" (click)="previo()">
-                            <svg  [disabled]="!btnPrev" xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" fill="currentColor"  viewBox="0 0 16 16">
-                                <path style="fill:#ffc300;"  d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px"   viewBox="0 0 16 16">
+                                <path  d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
                               </svg>
                         </button>
                         <span style="margin-left: 10px; margin-right: 10px; ">{{actualPage}} de {{totalPages}}</span>
                         <button  class="btn-list" [disabled]="!btnNext" (click)="siguiente()">
-                        <svg [disabled]="!btnNext" xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" fill="currentColor" viewBox="0 0 16 16">
-                            <path style="fill:#ffc300;" id="path"  d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
+                        <svg  xmlns="http://www.w3.org/2000/svg" width="40px" height="40px"  viewBox="0 0 16 16">
+                            <path   d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
                           </svg></button>
                         </div>
                     </div>    
             </ng-template>
           </mat-tab>
+          <mat-tab label="Terminados">
+            <ng-template matTabContent>
+              <div class="tab">
+                <div id="Nohay">No hay comentarios</div>
+              </div>
+            </ng-template>
+            </mat-tab>
       </mat-tab-group>
 
     <hr>
-    
-
-
     <div>
         <button mat-dialog-close="false" mat-raised-button style="outline: none; background-color: rgb(255, 60, 0);" color ="accent">Cerrar</button>
     </div>

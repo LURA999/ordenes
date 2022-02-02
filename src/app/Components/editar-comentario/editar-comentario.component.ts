@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { ComentarioService } from 'src/app/services/comentario.service';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-editar-comentario',
@@ -16,7 +16,9 @@ export class EditarComentarioComponent implements OnInit {
 
 
   fechaSin : String = this.data.fecha.split(" ",1) ;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private serviceComent: ComentarioService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+  private dialogoRef: MatDialogRef<EditarComentarioComponent>,
+  private serviceComent: ComentarioService) {
    }
 
   ngOnInit(): void {
@@ -37,7 +39,8 @@ export class EditarComentarioComponent implements OnInit {
 
   async editar(e:String, fecha:String, cantidad:String,selectValue:String){
 
-    console.log("Comentario "+e+"\nfecha "+fecha+"\ncantidad "+cantidad+"\nselectValue "+selectValue)
+    
+   // console.log("Comentario "+e+"\nfecha "+fecha+"\ncantidad "+cantidad+"\nselectValue "+selectValue)
   //  console.log(" opcion: "+this.data.opc+"\n comentario: "+e+"\n idcomentario: "+this.data.idcomentario+"\n clave_Serv: "+this.data.clave_serv+"\n fecha: "+this.data.fecha+"\n fecha: "+fecha+"\n cantidad: "+cantidad+"\n idconvenio "+this.data.idconvenio)
 
     switch(this.data.opc){
@@ -51,6 +54,8 @@ export class EditarComentarioComponent implements OnInit {
         console.log("OPCION: "+this.data.opc+"\ncomentario: "+e+"\nidcomentario: "+this.data.idcomentario+"\nclaveServicio: "+this.data.clave_serv+"\nFecha de publicacion: "+this.data.cantidad+"\nFecha nueva: "+fecha+" 0:00:00"+"\nCantidad: "+cantidad+"\nSelect: "+selectValue)
         await this.serviceComent.updateComentario(this.data.opc,e,this.data.idcomentario,this.data.clave_serv,this.data.cantidad,fecha+" 0:00:00",cantidad,selectValue).toPromise();
     }
+
+    this.dialogoRef.close({data:"Comentario: "+e+" \nFecha: "+ fecha+"\nCantidad: "+cantidad+"\nSelect: "+selectValue+""})
   }
 
   dateChange(e,valor){
