@@ -23,6 +23,7 @@ table {
   .example-element-detail {
     overflow: hidden;
     display: flex;
+    overflow-x: auto;
   }
   
   .example-element-descriptions {
@@ -73,7 +74,7 @@ table {
   .description_cell{
     display: flex;
     flex-direction: row;
-    text-align: center;
+    border: 1px solid transparent;
   }
   mat-form-field,
   mat-label {
@@ -89,7 +90,7 @@ table {
 }
  
 /*Lista expandible*/
-  #barra-paginator
+  mat-paginator
   {
     display: flex;
     flex-direction: column;
@@ -130,7 +131,7 @@ table {
 
 /*Mensaje cuando no hay clientes*/
 
- #existe{
+ .existe{
   margin-top: 5%;
   margin-bottom: 5%;
   text-align: center;
@@ -271,21 +272,6 @@ mat-label{
   margin-left: 4%;
 }
 
-.btn-c{
-  padding: 20%;
-  background: #4553ff;
-  font-size: smaller;
-  outline: none;
-  border: 1px solid black;
-  color: white;
-  border-radius: 4px;
-  box-shadow: 1px 2px 2px #ccc;
-  border: none;
-}
-
-.btn-c:hover{
-  background: #363fa5;
-}
 
 .agregar{
   display: flex;
@@ -313,15 +299,55 @@ mat-label{
  .tab-convenio{
    margin-top: 10%;
  }
+ .subtabla{
+  width : 200%;
+  text-align: center;
+ }
+ .tr-subtabla {
+  border-bottom: 0.5px dashed black;
+}
 
+.btn-c{
+  padding: 7%;
+  background: #4553ff;
+  font-size: smaller;
+  outline: none;
+  border: 1px solid black;
+  color: white;
+  border-radius: 4px;
+  box-shadow: 1px 2px 2px #ccc;
+  border: none;
+}
 
+.btn-c:hover{
+  background: #363fa5;
+}
+.preloader {
+  width: 70px;
+  height: 70px;
+  border: 10px solid #eee;
+  border-top: 10px solid #0c82ff ;
+  border-radius: 50%;
+  animation-name: girar;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+@keyframes girar {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 @media screen and (max-width: 989px){
-  table td{
+  .tabla table td{
     font-size: 60%;
   }
 
-  #existe{
+  .existe{
     font-size: 60%;
   }
   .opciones-head{
@@ -339,21 +365,11 @@ mat-label{
   .btn {
     margin: auto;
   }
-  table th{
+  .tabla table th{
     font-size: 60%;
   }
-
-  #barra-paginator{
-    font-size: 70%;
-    height: 1%;
-  }
 }
 
-#existe-conv {
-  margin-top: 10%;
-  margin-bottom: 10%;
-  text-align: center;
-}
 @media screen and (max-width: 770px){
   mat-form-field {
     color:black;
@@ -374,26 +390,23 @@ mat-label{
   .ciudad {
     margin-left: -25%;
   }
-  #existe{
+  .existe{
     font-size: 60%;
   }
   .estado, .mat-form-field.mat-primary.mat-form-field-type-mat-select {
     width: 60%;
     margin-right: -10%;
   }
-  #barra-paginator{
-    font-size: 60% ;
-  }
 }
 
 @media screen and (max-width: 393px){
-  table td{
+  .tabla table td{
     font-size: 40%;
   }
-  table th{
+  .tabla table th{
     font-size: 40%;
   }
-  #existe{
+  .existe{
     font-size: 40%;
   }
  

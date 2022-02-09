@@ -1,6 +1,6 @@
 <div class="container2" style="text-align: center;">
 
-<h1 style="font:500 20px/32px Roboto, 'Helvetica Neue', sans-serif">Actualizando datos </h1>
+<h1 style="font:500 20px/32px Roboto, 'Helvetica Neue', sans-serif">Actualizando datos <br> No.{{data.idcomentario}} </h1>
 
 <div>
     <ng-container *ngIf="data.opc == 10; else elseTemplate">
@@ -54,6 +54,7 @@
             </div>
         </ng-container>
         <ng-template #elseTemplate>
+          
           <div>
             <div id="opcion">
               <!--Modificas la seccion de pagos-->
@@ -91,7 +92,6 @@
             </div>
         </div>
         </ng-template>
-        
     </ng-template>
         </div>
 

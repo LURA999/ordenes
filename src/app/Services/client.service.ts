@@ -12,6 +12,7 @@ export class ClientService {
   constructor(private http : HttpClient) { }
 
   getAll(opc:number){
+    console.log(opc);
     return this.http.get(this.local+'Cliente/Cliente.php?todo='+true+'&opc='+opc);
   }
 
@@ -54,6 +55,10 @@ export class ClientService {
 
   actualizarEstatus_Estado(opc: number,estatus: String, cve : String){
     return this.http.patch(this.local+'Cliente/Cliente.php?estatus2='+opc+'&cve='+cve+'&estatus='+estatus,{responseType: 'text'});
+  }
+  
+  actualizarCliente(opc :number,cve : String){
+    return this.http.patch(this.local+'Comentarios.php?opc='+opc+'&cve='+cve+'&clientes=false',  {responseType: 'text'});
   }
 
   clienteRepetido(cve : String){

@@ -22,6 +22,7 @@ export class EditarComentarioComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    console.log(this.data)
     this.date1 = new FormControl(new Date(this.data.fecha)) 
     this.date2 = new FormControl(new Date(this.data.fecha)) 
 

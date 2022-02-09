@@ -1,5 +1,8 @@
 <app-navbar></app-navbar>
 <div class="container" >
+
+<div>
+<h2>Seccion de Clientes</h2>
 <div class="opciones-head">
   <div class="buscador">
   <form >
@@ -12,11 +15,10 @@
     <div>
   </div>
   </div>
-  
+ 
   <div class="selects row">
     <div class="ciudad">
       <mat-label  class="selectb">Buscar:&nbsp;</mat-label>
-
       <mat-form-field appearance="fill">
         <mat-label >Ciudad</mat-label>
         <mat-select  class="selecthead" (selectionChange)="verCiudad($event.value.ciudad)" >
@@ -49,11 +51,7 @@
       />
       </label>
     </div> 
-  
 </div>
-
-  
-  
 <div class="tabla">
     <table
       mat-table
@@ -125,7 +123,6 @@
                       {{ key  }}
                     </div>
                   </div>
-                 
                   <!--CONTENIDO DE SUBLISTAS-->
                   <div>
                   <div *ngFor="let nested of element['nested']; let idx = index"
@@ -143,7 +140,7 @@
                   {{nested.Intereses}}
                   </div> 
                   <div *ngIf="idx > 0">
-                    <button class="btn-c" (click)="abrirComentario(element['Clave'],element.Clave
+                    <button class="btn-c" style = "padding: 20%;" (click)="abrirComentario(element['Clave'],element.Clave
                     , nested.Fecha)">Comentar</button>
                   </div>
                   </div>
@@ -169,47 +166,140 @@
         class="example-detail-row"
       ></tr>
     </table>
-
-    <div id="existe">No se encontraron resultados... </div>
-    <mat-paginator #paginator id= "barra-paginator"  
+  
+      <div class="preloader" style="position: relative; left:45%; margin-top:5%; margin-bottom: 5%;" [hidden]="si"></div>
+      <div class="existe">No se encontraron resultados... </div>
+    
+    <mat-paginator #paginator class= "barra-paginator"  
     [hidePageSize]="true"
-    (page)="pageEvents($event,inicio,fin,dataSource,data)"
+    (page)="pageEvents($event)"
     [pageSize]="10"></mat-paginator>
   </div>
 
+<br><br>
 <div>
-<div class="tab-convenio">
-  <h2>Convenios viejos</h2>
-    <table mat-table [dataSource]="dataSource2" >
-       Position Column 
-      <ng-container matColumnDef="Id">
-        <th mat-header-cell *matHeaderCellDef> Id </th>
-        <td mat-cell *matCellDef="let element"> {{element.Id}} </td>
-      </ng-container>
-    
-       Name Column 
-      <ng-container matColumnDef="Cliente">
-        <th mat-header-cell *matHeaderCellDef> Cliente </th>
-        <td mat-cell *matCellDef="let element"> {{element.Cliente}} </td>
-      </ng-container>
-    
-      Weight Column 
-      <ng-container matColumnDef="Convenio">
-        <th mat-header-cell *matHeaderCellDef> Convenio </th>
-        <td mat-cell *matCellDef="let element"> {{element.Convenio}} </td>
-      </ng-container>
+  <h2>Seccion de convenios</h2>
+  <div class="opciones-head">
+    <div class="buscador">
+    <form >
+        <mat-form-field class="aqui" appearance="legacy" color="primary">
+          <mat-label>Buscar nombre-cliente</mat-label>
+          <input matInput #escribir2 >
+        </mat-form-field>
+       <button mat-raised-button  class="btnb" (click)="filtrarNombre(escribir2.value)" >Buscar</button>
+      </form>
+      <div>
+    </div>
+    </div>
+  </div>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
-    </table>
-    <div id="existe-conv">No se encontraron resultados... </div>
-    
-    <mat-paginator  #paginator2 id= "barra-paginator" 
-    [hidePageSize]="true"
-    (page)="pageEvents($event,inicio2,fin2,dataSource2,data2)"
-    [pageSize]="10"></mat-paginator>
-  </div> 
-</div>
+
+  <div class="tabla2">
+      <table
+        mat-table
+        [dataSource]="dataSource2"
+        multiTemplateDataRows 
+        *ngIf="true"
+        [hidden] = "load"
+      >
+      <ng-container
+          matColumnDef="{{ column }}"
+          *ngFor="let column of displayedColumns2"
+          matColumn 
+        >
+        <thead>
+          <tr >
+            <th  mat-header-cell *matHeaderCellDef style="border-bottom:1px solid gray;">{{ column }}</th>
+          </tr>
+        </thead>
+          <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+        </ng-container>
+        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+        <ng-container matColumnDef="expandedDetail">
+          <td
+            mat-cell
+            *matCellDef="let element"
+            [attr.colspan]="displayedColumns2.length"
+            >
+            <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'" >
+              <div class="example-element-descriptions">
+              <!--TITULO DE SUBLISTAS-->
+                  <div class="description">
+                      <div *ngFor="let nested of element['nested']; let idx = index" >     
+                      <div *ngIf="idx > 0">
+                        <table class="subtabla">
+                          <tr class="tr-subtabla">
+                            <td>Clave</td>
+                            <td>{{nested.Clave}}</td>
+                          </tr>
+                          <tr class="tr-subtabla">
+                            <td>Nombre</td>
+                            <td>{{nested.Nombre}}</td>
+                          </tr>
+                          <tr class="tr-subtabla">
+                            <td>Colonia</td>
+                            <td>{{nested.Colonia}}</td>
+                          </tr>
+                          <tr class="tr-subtabla">
+                            <td>Calle</td>
+                            <td>{{nested.Calle}}</td>
+                          </tr>
+                          <tr class="tr-subtabla">
+                            <td>Num</td>
+                            <td> {{nested.Num}}</td>
+                          </tr>
+                          <tr class="tr-subtabla">
+                            <td>Celular 1</td>
+                            <td>{{nested.Celular1}}</td>
+                          </tr>
+                          <tr class="tr-subtabla">
+                            <td>Celular 2</td>
+                            <td>{{nested.Celular2}}</td>
+                          </tr>
+                          <tr class="tr-subtabla">
+                            <td>Ciudad</td>
+                            <td>{{nested.Ciudad}}</td>
+                          </tr>
+                          <tr class="tr-subtabla">
+                            <td>Estado</td>
+                            <td>{{nested.Estado}}</td>
+                          </tr>
+                          <tr class="tr-subtabla">
+                            <td>Estatus</td>
+                            <td>{{nested.Estatus}}</td>
+                          </tr>
+                        </table>
+                        <br>
+                        <button class="btn-c"  (click)="abrirComentario(nested.Clave,nested.Clave
+                        , element['Clave servicio'])">Comentar</button>
+                    </div>
+                    </div> 
+                </div>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+        <tr
+          mat-row
+          *matRowDef="let element; columns: displayedColumns2"
+          class="example-element-row"
+          [class.example-expanded-row]="expandedElement === element"
+          (click)="expandedElement = expandedElement === element ? null : element"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: ['expandedDetail']"
+          class="example-detail-row"
+        ></tr>
+      </table>
+      <div class="existe">No se encontraron resultados... </div>
+      <mat-paginator #paginator2 class= "barra-paginator2"  
+      [hidePageSize]="true"
+      (page)="pageEvents2($event)"
+      [pageSize]="10"></mat-paginator>
+    </div>
+  </div>
 </div>
 <!-- Copyright 2019 Google Inc. All Rights Reserved.
     Use of this source code is governed by an MIT-style license that

@@ -40,7 +40,6 @@
                     </mat-select>
                 </mat-form-field>
                 </ng-container>
-                
                 <ng-container *ngIf="listaConvenios.length > 0">
                 <mat-form-field color="accent" appearance="legacy">
                     <mat-label>Lista de convenios</mat-label>
@@ -49,7 +48,6 @@
                     </mat-select>
                 </mat-form-field>
                 </ng-container>
-
             <mat-form-field #inputFecha class="convenio" color="accent" floatLabel="always" appearance="legacy">
                 <mat-label>Ingrese una fecha</mat-label>
                 <input #fechaValue matInput 
@@ -59,8 +57,6 @@
                 <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
                 <mat-datepicker #picker disabled="true"></mat-datepicker>
               </mat-form-field>
-
-
             <mat-form-field #inputPago class="cantidad" color="accent" appearance="legacy" floatLabel="always">
             <mat-label>Ingrese pago</mat-label>
                 <input matInput type="number" placeholder="0" disabled #pagoValue
@@ -127,25 +123,6 @@
                             <td> 
                                 <div class="celda-vacia">{{ c.clav_conv == "" ||c.clav_conv == undefined ? '-': c.clav_conv}}</div>
                             </td>
-                           <!-- <td>
-                            <ng-container *ngIf="email != c.correo; else elseTemplate">
-                                <ng-container *ngIf="nivel == 1; else elseTemplate">
-                                    <div class="btns-eb">
-                                        <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fecha,c.cantidadp,'')">Editar</button>
-                                        <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
-                                    </div>
-                                </ng-container>
-                                <ng-template #elseTemplate>
-                                    <div>No puedes editar</div>
-                                </ng-template>
-                            </ng-container>
-                            <ng-template #elseTemplate>
-                                <div class="btns-eb">
-                                    <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fecha,c.cantidadp,'')">Editar</button>
-                                    <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
-                                </div>
-                            </ng-template>
-                            </td>-->
                             </tr>
                         </tbody>
                 </table>
@@ -262,11 +239,13 @@
                             <tr class="fila{{i}}">
                             <td>{{c.idconvenio}}</td>
                             <td>{{c.nombre}}</td>
-                            <td  style="text-align: justify;"><textarea readonly="yes" style="border:none; resize: none;
-                                background: none; outline: none; height: 40px;">{{c.comentario}}</textarea></td>
+                            <td  style="text-align: justify;">
+                            <textarea readonly="yes" style="border:none; resize: none;
+                            background: none; outline: none; height: 40px;" >{{c.comentario}}</textarea>
+                            </td>
                             <td>{{c.fecha}}</td>
                             <td >{{c.fechac}}</td>
-                            <td>{{c.cantidadc}}</td>
+                            <td >{{c.cantidadc}}</td>
                             <td>
                             <ng-container *ngIf="email != c.correo; else elseTemplate">
                                 <ng-container *ngIf="nivel == 1; else elseTemplate">

@@ -70,3 +70,11 @@ button.mat-focus-indicator.mat-tooltip-trigger.mat-paginator-navigation-previous
 button.mat-focus-indicator.mat-tooltip-trigger.mat-paginator-navigation-next {
   right: 10%;
 }
+
+
+@media only screen  and (max-width: 1050px){
+  .mat-tab-body-content {
+    overflow-x: scroll !important;
+  }
+  
+}

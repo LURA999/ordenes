@@ -192,3 +192,33 @@ background-color: #ffdb6e;
     fill:#ffc300;
 }
 
+@media screen and (max-width: 930px) {
+    .cabecera{
+        display: initial;
+        justify-content: space-around;
+    }
+    .radiobutton {
+        width: auto;
+        margin-top: 5%;
+        margin-bottom: 5%;
+        text-align: center;
+    }
+    .comentario-nuevo{
+        width: auto;
+    }
+    .comentario{
+        margin-top: auto;
+    }
+    mat-radio-button {
+        margin-right: 2%;
+    }
+}
+
+@media screen and (max-width: 930px) {
+ .btnb{
+     width: 60px;
+     font-size: smaller;
+     text-align: center;
+ }
+}
+

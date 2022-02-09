@@ -1,7 +1,5 @@
-import { Component, OnInit, Inject, ViewChild, Input } from '@angular/core';
-import { DateFilterFn } from '@angular/material/datepicker';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import * as moment from 'moment';
 import {  ComentarioService } from "src/app/services/comentario.service";
 import Swal from 'sweetalert2';
 import { EditarComentarioComponent } from '../editar-comentario/editar-comentario.component';
@@ -28,6 +26,9 @@ export class PopupComentarioComponent implements OnInit {
   currentElement: number;
   lastElement: number;
   nivel =localStorage.getItem("level") 
+  nuevoComentario :String;
+  nuevaFechap : String;
+  nuevaCantidad :number;
   @ViewChild('inputFecha') inputFecha;
   @ViewChild('picker') calendario;
   @ViewChild('inputPago') inputPago;
@@ -168,6 +169,7 @@ export class PopupComentarioComponent implements OnInit {
   }
 
   async editarComentario(e:String,idcomentario : String,clave_serv : String,fecha : String, cantidad :String,idconvenio : String, cantidadc : String,id:String){
+
     if(this.tabCategoria != 10){
       fecha = fecha.split(" ")[0];
       var fecha2 = fecha.split('/');
