@@ -1,10 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpHandler,  } from '@angular/common/http';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { Subscription } from 'rxjs';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-lista-usuarios',
@@ -15,7 +11,6 @@ export class ListaUsuariosComponent   {
 
   usuarios: any[] = [] ;
   public cve : number;
- 
 
   constructor(private route:Router, private userService: UserService ) { 
     this.userService.getAll().subscribe((result:any)=>{ this.usuarios = result});

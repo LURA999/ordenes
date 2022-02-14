@@ -12,12 +12,14 @@ export class LoaderService {
     }
     hide() {
         this.isLoading.next(false);
+
     }
+
     constructor(private http : HttpClient) { }
     local = environment.api;
+    
 
     insertClientes(cliente: ClienteModel){
-
       return this.http.post(this.local+'Cliente/Cliente.php?insertarExcel1=1'
         , cliente
         , {responseType: 'text'});
@@ -28,4 +30,4 @@ export class LoaderService {
         return this.http.post(this.local+'Cliente/Cliente.php?insertarExcel2=1'+"&cve="+cve+"&clave_serv="+clave_serv+"&servicio="+servicio+"&cantidad="+cantidad+"&interes="+interes
         , {responseType: 'text'});
       }
-}
+} 

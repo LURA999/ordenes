@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { PopupComentarioComponent } from '../popup-comentario/popup-comentario.component';
 import { NgDialogAnimationService } from 'ng-dialog-animation';
+import { ArrayType } from '@angular/compiler';
 
 @Component({
   selector: 'app-lista-clientess',
@@ -52,7 +53,6 @@ export class ListaClientessComponent implements OnInit {
   inicio2 : number=0;
   fin2 : number=10;
   si :Boolean = true;
-
   acumClientesCVE : String [] =[];
   displayedColumns2: string[] = ['Id','Clave servicio','Servicio','Total de pago'];
   dataSource2 : any;
@@ -86,12 +86,14 @@ export class ListaClientessComponent implements OnInit {
   }
 
   async llamarServicios(){
-   this.conveniosServicio=await this.sService.getServicios('').toPromise();
+    /** sin variable */
+   this.conveniosServicio= await this.sService.getServiciosAll().toPromise();
+   this.conveniosServicio = await this.conveniosServicio.container;
   }
 
   async cargarCiudades(){
-    await this.sService.getciudades(1,"").subscribe(resp=>{
-      this.ciudades = resp;
+    await this.sService.getciudades(1,"").subscribe( (resp : any) =>{
+      this.ciudades = resp.container;
     });
   }
 
@@ -99,6 +101,7 @@ export class ListaClientessComponent implements OnInit {
 
   async totalClientes(){
     this.subcliente =  await this.sService.getAll(1).toPromise();
+    this.subcliente = await this.subcliente.container; 
   }
 
   /** 
@@ -179,8 +182,10 @@ export class ListaClientessComponent implements OnInit {
             'Estatus': this.subcliente[this.inicio].estatus,
             nested:[{'Fecha':'','Servicio':'','Saldo':'','Intereses':'', '':''}]
           });
-        this.subclienteS = await this.sService.getServicios(this.subcliente[this.inicio].idcliente).toPromise();
-           for await(const obj of this.subclienteS) {
+          /**con variable */
+       this.subclienteS = await this.sService.getServiciosCve(this.subcliente[this.inicio].idcliente).toPromise();
+        this.subclienteS = this.subclienteS.container;    
+        for await(const obj of this.subclienteS) {
             this.data[this.inicio].nested.push (
             {
               'Fecha': obj.clave_serv,
@@ -217,7 +222,6 @@ export class ListaClientessComponent implements OnInit {
     this.paginator.length = await this.subcliente.length;
     this.load = false;
     this.si = true;
-
   }
 
 
@@ -288,8 +292,6 @@ async filtrar(valor :String) {
     }else{
       id  = await this.sService.id(0,valor,this.estado,this.ciudad).toPromise();
     }
-  
-    
     this.noHayclientes(id,0);
   for await (const obj of id) {
          this.data[iniciof] =(    
@@ -307,7 +309,8 @@ async filtrar(valor :String) {
              'Estatus': obj.estatus,
              nested:[{'Fecha':'','Servicio':'','Saldo':'','Intereses':'', '' : ''}]
            });
-          this.subclienteS = await this.sService.getServicios(obj.idcliente).toPromise();
+          this.subclienteS = await this.sService.getServiciosCve(obj.idcliente).toPromise();
+          this.subclienteS = this.subclienteS.container;
             for await(const obj of this.subclienteS) {
              this.data[iniciof].nested.push (
              {
@@ -408,9 +411,11 @@ async filtrarNombre(valor :String) {
     if(this.excel[0].length == 13){
       
        for (let p=0; p<this.excel.length; p++) {
-        let repetido = await this.sService.getTotalDeServiciosClienteID(this.ExcelDateToJSDate(this.excel[p][9]).toLocaleString(),this.excel[p][0]).toPromise();
-        let repetidocliente = await this.sService.clienteRepetido(this.excel[p][0]).toPromise();
-         try{
+        let repetido : any = await this.sService.getTotalDeServiciosClienteID(this.ExcelDateToJSDate(this.excel[p][9]).toLocaleString(),this.excel[p][0]).toPromise();
+        repetido = repetido.container;
+        let repetidocliente : any = await this.sService.clienteRepetido(this.excel[p][0]).toPromise();
+        repetidocliente = repetidocliente.container; 
+        try{
            if(this.excel[p][0] !== undefined  && repetidocliente[0].repetido == 0 || this.excel[p][0] == "" && repetidocliente[0].repetido == 0){   
               this.acumClientesCVE.push(this.excel[p][0]);
               this.cliente.cve=this.excel[p][0];
@@ -490,7 +495,6 @@ async filtrarNombre(valor :String) {
     if(this.ciudad === undefined){
       this.ciudad = "-1"
     }
-    console.log("HOLA")
 
   if(this.estado != undefined && this.ciudad != undefined){
     this.dataSource=null; 
@@ -500,14 +504,13 @@ async filtrarNombre(valor :String) {
     this.paginator.pageIndex = 0;
     await this.CiudadEstado();
     this.subcliente = await this.sService.getciudadesEstados(this.opcionCEfiltro, this.ciudad, this.estado).toPromise();
-    console.log(this.subcliente)
+    this.subcliente = this.subcliente.container;
     await this.cargarInicio();
   }
   }
 
   /**filtro de estado*/
   async verEstado(estado : String){
-    console.log("HOLA2")
 
     this.estado = estado;  
     if(this.estado !=undefined && this.ciudad != undefined){
@@ -518,7 +521,7 @@ async filtrarNombre(valor :String) {
       this.paginator.pageIndex = 0;
       await this.CiudadEstado(); 
       this.subcliente = await this.sService.getciudadesEstados(this.opcionCEfiltro, this.ciudad, this.estado).toPromise();
-      console.log(this.subcliente)
+      this.subcliente = this.subcliente.container;
       await this.cargarInicio()
     }
   }
@@ -526,6 +529,7 @@ async filtrarNombre(valor :String) {
   async modificarEstatus( cve : String, input: String){
     await this.sService.actualizarEstatus_Estado(2,(input? 1:0)+"", cve).toPromise();
     this.subcliente = await this.sService.getciudadesEstados(this.opcionCEfiltro, this.ciudad, this.estado).toPromise();
+    this.subcliente = this.subcliente.container;
     await this.cargarInicio()
   }
   
@@ -548,6 +552,7 @@ async filtrarNombre(valor :String) {
     
     await this.sService.actualizarEstatus_Estado(1,input+"", cve).toPromise();
     this.subcliente = await this.sService.getciudadesEstados(this.opcionCEfiltro, this.ciudad, this.estado).toPromise();
+    this.subcliente = this.subcliente.container;
     await this.cargarInicio();
 
   }

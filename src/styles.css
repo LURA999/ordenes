@@ -72,7 +72,7 @@ button.mat-focus-indicator.mat-tooltip-trigger.mat-paginator-navigation-next {
 }
 
 
-@media only screen  and (max-width: 1050px){
+@media only screen  and (max-width: 1200px){
   .mat-tab-body-content {
     overflow-x: scroll !important;
   }

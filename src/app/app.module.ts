@@ -102,7 +102,7 @@ import { NgDialogAnimationService } from 'ng-dialog-animation';
   providers: [NgDialogAnimationService,
     NavbarService,    
     MatDatepickerModule,
-
+    HttpClientModule,
     { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() }, 
     LoaderService,
     {provide: HTTP_INTERCEPTORS, useClass:LoaderInterceptor, multi: true },

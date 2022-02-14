@@ -23,7 +23,7 @@
         <mat-label >Ciudad</mat-label>
         <mat-select  class="selecthead" (selectionChange)="verCiudad($event.value.ciudad)" >
           <mat-option [value]="-1">Todos</mat-option>
-          <mat-option *ngFor="let nombre of ciudades" [value]="nombre">{{nombre.ciudad}}</mat-option>
+          <mat-option *ngFor="let nombre of ciudades" [value]="nombre.ciudad">{{nombre.ciudad}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>

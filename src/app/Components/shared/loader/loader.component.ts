@@ -18,7 +18,7 @@ export class LoaderComponent {
   isLoading: Subject<boolean> = this.loaderService.isLoading;
   constructor(private loaderService: LoaderService,private ComunicacionService:ComunicacionService,
     private router:Router ){
-    
+
   }
 
 }

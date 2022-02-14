@@ -10,24 +10,30 @@ export class ClientService {
   local=environment.api;
 
   constructor(private http : HttpClient) { }
-
+/**Se instalo nueva API */
   getAll(opc:number){
-    console.log(opc);
-    return this.http.get(this.local+'Cliente/Cliente.php?todo='+true+'&opc='+opc);
+    return this.http.get(this.local+'API/Customers/customers.php?opc='+opc);
   }
 
   /**Esta consulta puede consultar todas las ciudades registras, 
    * y tambien todos los usuarios de una ciudad */
+
+  /**Se instalo nueva API */
   getciudades(opc:number,nombreCiudad:String){
-    return this.http.get(this.local+'Cliente/Cliente.php?ciudades='+true+'&opc='+opc+'&nombre='+nombreCiudad);
+    return this.http.get(this.local+'API/Cities/cities.php?ciudades='+true+'&opc='+opc+'&cve=false');
   }
 
   getciudadesEstados(opc:number,ciudad:String,estado:String){
     return this.http.get(this.local+'Cliente/Cliente.php?ciudadesEstados='+true+'&opc='+opc+'&ciudad='+ciudad+'&estado='+estado);
   }
+  /**Se instalo nueva API */
+  getServiciosCve(id_servicio : String){
+    return this.http.get(this.local+'API/Customers/customerServices.php?cve='+id_servicio);
+  }
 
-  getServicios(id_servicio:String){
-    return this.http.get(this.local+'Cliente/Cliente.php?id_servicio='+id_servicio);
+  /**Se instalo nueva API */
+  getServiciosAll(){
+    return this.http.get(this.local+'API/Services/serviceAgreements.php');
   }
 
   getTotalDeServiciosCliente(cve:String){
@@ -46,7 +52,7 @@ export class ClientService {
   }
 
   getTotalDeServiciosClienteID(cveserv:String,cve:String){
-    return this.http.get(this.local+'Cliente/Cliente.php?idcliente='+cve+'&idserv='+cveserv+'&buscarIDserv=true');
+    return this.http.get(this.local+'API/services_client.php?cve='+cve+'&cveserv='+cveserv);
   }
   
   id(opc:number,cve:String, estado:String, ciudad:String){
@@ -55,14 +61,14 @@ export class ClientService {
 
   actualizarEstatus_Estado(opc: number,estatus: String, cve : String){
     return this.http.patch(this.local+'Cliente/Cliente.php?estatus2='+opc+'&cve='+cve+'&estatus='+estatus,{responseType: 'text'});
-  }
+  } 
   
   actualizarCliente(opc :number,cve : String){
     return this.http.patch(this.local+'Comentarios.php?opc='+opc+'&cve='+cve+'&clientes=false',  {responseType: 'text'});
   }
 
   clienteRepetido(cve : String){
-    return this.http.get(this.local+'Cliente/Cliente.php?repetidosClientes=true&cve='+cve);
+    return this.http.get(this.local+'API/services_client.php?cve_cliente='+cve);
   }
 
 }
