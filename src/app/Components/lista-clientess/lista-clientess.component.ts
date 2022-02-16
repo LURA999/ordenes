@@ -292,6 +292,7 @@ async filtrar(valor :String) {
     }else{
       id  = await this.sService.id(0,valor,this.estado,this.ciudad).toPromise();
     }
+    id = id.container;
     this.noHayclientes(id,0);
   for await (const obj of id) {
          this.data[iniciof] =(    
@@ -347,11 +348,16 @@ async filtrarNombre(valor :String) {
   let id :any;
   this.dataSource2=null;
   this.data2=[];
-
-  if(valor!==""){
+console.log(valor)
+  if(valor!=""){
     try{
+      console.log(valor)
 
       id  = await this.sService.id(0,valor,"","").toPromise();
+      id = id.container;
+      console.log(id)
+      console.log("id")
+
       this.noHayclientes(id.length,1);
     for await (const obj of id) {
             this.data2[iniciof] =(    
@@ -436,7 +442,7 @@ async filtrarNombre(valor :String) {
           }
         }catch(Exception){}
          }
-        for(let x=0; x<this.acumClientesCVE.length; x++){
+      /*  for(let x=0; x<this.acumClientesCVE.length; x++){
          for(let y = 0; y<this.subcliente.length; y++){
           if(this.acumClientesCVE[x] === this.subcliente[y]){
             
@@ -444,8 +450,8 @@ async filtrarNombre(valor :String) {
         }
         for(let p=0; p<this.subcliente.length; p++){
         }
-      }
-    //   await location.reload();
+      }*/
+    await location.reload();
       }
     };
     await reader.readAsBinaryString(target.files[0]);
@@ -477,25 +483,25 @@ async filtrarNombre(valor :String) {
 
   /**Proceso de filtracion */
   async CiudadEstado(){
-    if(this.estado == "5" && this.ciudad !== "-1" && this.ciudad !==undefined){
+    /** 2 estados , 3 ciudad */
+    if(this.estado == "-1" && this.ciudad != "-1" && this.ciudad !==undefined){
       this.opcionCEfiltro = 3;
-    }else if(this.ciudad == "-1" && this.estado != "5" && this.estado !==undefined){
+    }else if(this.ciudad == "-1" && this.estado != "-1" && this.estado !==undefined){
       this.opcionCEfiltro = 2;
-    }else if(this.estado !==undefined && this.ciudad !==undefined && this.estado !== "5" && this.ciudad !== "-1" ){
+    }else if(this.estado !==undefined && this.ciudad !==undefined && this.estado != "-1" && this.ciudad != "-1" ){
       this.opcionCEfiltro = 1;
     }else{
       this.opcionCEfiltro = 4;
     }  
+    console.log(this.opcionCEfiltro, this.ciudad,this.estado)
 
-    
   }
   /**Filtro de ciudades */
   async verCiudad(ciudad : String){
     this.ciudad = ciudad;
     if(this.ciudad === undefined){
-      this.ciudad = "-1"
+      this.ciudad = "-1";
     }
-
   if(this.estado != undefined && this.ciudad != undefined){
     this.dataSource=null; 
     this.data =[];
@@ -503,8 +509,10 @@ async filtrarNombre(valor :String) {
     this.fin=10;
     this.paginator.pageIndex = 0;
     await this.CiudadEstado();
+    console.log(this.opcionCEfiltro, this.ciudad, this.estado)
     this.subcliente = await this.sService.getciudadesEstados(this.opcionCEfiltro, this.ciudad, this.estado).toPromise();
     this.subcliente = this.subcliente.container;
+    console.log(this.subcliente)
     await this.cargarInicio();
   }
   }
@@ -513,15 +521,18 @@ async filtrarNombre(valor :String) {
   async verEstado(estado : String){
 
     this.estado = estado;  
+
     if(this.estado !=undefined && this.ciudad != undefined){
       this.dataSource=null; 
       this.data =[];
       this.inicio=0;
       this.fin=10;
       this.paginator.pageIndex = 0;
-      await this.CiudadEstado(); 
+      await this.CiudadEstado();       
+      console.log(this.opcionCEfiltro, this.ciudad, this.estado)
       this.subcliente = await this.sService.getciudadesEstados(this.opcionCEfiltro, this.ciudad, this.estado).toPromise();
       this.subcliente = this.subcliente.container;
+      console.log(this.subcliente)
       await this.cargarInicio()
     }
   }

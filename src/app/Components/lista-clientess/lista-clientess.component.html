@@ -21,7 +21,7 @@
       <mat-label  class="selectb">Buscar:&nbsp;</mat-label>
       <mat-form-field appearance="fill">
         <mat-label >Ciudad</mat-label>
-        <mat-select  class="selecthead" (selectionChange)="verCiudad($event.value.ciudad)" >
+        <mat-select  class="selecthead" (selectionChange)="verCiudad($event.value)" >
           <mat-option [value]="-1">Todos</mat-option>
           <mat-option *ngFor="let nombre of ciudades" [value]="nombre.ciudad">{{nombre.ciudad}}</mat-option>
         </mat-select>
@@ -33,13 +33,13 @@
       <mat-form-field  appearance="fill">
       <mat-label >Estado</mat-label>
         <mat-select class="selecthead" (selectionChange)="verEstado($event.value)" >
-          <mat-option [value]="5">Todos</mat-option>
+          <mat-option [value]="-1">Todos</mat-option>
           <mat-option [value]="0">Nuevo</mat-option>
           <mat-option [value]="1">Si contestan</mat-option>
           <mat-option [value]="2">No sirve</mat-option>
           <mat-option [value]="3">Dejamos recado</mat-option>
           <mat-option [value]="4">Convenio</mat-option>
-          <mat-option [value]="6">No contestan</mat-option>
+          <mat-option [value]="5">No contestan</mat-option>
         </mat-select>
       </mat-form-field>
       </div>

@@ -20,14 +20,12 @@ export class LoaderService {
     
 
     insertClientes(cliente: ClienteModel){
-      return this.http.post(this.local+'Cliente/Cliente.php?insertarExcel1=1'
-        , cliente
-        , {responseType: 'text'});
+      return this.http.post(this.local+'API/Customers/customers.php', cliente, {responseType: 'text'});
       }
       
       insertClientesServ(cve,clave_serv,servicio,cantidad,interes){
-       // console.log(this.local+'Cliente/Cliente.php?insertarExcel2=1'+"&cve="+cve+"&clave_serv="+clave_serv+"&servicio="+servicio+"&cantidad="+cantidad+"&interes="+interes)
-        return this.http.post(this.local+'Cliente/Cliente.php?insertarExcel2=1'+"&cve="+cve+"&clave_serv="+clave_serv+"&servicio="+servicio+"&cantidad="+cantidad+"&interes="+interes
-        , {responseType: 'text'});
+        console.log(this.http.post)
+        return this.http.post(this.local+'API/Customers/customerServices.php',
+        {cve:cve, clave_serv:clave_serv, servicio:servicio,cantidad:cantidad,interes:interes}, {responseType: 'text'});
       }
 } 

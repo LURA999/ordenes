@@ -47,7 +47,9 @@ export class PopupComentarioComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+       this.serviceComent.getAllServClientAgreements(this.data.clave, this.data.fecha,0).subscribe((resp :any) =>{
+        this.listaConvenios = resp.container;
+      });
   }
 
   dateChange(e,valor){
@@ -118,42 +120,48 @@ export class PopupComentarioComponent implements OnInit {
   }
 
   async todosServCliente(opc : number){
-    this.comentariosMostrar = [];
+    this.comentario 
     switch(opc){
       case 0:
         await this.serviceComent.getAllServClient(this.data.clave, this.data.fecha).subscribe((resp :any) =>{
           this.comentarios = resp.container;
-          this.paginar(this.comentarios)
-        });
-      break;
-      case 3:
-        await this.serviceComent.getAllServClientPayments(this.data.clave, this.data.fecha).subscribe((resp :any) =>{
-          this.comentarios = resp.container;
+          this.comentariosMostrar = [];
           this.paginar(this.comentarios)
         });
       break;
       case 1:
         await this.serviceComent.getAllServClientPayments(this.data.clave, this.data.fecha).subscribe((resp :any) =>{
           this.comentarios = resp.container;
+          this.comentariosMostrar = [];
+          this.paginar(this.comentarios)
+        });
+      break;
+      case 2:
+        await this.serviceComent.getAllServClientAgreements(this.data.clave, this.data.fecha,0).subscribe((resp :any) =>{
+          this.comentarios = resp.container;
+          this.comentariosMostrar = [];
           this.paginar(this.comentarios)
 
         });
       break;
-      case 10:
-        await this.serviceComent.getAllServClientPayments(this.data.clave, this.data.fecha).subscribe((resp :any) =>{
+      case 3:
+        await this.serviceComent.getAllServClientComments(this.data.clave, this.data.fecha).subscribe((resp :any) =>{
           this.comentarios = resp.container;
+          this.comentariosMostrar = [];
           this.paginar(this.comentarios)
 
+        });
+      break;
+      case 4:
+        await this.serviceComent.getAllServClientAgreements(this.data.clave, this.data.fecha,1).subscribe((resp :any) =>{
+          this.comentarios = resp.container;
+          this.comentariosMostrar = [];
+          this.paginar(this.comentarios)
         });
       break;
     }
-    
-   
-   if(this.tabCategoria == 1 || this.tabCategoria == 0){
-    await this.serviceComent.getAllServClientAgreements(this.data.clave, this.data.fecha).subscribe((resp :any) =>{
-      this.listaConvenios = resp.container;
-    });
-  }
+
+
   }
 
   async todosServCliente2(opc : number, id : number){
@@ -166,43 +174,27 @@ export class PopupComentarioComponent implements OnInit {
 
   /**Para cargar cada pestaña cuando se elige */
  async tab(opc: number){
-    switch(opc){
-      case 0:
-        this.tabCategoria = 0;
-        await this.todosServCliente(0)
-        break;
-      case 1:
-        this.tabCategoria = 3;
-        await this.todosServCliente(3)
-        break;
-      case 2:
-        this.tabCategoria = 1;
-       await this.todosServCliente(1)
-        break;
-      case 3:
-        this.tabCategoria = 10;
-        await this.todosServCliente(10)
-        break;
-    }
+   this.tabCategoria = opc;
+  await this.todosServCliente(opc)
   }
 
   /**Esta funcion ayuda a insertar un comentario nuevo y actualiza los campos del modulo para mostrar  */
   async actualizarComentarios(textArea : String, pago:String,fecha:String, select:String){
-    if(select == undefined){
-      select = "0";
-    }
-    if(fecha == ""){
-      fecha = "0";
-    }
-    if(pago == ""){
-      pago = "0"
-    }
+
     switch(this.categoria){
+      case 0:
+        select = "0";
+        pago ="0";
+        fecha = "0";
+        await this.serviceComent.insertComment(this.data.clave,this.data.fecha,textArea,this.data.name, this.data.email, this.categoria
+          ,select,fecha+" 0:00:00",pago).toPromise();
+          break;
       case 1:
         await this.serviceComent.insertCommentPay(this.data.clave,this.data.fecha,textArea,this.data.name, this.data.email, this.categoria
           ,select,fecha+" 0:00:00",pago).toPromise();
         break;
       case 2:
+        select = "0";
         await this.serviceComent.insertCommentAgreement(this.data.clave,this.data.fecha,textArea,this.data.name, this.data.email, this.categoria
           ,select,fecha+" 0:00:00",pago).toPromise();
         break;
@@ -213,7 +205,7 @@ export class PopupComentarioComponent implements OnInit {
   }
 
   async editarComentario(e:String,idcomentario : String,clave_serv : String,fecha : String, cantidad :String,idconvenio : String, cantidadc : String,id:String){
-
+    console.log(this.data.opc+" ---- " +e+" -- "+idcomentario+" -- "+clave_serv+" -- "+fecha+" -- " +cantidad+" -- "+idconvenio+" -- "+ cantidadc+" -- "+id)
     if(this.tabCategoria != 10){
       fecha = fecha.split(" ")[0];
       var fecha2 = fecha.split('/');

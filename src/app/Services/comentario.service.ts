@@ -11,6 +11,13 @@ export class ComentarioService {
 
   constructor(private http : HttpClient) { }
   
+
+  insertComment(cve:  String, clave_serv : String, comentario : String, nombre :String, correo :String, tipo : number
+    ,clave_conv :String ,fecha : String , cantidad : String){
+    return this.http.post(this.local+'API/Comments/normalComments.php',{cve:cve,correo:correo,clave_serv:clave_serv,comentario:comentario,nombre:nombre
+    ,tipo:tipo,clave_conv:clave_conv,fecha:fecha,cantidad:cantidad},  {responseType: 'text'});
+  }
+
   insertCommentPay(cve:  String, clave_serv : String, comentario : String, nombre :String, correo :String, tipo : number
     ,clave_conv :String ,fecha : String , cantidad : String){
     return this.http.post(this.local+'API/Comments/payComments.php',{cve:cve,clave_serv:clave_serv,comentario:comentario,nombre:nombre
@@ -24,19 +31,19 @@ export class ComentarioService {
   }
 
   getAllServClient(cve:String, fecha:String){
-    return this.http.get(this.local+'API/Comments/serviceComments.php?cve='+cve+'&fecha='+fecha+'');
+    return this.http.get(this.local+'API/Comments/serviceComments.php?cve='+cve+'&fecha='+fecha);
   }
 
-  getAllServClientAgreements(cve:String, fecha:String){
-    return this.http.get(this.local+'API/Comments/commentsAgreements.php?cve='+cve+'&fecha='+fecha+'');
+  getAllServClientAgreements(cve:String, fecha:String, opc:number){
+    return this.http.get(this.local+'API/Comments/commentsAgreements.php?cve='+cve+'&fecha='+fecha+'&opc='+opc);
   }
 
   getAllServClientPayments(cve:String, fecha:String){
-    return this.http.get(this.local+'API/Comments/payComments.php?&cve='+cve+'&fecha='+fecha);
+    return this.http.get(this.local+'API/Comments/payComments.php?cve='+cve+'&fecha='+fecha);
   }
 
   getAllServClientComments(cve:String, fecha:String){
-    return this.http.get(this.local+'API/Comments/normalComments.php?&cve='+cve+'&fecha='+fecha);
+    return this.http.get(this.local+'API/Comments/normalComments.php?cve='+cve+'&fecha='+fecha);
   }
 
   updateComentario(opc :number,comentario : String,idcomentario:String,clave_serv:String,fecha:String,fecha2:String, cantidad:String,idconvenio: String){

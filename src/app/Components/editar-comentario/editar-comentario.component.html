@@ -3,7 +3,7 @@
 <h1 style="font:500 20px/32px Roboto, 'Helvetica Neue', sans-serif">Actualizando datos <br> No.{{data.idcomentario}} </h1>
 
 <div>
-    <ng-container *ngIf="data.opc == 10; else elseTemplate">
+    <ng-container *ngIf="data.opc == 3; else elseTemplate">
       <!--Solo modificas la seccion de comentarios-->
         <div>
             <div class="comentario-nuevo">
@@ -21,7 +21,7 @@
         </div>
     </ng-container>
     <ng-template #elseTemplate>
-        <ng-container *ngIf="data.opc == 1; else elseTemplate">
+        <ng-container *ngIf="data.opc == 2; else elseTemplate">
           <!-- Modificas le seccion de convenios-->
             <div>
                 <div id="opcion">
