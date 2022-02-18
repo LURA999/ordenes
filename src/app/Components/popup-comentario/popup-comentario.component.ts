@@ -43,7 +43,7 @@ export class PopupComentarioComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private serviceComent :ComentarioService,
   public dialog: MatDialog){
     /**Para llenar la tabla */
-    this.todosServCliente(this.tabCategoria);
+    this.todosServCliente(0);
   }
 
   ngOnInit(): void {
@@ -160,16 +160,46 @@ export class PopupComentarioComponent implements OnInit {
         });
       break;
     }
-
-
   }
 
   async todosServCliente2(opc : number, id : number){
-    await this.serviceComent.buscarId(opc,this.data.clave, this.data.fecha, id).subscribe((resp :any) =>{
-    this.comentarios = resp.container;
-    this.comentariosMostrar = [];
-    this.paginar(this.comentarios)
-  });
+    switch(opc){
+      case 0:
+        await this.serviceComent.buscarIdTodos(this.data.clave, this.data.fecha, id).subscribe((resp :any) =>{
+          this.comentarios = resp.container;
+          this.comentariosMostrar = [];
+          this.paginar(this.comentarios);
+        })
+        break;
+      case 1:
+        await this.serviceComent.buscarIdPagos(this.data.clave, this.data.fecha, id).subscribe((resp :any) =>{
+          this.comentarios = resp.container;
+          this.comentariosMostrar = [];
+          this.paginar(this.comentarios);
+        })
+        break;
+      case 2:
+        await this.serviceComent.buscarIdConvenios(this.data.clave, this.data.fecha, id, 0).subscribe((resp :any) =>{
+          this.comentarios = resp.container;
+          this.comentariosMostrar = [];
+          this.paginar(this.comentarios);
+        })
+        break;
+      case 3:
+        await this.serviceComent.buscarIdComentarios(this.data.clave, this.data.fecha, id).subscribe((resp :any) =>{
+          this.comentarios = resp.container;
+          this.comentariosMostrar = [];
+          this.paginar(this.comentarios);
+        })
+        break;
+      case 4:
+        await this.serviceComent.buscarIdConvenios(this.data.clave, this.data.fecha, id, 1).subscribe((resp :any) =>{
+          this.comentarios = resp.container;
+          this.comentariosMostrar = [];
+          this.paginar(this.comentarios);
+        })
+        break;
+    }
  }
 
   /**Para cargar cada pestaña cuando se elige */
@@ -178,7 +208,7 @@ export class PopupComentarioComponent implements OnInit {
   await this.todosServCliente(opc)
   }
 
-  /**Esta funcion ayuda a insertar un comentario nuevo y actualiza los campos del modulo para mostrar  */
+  /**Esta funcion ayuda a insertar un comentario nuevo */
   async actualizarComentarios(textArea : String, pago:String,fecha:String, select:String){
 
     switch(this.categoria){
@@ -197,6 +227,7 @@ export class PopupComentarioComponent implements OnInit {
         select = "0";
         await this.serviceComent.insertCommentAgreement(this.data.clave,this.data.fecha,textArea,this.data.name, this.data.email, this.categoria
           ,select,fecha+" 0:00:00",pago).toPromise();
+        await this.todosServCliente(0);
         break;
     }
 
@@ -205,7 +236,6 @@ export class PopupComentarioComponent implements OnInit {
   }
 
   async editarComentario(e:String,idcomentario : String,clave_serv : String,fecha : String, cantidad :String,idconvenio : String, cantidadc : String,id:String){
-    console.log(this.data.opc+" ---- " +e+" -- "+idcomentario+" -- "+clave_serv+" -- "+fecha+" -- " +cantidad+" -- "+idconvenio+" -- "+ cantidadc+" -- "+id)
     if(this.tabCategoria != 10){
       fecha = fecha.split(" ")[0];
       var fecha2 = fecha.split('/');
@@ -228,7 +258,7 @@ export class PopupComentarioComponent implements OnInit {
  }
 
 
-  async deleteComentario(idcomentario : String,clave_serv : String,fecha : String){
+  async deleteComentario(idcomentario : String,clave_serv : String){
     let titulo : String;
     if(this.tabCategoria == 1){
       titulo = "Si borras este convenio, borraras todos los pagos relacionados.\n\n¿Estas seguro?"
@@ -244,15 +274,24 @@ export class PopupComentarioComponent implements OnInit {
       denyButtonText: 'Cancelar'
     }).then((result)=>{
       if(result.isConfirmed){
-       this.eliminarComentario(this.tabCategoria,idcomentario,clave_serv,fecha);
+       this.eliminarComentario(this.tabCategoria,idcomentario,clave_serv);
     }
     });
   }
 
 /**Se separo este metodo del metodo delete comentario, para que funcionara */
-  async eliminarComentario(opc:number,idcomentario,clave_serv,fecha){
-    await this.serviceComent.deleteComentario(opc,idcomentario,clave_serv,fecha).toPromise();
-    await this.todosServCliente(this.tabCategoria);
+  async eliminarComentario(opc:number,idcomentario,clave_serv){
+    if(opc == 1){
+      await this.serviceComent.deleteCommentPay(idcomentario,clave_serv).toPromise();
+      await this.todosServCliente(this.tabCategoria);
+    } else if (opc ==2 || opc == 4){
+      console.log(idcomentario,clave_serv)
+      await this.serviceComent.deleteCommentAgreement(idcomentario,clave_serv).toPromise();
+      await this.todosServCliente(this.tabCategoria);
+    } else {
+      await this.serviceComent.deleteCommentNormal(idcomentario).toPromise();
+      await this.todosServCliente(this.tabCategoria);
+    }
   }
 
 /**Para que no supere el numero de renglones en la pagina */

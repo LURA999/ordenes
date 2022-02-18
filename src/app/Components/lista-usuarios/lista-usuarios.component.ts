@@ -13,7 +13,7 @@ export class ListaUsuariosComponent   {
   public cve : number;
 
   constructor(private route:Router, private userService: UserService ) { 
-    this.userService.getAll().subscribe((result:any)=>{ this.usuarios = result});
+    this.userService.getAll().subscribe((result:any)=>{ this.usuarios = result.container});
  }
 
   borrar(cve_usuario: string) {

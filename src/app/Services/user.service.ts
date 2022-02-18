@@ -13,57 +13,45 @@ export class UserService {
   }
 
   public getEmail(id:number) {
-    return this.http.get(this.local+'Usuario.php?uncorreo=true&cv='+id);
+    return this.http.get(this.local+'API/Users/user.php?uncorreo=true&cv='+id);
   }
   public get(id:string): any{
-    return this.http.get(this.local+'Usuario.php?cve='+id);
+    return this.http.get(this.local+'API/Users/user.php?cve='+id);
  }
 
   public getAll(){
-     return this.http.get(this.local+'Usuario.php?cve=0');
+     return this.http.get(this.local+'API/Users/user.php?cve=-1');
   }
 
   public delete(id:number){
-    return this.http.delete(this.local+'Usuario.php?cve='+id );
+    return this.http.patch(this.local+'API/Users/user.php?cve='+id , {responseType : "text"});
   }
 
   public deleteUsuarioCiudades(cve:string){
-    return this.http.delete(this.local+'Usuario.php?ciudades=true&cve='+cve);
+    return this.http.delete(this.local+'API/Users/user.php?ciudades=true&cve='+cve);
   }
 
-  public update(id:string, email: string, nivel: number, contrasena?: string){
+  public update(id:string, email: string, nivel: number, contrasena: string){
+let response;
+    if(email != undefined ){
+      response = this.http.patch(this.local+'API/email.php',{id: id, email:email},{responseType: 'text'});
+    }
+    
     if(contrasena != undefined ){
-      return this.http.patch(this.local+'Usuario.php?',{
-        cve_usuario: id,
-        password: contrasena ,
-        email:email
-      },{
-        responseType: 'text'
-      }
-      );
-    }if(nivel != undefined){
-      return this.http.patch(this.local+'Usuario.php?',{
-        cve_usuario: id,
-        nivel:nivel
-      },{
-        responseType: 'text'
-      }
+      response = this.http.patch(this.local+'API/Users/userLogin.php',{id: id,contrasena: contrasena},{responseType: 'text'}
       );
     }
     
-    else{
-      return this.http.patch(this.local+'Usuario.php?',{
-        cve_usuario: id,
-        email:email
-      },{
-        responseType: 'text'
-      }
+    if(nivel != undefined){
+       response = this.http.patch(this.local+'API/Users/userLogin.php?',{id: id, nivel:nivel },{ responseType: 'text'}
       );
-    }  
+    }
+ return response;
   }
 
   public create(user: UsuarioModel, ciudades : any[]){
-    return this.http.post(this.local+'Usuario.php',{ nombre: user.nombre, email: user.email,
+    console.log(this.local+'API/Users/user.php')
+    return this.http.post(this.local+'API/Users/user.php',{ nombre: user.nombre, email: user.email,
       password: user.password,nivel: user.nivel, ciudades: ciudades},{responseType: 'text'});
   }
 

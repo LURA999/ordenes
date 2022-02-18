@@ -46,14 +46,45 @@ export class ComentarioService {
     return this.http.get(this.local+'API/Comments/normalComments.php?cve='+cve+'&fecha='+fecha);
   }
 
-  updateComentario(opc :number,comentario : String,idcomentario:String,clave_serv:String,fecha:String,fecha2:String, cantidad:String,idconvenio: String){
-    return this.http.patch(this.local+'Comentarios.php?opc='+opc+'&comentario='+comentario+'&id='+idcomentario+'&clave_serv='+clave_serv+'&fecha='+fecha+'&fecha2='+fecha2+'&cantidad='+cantidad+"&idconvenio="+idconvenio,  {responseType: 'text'});
+  updateCommentPay(comentario : String,idcomentario:String,clave_serv:String,fecha:String,fecha2:String, cantidad:String,idconvenio: String){
+    return this.http.patch(this.local+'API/Comments/payComments.php',{comentario:comentario,id:idcomentario,clave_serv:clave_serv,fecha:fecha,fecha2:fecha2,cantidad:cantidad,idconvenio:idconvenio},  {responseType: 'text'});
   }
 
-  deleteComentario(opc :number,idcomentario:String,clave_serv:String,fecha:String){
-    return this.http.delete(this.local+'Comentarios.php?opc='+opc+'&id='+idcomentario+'&clave_serv='+clave_serv+'&fecha='+fecha,  {responseType: 'text'});
+  updateCommentAgreement(comentario : String,idcomentario:String,clave_serv:String,fecha:String,fecha2:String, cantidad:String,idconvenio: String){
+    console.log("COMENTARIO: "+comentario+"\n  IDCOMENTARIO: "+idcomentario+",\n CLAVESERV: "+clave_serv+",\n CANTIDAD "+fecha+",\n FECHA: "+fecha2+" 0:00:00,\n Cantidad"+cantidad+",\n SELECT:"+idconvenio)
+    return this.http.patch(this.local+'API/Comments/commentsAgreements.php',{comentario:comentario,id:idcomentario,clave_serv:clave_serv,fecha:fecha,fecha2:fecha2,cantidad:cantidad,idconvenio:idconvenio},  {responseType: 'text'});
   }
-  buscarId(opc:number,cve:String, fecha:String, id:number){
-    return this.http.get(this.local+'Comentarios.php?opc='+opc+'&cve='+cve+'&fecha='+fecha+"&id="+id+"&uno=true");
+
+  updateComment(comentario : String,idcomentario:String,clave_serv:String,fecha:String,fecha2:String, cantidad:String,idconvenio: String){
+    console.log(this.local+'API/Comments/normalComments.php')
+    return this.http.patch(this.local+'API/Comments/normalComments.php',{comentario:comentario,id:idcomentario,clave_serv:clave_serv,fecha:fecha,fecha2:fecha2,cantidad:cantidad,idconvenio:idconvenio}, {responseType: 'text'});
+  }
+
+  deleteCommentPay(idcomentario:String,clave_serv:String){
+    return this.http.delete(this.local+'API/Comments/payComments.php?id='+idcomentario+'&clave_serv='+clave_serv,  {responseType: 'text'});
+  }
+
+  deleteCommentAgreement(idcomentario:String,clave_serv:String){
+    return this.http.patch(this.local+'API/Comments/commentsAgreements.php?',{id:idcomentario, estado:clave_serv},  {responseType: 'text'});
+  }
+
+  deleteCommentNormal(idcomentario:String){
+    return this.http.delete(this.local+'API/Comments/normalComments.php?id='+idcomentario,  {responseType: 'text'});
+  }
+
+  buscarIdTodos(cve:String, fecha:String, id:number){
+    return this.http.get(this.local+'API/Comments/serviceComments.php?cve_cliente='+cve+'&fecha='+fecha+"&id="+id);
+  }
+
+  buscarIdPagos(cve:String, fecha:String, id:number){
+    return this.http.get(this.local+'API/Comments/payComments.php?cve_cliente='+cve+'&fecha='+fecha+"&id="+id);
+  }
+
+  buscarIdConvenios(cve:String, fecha:String, id:number, opc : number){
+    return this.http.get(this.local+'API/Comments/commentsAgreements.php?cve_cliente='+cve+'&fecha='+fecha+"&id="+id+"&opc="+opc);
+  }
+  
+  buscarIdComentarios(cve:String, fecha:String, id:number){
+    return this.http.get(this.local+'API/Comments/normalComments.php?cve_cliente='+cve+'&fecha='+fecha+"&id="+id);
   }
 }

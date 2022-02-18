@@ -22,8 +22,7 @@ export class AuthService {
    //var local='';
    var   local=environment.api;
 
-  
-    return this.http.get(local+'Login.php?user='+ usuario.email +'&contrasena=' + usuario.password
+    return this.http.get(local+'API/Users/userLogin.php?user='+ usuario.email +'&contrasena=' + usuario.password
     ).pipe( map( resp =>{
       if(resp["error"] == false){
         this.saveToken( resp['token']);

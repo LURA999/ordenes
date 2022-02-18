@@ -22,7 +22,6 @@ export class EditarComentarioComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    console.log(this.data)
     this.date1 = new FormControl(new Date(this.data.fecha)) 
     this.date2 = new FormControl(new Date(this.data.fecha)) 
 
@@ -40,21 +39,19 @@ export class EditarComentarioComponent implements OnInit {
 
   async editar(e:String, fecha:String, cantidad:String,selectValue:String){
 
-    
-   // console.log("Comentario "+e+"\nfecha "+fecha+"\ncantidad "+cantidad+"\nselectValue "+selectValue)
-  //  console.log(" opcion: "+this.data.opc+"\n comentario: "+e+"\n idcomentario: "+this.data.idcomentario+"\n clave_Serv: "+this.data.clave_serv+"\n fecha: "+this.data.fecha+"\n fecha: "+fecha+"\n cantidad: "+cantidad+"\n idconvenio "+this.data.idconvenio)
-
     switch(this.data.opc){
-      case 10:
-       await this.serviceComent.updateComentario(this.data.opc,e,this.data.idcomentario,this.data.clave_serv,this.data.fecha,"0:00:00","0","").toPromise();
+      case 3:
+       await this.serviceComent.updateComment(e,this.data.idcomentario,this.data.clave_serv,this.data.fecha,"0:00:00","0","").toPromise();
+      break;
+      case 2:
+        await this.serviceComent.updateCommentAgreement(e,this.data.idcomentario,this.data.clave_serv,this.data.fecha,fecha+" 0:00:00",cantidad,this.data.idconvenio).toPromise();
       break;
       case 1:
-        await this.serviceComent.updateComentario(this.data.opc,e,this.data.idcomentario,this.data.clave_serv,this.data.fecha,fecha+" 0:00:00",cantidad,this.data.idconvenio).toPromise();
+        console.log("COMENTARIO: "+e+"\n  IDCOMENTARIO: "+this.data.idcomentario+",\n CLAVESERV: "+this.data.clave_serv+",\n CANTIDAD "+this.data.cantidad+",\n FECHA: "+fecha+" 0:00:00,\n Cantidad"+cantidad+",\n SELECT:"+selectValue)
+        await this.serviceComent.updateCommentPay(e,this.data.idcomentario,this.data.clave_serv,this.data.cantidad,fecha+" 0:00:00",cantidad,selectValue).toPromise();
       break;
-      default:
-        console.log("OPCION: "+this.data.opc+"\ncomentario: "+e+"\nidcomentario: "+this.data.idcomentario+"\nclaveServicio: "+this.data.clave_serv+"\nFecha de publicacion: "+this.data.cantidad+"\nFecha nueva: "+fecha+" 0:00:00"+"\nCantidad: "+cantidad+"\nSelect: "+selectValue)
-        await this.serviceComent.updateComentario(this.data.opc,e,this.data.idcomentario,this.data.clave_serv,this.data.cantidad,fecha+" 0:00:00",cantidad,selectValue).toPromise();
     }
+
 
     this.dialogoRef.close({data:"Comentario: "+e+" \nFecha: "+ fecha+"\nCantidad: "+cantidad+"\nSelect: "+selectValue+""})
   }

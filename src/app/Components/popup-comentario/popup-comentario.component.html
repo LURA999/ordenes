@@ -179,8 +179,8 @@
                             <ng-container *ngIf="email != c.correo; else elseTemplate">
                                 <ng-container *ngIf="nivel == 1; else elseTemplate">
                                     <div class="btns-eb">
-                                        <button mat-raised-button class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fechap,c.fecha,c.clav_conv, c.cantidadp,c.idpagos)">Editar</button>
-                                        <button mat-raised-button class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
+                                        <button mat-raised-button class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.idpagos,c.fechap,c.fecha,c.clav_conv, c.cantidadp,c.idpagos)">Editar</button>
+                                        <button mat-raised-button class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.idpagos)">Borrar</button>
                                     </div>
                                 </ng-container>
                                 <ng-template #elseTemplate>
@@ -189,8 +189,8 @@
                             </ng-container>
                             <ng-template #elseTemplate>
                                 <div class="btns-eb">
-                                    <button mat-raised-button class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fechap,c.fecha,c.clav_conv,c.cantidadp,c.idpagos)">Editar</button>
-                                    <button mat-raised-button class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
+                                    <button mat-raised-button class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.idpagos,c.fechap,c.fecha,c.clav_conv,c.cantidadp,c.idpagos)">Editar</button>
+                                    <button mat-raised-button class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.idpagos)">Borrar</button>
                                 </div>
                             </ng-template>
                             </td>
@@ -250,8 +250,8 @@
                             <ng-container *ngIf="email != c.correo; else elseTemplate">
                                 <ng-container *ngIf="nivel == 1; else elseTemplate">
                                     <div class="btns-eb">
-                                        <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fechac,c.cantidadc,c.fecha,'',c.idconvenio)">Editar</button>
-                                        <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
+                                        <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.idconvenio,c.fechac,c.cantidadc,c.fecha,'',c.idconvenio)">Editar</button>
+                                        <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idconvenio, 1)">Borrar</button>
                                     </div>
                                 </ng-container>
                                 <ng-template #elseTemplate>
@@ -260,8 +260,8 @@
                             </ng-container>
                             <ng-template #elseTemplate>
                                 <div class="btns-eb">
-                                    <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fechac,c.cantidadc,c.fecha,'',c.idconvenio)">Editar</button>
-                                    <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
+                                    <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.idconvenio,c.fechac,c.cantidadc,c.fecha,'',c.idconvenio)">Editar</button>
+                                    <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idconvenio, 1)">Borrar</button>
                                 </div>
                             </ng-template>
                             </td>
@@ -316,7 +316,7 @@
                                     <ng-container *ngIf="nivel == 1; else elseTemplate">
                                         <div class="btns-eb">
                                             <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fecha,'','')">Editar</button>
-                                            <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
+                                            <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv)">Borrar</button>
                                         </div>
                                     </ng-container>
                                     <ng-template #elseTemplate>
@@ -326,7 +326,7 @@
                                 <ng-template #elseTemplate>
                                     <div class="btns-eb">
                                         <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fecha,'','')">Editar</button>
-                                        <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
+                                        <button mat-raised-button  class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv)">Borrar</button>
                                     </div>
                                 </ng-template>
                                 </td>
@@ -356,6 +356,7 @@
             </ng-template>
           </mat-tab>
           <mat-tab label="Terminados">
+              <!--TABLA DE TERMINADOS-->
             <ng-template matTabContent>
                 <div class="tab">
                     <table class="table table-hover table-container" style="width: 100%;">
@@ -370,7 +371,7 @@
                         </thead>
                             <tbody *ngFor="let c of comentariosMostrar; let i = index">
                                 <tr class="fila{{i}}">
-                                <td>{{c.idpagos}}</td>
+                                <td>{{c.idconvenio}}</td>
                                 <td>{{c.nombre}}</td>
                                 <td  style="text-align: justify;"><textarea readonly="yes" style="border:none; resize: none;
                                     background: none; outline: none; height: 40px;" >{{c.comentario}}</textarea></td>
@@ -379,8 +380,7 @@
                                 <ng-container *ngIf="email != c.correo; else elseTemplate">
                                     <ng-container *ngIf="nivel == 1; else elseTemplate">
                                         <div class="btns-eb">
-                                            <button mat-raised-button class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fechap,c.fecha,c.clav_conv, c.cantidadp,c.idpagos)">Editar</button>
-                                            <button mat-raised-button class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
+                                            <button mat-raised-button class="btn-exit" color="black" (click)="deleteComentario(c.idconvenio,0)">Restaurar</button>
                                         </div>
                                     </ng-container>
                                     <ng-template #elseTemplate>
@@ -389,8 +389,7 @@
                                 </ng-container>
                                 <ng-template #elseTemplate>
                                     <div class="btns-eb">
-                                        <button mat-raised-button class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fechap,c.fecha,c.clav_conv,c.cantidadp,c.idpagos)">Editar</button>
-                                        <button mat-raised-button class="btn-exit" (click)="deleteComentario(c.idcomentarios,c.clave_serv,c.fecha)">Borrar</button>
+                                        <button mat-raised-button class="btn-exit" color="black" (click)="deleteComentario(c.idconvenio, 0)">Restaurar</button>
                                     </div>
                                 </ng-template>
                                 </td>

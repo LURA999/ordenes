@@ -20,12 +20,15 @@ export class AbcUsuarioComponent {
   titulo: string = "Nuevo usuario";
   ciudades : any [];
   ciudadesSelecionadas : any[] = [];
+
   constructor(private userservice: UserService, private route: Router, private aroute: ActivatedRoute, private sCatalogo: CatalogueService) { 
     this.usuario = new UsuarioModel();
     if(aroute.snapshot.paramMap.has('id')){
+      console.log(aroute.snapshot.paramMap.has('id'))
       this.isUpdate = true;
       this.titulo = "Editar usuario";
       userservice.get(aroute.snapshot.paramMap.get('id')).subscribe(resp=>{
+        resp = resp.container;
         this.cve_usuario = parseInt(aroute.snapshot.paramMap.get('id'));
         this.obtenerCiudadesUsuario();
         this.obtenerCiudadesCatalogo();
@@ -45,16 +48,19 @@ export class AbcUsuarioComponent {
     if(forma.invalid){
       alert("Error en datos");
     }else{
+
       if(this.usuario.password != ''){
+        console.log("entro")
+
         await this.userservice.update(this.aroute.snapshot.paramMap.get('id'),this.usuario.email,this.usuario.nivel ,this.usuario.password)
         .subscribe(resp =>{
-          this.route.navigateByUrl('/usuarios');
+        //  this.route.navigateByUrl('/usuarios');
         });
         
       }else{
-        await this.userservice.update(this.aroute.snapshot.paramMap.get('id'),this.usuario.email,this.usuario.nivel)
+        await this.userservice.update(this.aroute.snapshot.paramMap.get('id'),this.usuario.email,this.usuario.nivel,this.usuario.password)
         .subscribe(resp =>{
-          this.route.navigateByUrl('/usuarios');
+   //       this.route.navigateByUrl('/usuarios');
         });
        
       }
@@ -66,7 +72,7 @@ export class AbcUsuarioComponent {
     let ciudadesaux=[];
     let contador;
     await this.sCatalogo.obtenerCiudades().subscribe((resp:any)=>{
-      ciudadesaux = resp;
+      ciudadesaux = resp.container;
       for (let x = 0; x < ciudadesaux.length; x++) {
         contador=0;
         for(let y =0; y < this.ciudadesSelecionadas.length; y++ ){
@@ -83,7 +89,7 @@ export class AbcUsuarioComponent {
    async obtenerCiudadesUsuario(){
     this.ciudadesSelecionadas=[];
     await this.sCatalogo.obtenerUsuarioCiudades(this.cve_usuario).subscribe((resp:any)=>{
-      this.ciudadesSelecionadas = resp;
+      this.ciudadesSelecionadas = resp.container;
     });
   }
 
@@ -120,7 +126,7 @@ export class AbcUsuarioComponent {
       });
     }else{
       this.userservice.create(this.usuario, this.ciudadesSelecionadas).subscribe(resp=>{
-        this.route.navigate(['/','usuarios',], {skipLocationChange: false});
+       // this.route.navigate(['/','usuarios',], {skipLocationChange: false});
       }, error=>{
         alert(error);
       });

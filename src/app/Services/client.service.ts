@@ -59,6 +59,11 @@ export class ClientService {
     return this.http.get(this.local+'API/Customers/customerSearch.php?opc='+opc+'&cve='+cve+'&estado='+estado+'&ciudad='+ciudad);
   }
 
+  buscarConveniosCliente(nombre:String){
+    return this.http.get(this.local+'API/Services/serviceAgreements.php?nombre='+nombre);
+  }
+
+  
   actualizarEstatus_Estado(estatus2: number,estatus: String, cve : String){
     return this.http.patch(this.local+'API/Customers/customers.php',{estatus2:estatus2,cve:cve,estatus:estatus},{responseType: 'text'});
   } 

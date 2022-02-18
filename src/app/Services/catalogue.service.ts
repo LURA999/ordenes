@@ -34,11 +34,11 @@ export class CatalogueService {
   }
 
   obtenerCiudades(){
-    return this.http.get(this.local+'Catalogos/ciudades.php');
+    return this.http.get(this.local+'API/Cities/cities.php');
   }
 
   obtenerUsuarioCiudades(cve_usuario:number){
-    return this.http.get(this.local+'Catalogos/ciudades.php?usuariociudades=1&cve_usuario='+cve_usuario);
+    return this.http.get(this.local+'API/Users/user.php?id='+cve_usuario);
   }
 
 

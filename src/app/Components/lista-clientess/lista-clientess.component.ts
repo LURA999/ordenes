@@ -351,13 +351,8 @@ async filtrarNombre(valor :String) {
 console.log(valor)
   if(valor!=""){
     try{
-      console.log(valor)
-
-      id  = await this.sService.id(0,valor,"","").toPromise();
+      id  = await this.sService.buscarConveniosCliente(valor).toPromise();
       id = id.container;
-      console.log(id)
-      console.log("id")
-
       this.noHayclientes(id.length,1);
     for await (const obj of id) {
             this.data2[iniciof] =(    
@@ -493,8 +488,6 @@ console.log(valor)
     }else{
       this.opcionCEfiltro = 4;
     }  
-    console.log(this.opcionCEfiltro, this.ciudad,this.estado)
-
   }
   /**Filtro de ciudades */
   async verCiudad(ciudad : String){
@@ -509,10 +502,8 @@ console.log(valor)
     this.fin=10;
     this.paginator.pageIndex = 0;
     await this.CiudadEstado();
-    console.log(this.opcionCEfiltro, this.ciudad, this.estado)
     this.subcliente = await this.sService.getciudadesEstados(this.opcionCEfiltro, this.ciudad, this.estado).toPromise();
     this.subcliente = this.subcliente.container;
-    console.log(this.subcliente)
     await this.cargarInicio();
   }
   }
@@ -529,10 +520,8 @@ console.log(valor)
       this.fin=10;
       this.paginator.pageIndex = 0;
       await this.CiudadEstado();       
-      console.log(this.opcionCEfiltro, this.ciudad, this.estado)
       this.subcliente = await this.sService.getciudadesEstados(this.opcionCEfiltro, this.ciudad, this.estado).toPromise();
       this.subcliente = this.subcliente.container;
-      console.log(this.subcliente)
       await this.cargarInicio()
     }
   }
