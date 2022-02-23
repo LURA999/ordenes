@@ -47,7 +47,6 @@ export class EditarComentarioComponent implements OnInit {
         await this.serviceComent.updateCommentAgreement(e,this.data.idcomentario,this.data.clave_serv,this.data.fecha,fecha+" 0:00:00",cantidad,this.data.idconvenio).toPromise();
       break;
       case 1:
-        console.log("COMENTARIO: "+e+"\n  IDCOMENTARIO: "+this.data.idcomentario+",\n CLAVESERV: "+this.data.clave_serv+",\n CANTIDAD "+this.data.cantidad+",\n FECHA: "+fecha+" 0:00:00,\n Cantidad"+cantidad+",\n SELECT:"+selectValue)
         await this.serviceComent.updateCommentPay(e,this.data.idcomentario,this.data.clave_serv,this.data.cantidad,fecha+" 0:00:00",cantidad,selectValue).toPromise();
       break;
     }

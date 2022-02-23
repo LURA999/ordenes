@@ -24,7 +24,6 @@ export class LoaderService {
       }
       
       insertClientesServ(cve,clave_serv,servicio,cantidad,interes){
-        console.log(this.http.post)
         return this.http.post(this.local+'API/Customers/customerServices.php',
         {cve:cve, clave_serv:clave_serv, servicio:servicio,cantidad:cantidad,interes:interes}, {responseType: 'text'});
       }

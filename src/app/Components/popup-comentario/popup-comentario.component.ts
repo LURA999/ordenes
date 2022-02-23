@@ -227,7 +227,10 @@ export class PopupComentarioComponent implements OnInit {
         select = "0";
         await this.serviceComent.insertCommentAgreement(this.data.clave,this.data.fecha,textArea,this.data.name, this.data.email, this.categoria
           ,select,fecha+" 0:00:00",pago).toPromise();
-        await this.todosServCliente(0);
+          
+          this.serviceComent.getAllServClientAgreements(this.data.clave, this.data.fecha,0).subscribe((resp :any) =>{
+            this.listaConvenios = resp.container;
+          });
         break;
     }
 
@@ -251,7 +254,7 @@ export class PopupComentarioComponent implements OnInit {
             const element = result[key];
           }
         }
-     //   this.todosServCliente(this.tabCategoria)
+      this.todosServCliente(this.tabCategoria)
       });
 
 
@@ -285,7 +288,6 @@ export class PopupComentarioComponent implements OnInit {
       await this.serviceComent.deleteCommentPay(idcomentario,clave_serv).toPromise();
       await this.todosServCliente(this.tabCategoria);
     } else if (opc ==2 || opc == 4){
-      console.log(idcomentario,clave_serv)
       await this.serviceComent.deleteCommentAgreement(idcomentario,clave_serv).toPromise();
       await this.todosServCliente(this.tabCategoria);
     } else {

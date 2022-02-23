@@ -64,10 +64,14 @@ export class ClientService {
   }
 
   
-  actualizarEstatus_Estado(estatus2: number,estatus: String, cve : String){
-    return this.http.patch(this.local+'API/Customers/customers.php',{estatus2:estatus2,cve:cve,estatus:estatus},{responseType: 'text'});
+  actualizarEstado(estado: String, cve : String){
+    return this.http.patch(this.local+'API/Customers/customers.php',{estado:estado,cve:cve},{responseType: 'text'});
   } 
-  
+  actualizarEstatus(estatus: String, cve : String){
+    return this.http.patch(this.local+'API/Customers/customers.php',{cve:cve,estatus:estatus},{responseType: 'text'});
+  } 
+
+
   actualizarCliente(opc :number,cve : String){
     return this.http.patch(this.local+'Comentarios.php?opc='+opc+'&cve='+cve+'&clientes=false',  {responseType: 'text'});
   }
@@ -76,4 +80,7 @@ export class ClientService {
     return this.http.get(this.local+'API/services_client.php?cve_cliente='+cve);
   }
 
+  actualizarVista(mostrar : number, cve : String){
+    return this.http.patch(this.local+'API/Customers/customers.php',{mostrar:mostrar,cve:cve}, {responseType: 'text'})
+  }
 }

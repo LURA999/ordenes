@@ -37,6 +37,7 @@ export class LoginComponent implements OnInit{
       icon: 'info',
       text: 'Cargando'
     });
+
     Swal.showLoading();
     if( form.invalid){
       Swal.close();
@@ -47,6 +48,7 @@ export class LoginComponent implements OnInit{
       return;
     }
     this.auth.login( this.usuario ).subscribe((resp:any)=>{
+      
       if(this.auth.autenticado()){
         Swal.close();
         let obj = JSON.parse(atob(localStorage['token'].split('.')[1]));
@@ -57,7 +59,6 @@ export class LoginComponent implements OnInit{
        let fechaVencimiento = new Date().getTime();
        fechaVencimiento = fechaVencimiento + 2400000;
        localStorage.setItem('endSeason',fechaVencimiento.toString());
-       
         this.route.navigateByUrl('/home');
        
       }else{

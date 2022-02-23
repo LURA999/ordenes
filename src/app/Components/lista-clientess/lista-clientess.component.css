@@ -1,13 +1,109 @@
-/*Lista no expandible*/
-table {
-  width: 100%;
+/*LOADING DE INICIO*/ 
+  #contenedor_carga{
+    background-color: rgba(88, 88, 88, 60%);
+    height: 100%;
+    width:100%;
+    position: fixed;
+    -webkit-transition: all 1s none;
+    -o-transition: all 1s none;
+    transition: all 1s none;
+    z-index:10000;
   }
+
+  span{
+  display:block;
+  font-family:  monospace;
+  white-space: nowrap;
+  width: 13ch;
+  animation: typing .5s steps(13) infinite;
+  overflow: hidden;
+  font-size: xx-large;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: white;
+  transform: translate(-50%,-50%);
   
-  tr.example-detail-row {
-    height: 0;
+}
+
+@keyframes typing {
+  from {width: 0 }
+}
+
+
+.slider{
+  overflow: hidden;
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform: translate(-50%,-50%);
+  text-align: center;
+  color: white;
+  font-size: 1rem;
+}
+.slider ul{
+    display: flex;
+    animation: cambio 5s infinite alternate linear;
+    width: 600%;
+}
+.slider li{
+    width: 100%;
+    list-style: none;
+}
+
+@keyframes cambio{
+    0%{margin-left: 0;}
+    20%{margin-left: 0;}
+    
+    25%{margin-left: -100%;}
+    45%{margin-left: -100%;}
+    
+    50%{margin-left: -200%;}
+    70%{margin-left: -200%;}
+    
+    75%{margin-left: -300%;}
+    100%{margin-left: -300%;}
+
+    105%{margin-left: -400%;}
+    130%{margin-left: -400%;}
+
+    135%{margin-left: -500%;}
+    160%{margin-left: -500%;}
+}
+
+  #carga {
+    border:15px solid #ccc;
+    border-top-color: #f42626;
+    border-top-style:dashed;
+    height:100px;
+    width:100px;
+    border-radius:100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin:auto;  
+    -webkit-animation: girar 1.5s linear infinite;
+    -o-animation: girar 1.5s linear infinite;
+    animation: girar 1.5s linear infinite;
+  }
+
+  @keyframes girar {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
   }
 
   
+  
+  /*Lista no expandible*/
+table {
+  width: 100%;
+  }
+    tr.example-detail-row {
+    height: 0;
+  }
+
   tr.example-element-row:not(.example-expanded-row):hover {
     background: #777;
   }
@@ -148,35 +244,19 @@ select{
   border-radius: 5px;
 }
 /** Colores de las filas*/
-.a1 {
+.▼1 {
 background: #4aef4a80;
 }
-.a2{
+.▼2{
 background: #ff797999;
 }
-.a3{
+.▼3{
   background: #2591ff42;
 }
-.a4{
+.▼4{
   background: #ffff0059;
 }
-.a5{
-  background: #ff910059;
-}
-
-.option1{
-background: #4aef4a80;
-}
-.option2{
-background: #ff797999;
-}
-.option3{
-  background: #2591ff42;
-}
-.option4{
-  background: #ffff0059;
-}
-.option5{
+.▼5{
   background: #ff910059;
 }
 
@@ -299,6 +379,7 @@ mat-label{
  .tab-convenio{
    margin-top: 10%;
  }
+
  .subtabla{
   width : 200%;
   text-align: center;
@@ -322,6 +403,8 @@ mat-label{
 .btn-c:hover{
   background: #363fa5;
 }
+
+/*Loading para tabla*/
 .preloader {
   width: 70px;
   height: 70px;
@@ -332,6 +415,7 @@ mat-label{
   animation-duration: 1s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
+  cursor:wait;
 }
 @keyframes girar {
   from {

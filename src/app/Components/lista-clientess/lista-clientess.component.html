@@ -1,4 +1,19 @@
+<div id="contenedor_carga" [hidden]="contenedor_carga">
+    <div id="carga" [hidden]="carga"></div>
+    <div class="slider" [hidden] = "slider">
+      <ul>
+          <li>Una ves completado, la pagina se reiniciara</li>
+          <li>Comparando clientes viejos y actuales</li>
+          <li>Por favor no cierre el navegador</li>
+          <li>Actualizando y/o subiendo clientes</li>
+          <li>Esto puede demorar dependiendo de la cantidad de clientes y/o servicios</li>
+          <li>Si interrumpe la pagina, se subira incompletamente</li>
+      </ul>
+  </div>
+</div>
+
 <app-navbar></app-navbar>
+
 <div class="container" >
 
 <div>
@@ -69,7 +84,7 @@
           <th  mat-header-cell *matHeaderCellDef style="border-bottom:1px solid gray;">{{ column }}</th>
         </tr>
       </thead>
-        <td class = "a{{element['Estado']}} {{element['Clave']}}"  mat-cell *matCellDef="let element">
+        <td class = "▼{{element['Estado']}} {{element['Clave']}}"  mat-cell *matCellDef="let element">
           <ng-container *ngIf="column == 'Celular 1' || column == 'Celular 2'; then thenTemplate; else elseTemplate"></ng-container>
           <ng-template #thenTemplate>
            <a (click)="CLICK($event)" href="tel:+52{{element[column]}}">{{ element[column] }}</a>
@@ -78,11 +93,11 @@
             <ng-container *ngIf="column == 'Estado'; else elseTemplate">
              <select (click)="CLICK($event)" (change)="modificarEstado(element['Clave'], $event.target.value)" name="select" [value]="element[column]" class="selectTabla seleccionar">
                 <option value="0" disabled hidden>Nuevo</option>
-                <option class = "option1" value="1">Si contestan</option>
-                <option class ="option3" value="3">Dejamos recado</option>
-                <option class= "option5" value="5">No contestan</option>
-                <option class = "option2" value="2">No sirve</option>
-                <option class="option4" value="4">Convenio</option>
+                <option class = "▼1" value="1">Si contestan</option>
+                <option class ="▼3" value="3">Dejamos recado</option>
+                <option class= "▼5" value="5">No contestan</option>
+                <option class = "▼2" value="2">No sirve</option>
+                <option class="▼4" value="4">Convenio</option>
               </select>
             </ng-container>
             <ng-template #elseTemplate>
@@ -167,7 +182,7 @@
       ></tr>
     </table>
   
-      <div class="preloader" style="position: relative; left:45%; margin-top:5%; margin-bottom: 5%;" [hidden]="si"></div>
+      <div class="preloader" style="position: relative; left:45%; margin-top:5%; margin-bottom: 5%;" [hidden]="peticionPrimeraTabla"></div>
       <div class="existe">No se encontraron resultados... </div>
     
     <mat-paginator #paginator class= "barra-paginator"  
@@ -262,11 +277,19 @@
                           </tr>
                           <tr class="tr-subtabla">
                             <td>Estado</td>
-                            <td>{{nested.Estado}}</td>
+                            <td>{{ nested.Estado == 0 ? 'NUEVO': ''}}
+                              {{ nested.Estado == 1 ? 'SI CONTESTAN': ''}}
+                              {{ nested.Estado == 3 ? 'DEJAMOS RECADO': ''}}
+                              {{ nested.Estado == 5 ? 'NO CONTESTAN': ''}}
+                              {{ nested.Estado == 2 ? 'NO SIRVE': ''}}
+                              {{ nested.Estado == 4 ? 'CONVENIO': ''}}
+                            </td>
                           </tr>
                           <tr class="tr-subtabla">
                             <td>Estatus</td>
-                            <td>{{nested.Estatus}}</td>
+                            <td>{{ nested.Estatus == 0 ? 'ACTIVO': ''}}
+                              {{ nested.Estatus == 1 ? 'INACTIVO': ''}}
+                             </td>
                           </tr>
                         </table>
                         <br>
@@ -293,6 +316,7 @@
           class="example-detail-row"
         ></tr>
       </table>
+      <div class="preloader" style="position: relative; left:45%; margin-top:5%; margin-bottom: 5%;" [hidden]="peticionSegundaTabla"></div>
       <div class="existe">No se encontraron resultados... </div>
       <mat-paginator #paginator2 class= "barra-paginator2"  
       [hidePageSize]="true"

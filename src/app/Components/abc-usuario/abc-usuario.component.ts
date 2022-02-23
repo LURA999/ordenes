@@ -5,6 +5,8 @@ import { UserService } from 'src/app/services/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CatalogueService } from 'src/app/services/catalogue.service';
 import Swal from 'sweetalert2';
+import { Observable, Subscription } from 'rxjs';
+import { isThisISOWeek } from 'date-fns';
 
 @Component({
   selector: 'app-abc-usuario',
@@ -13,6 +15,7 @@ import Swal from 'sweetalert2';
 })
 export class AbcUsuarioComponent {
   usuario: UsuarioModel;
+  sub$ = new Subscription();
   cve_usuario:number;
   isUpdate: boolean = false;
   variable : any;
@@ -24,7 +27,6 @@ export class AbcUsuarioComponent {
   constructor(private userservice: UserService, private route: Router, private aroute: ActivatedRoute, private sCatalogo: CatalogueService) { 
     this.usuario = new UsuarioModel();
     if(aroute.snapshot.paramMap.has('id')){
-      console.log(aroute.snapshot.paramMap.has('id'))
       this.isUpdate = true;
       this.titulo = "Editar usuario";
       userservice.get(aroute.snapshot.paramMap.get('id')).subscribe(resp=>{
@@ -44,34 +46,37 @@ export class AbcUsuarioComponent {
     }
   } 
 
-  async actualizar(forma: NgForm){
-    if(forma.invalid){
-      alert("Error en datos");
-    }else{
-
-      if(this.usuario.password != ''){
-        console.log("entro")
-
-        await this.userservice.update(this.aroute.snapshot.paramMap.get('id'),this.usuario.email,this.usuario.nivel ,this.usuario.password)
+   actualizar(){
+ //    this.sub$.add(this.userservice.update(this.aroute.snapshot.paramMap.get('id'),this.usuario.email,this.usuario.nivel,this.usuario.password))
+      if(this.usuario.password != '' || this.usuario.password != undefined){
+         this.sub$.add(this.userservice.updatePass(this.aroute.snapshot.paramMap.get('id'),this.usuario.password)
         .subscribe(resp =>{
-        //  this.route.navigateByUrl('/usuarios');
-        });
+          this.route.navigateByUrl('/usuarios');
+        }));
         
-      }else{
-        await this.userservice.update(this.aroute.snapshot.paramMap.get('id'),this.usuario.email,this.usuario.nivel,this.usuario.password)
-        .subscribe(resp =>{
-   //       this.route.navigateByUrl('/usuarios');
-        });
-       
       }
+      
+      if(this.usuario.email != "" || this.usuario.email != undefined ){
+         this.sub$.add(this.userservice.updateEmail(this.aroute.snapshot.paramMap.get('id'),this.usuario.email)
+        .subscribe(resp =>{
+          this.route.navigateByUrl('/usuarios');
+        }));
+      }
+
+      if(this.usuario.nivel != undefined ){
+        this.sub$.add(this.userservice.updateLevel(this.aroute.snapshot.paramMap.get('id'),this.usuario.nivel)
+       .subscribe(resp =>{
+         this.route.navigateByUrl('/usuarios');
+       }));
+     }
+
     }
-  }
 
   async obtenerCiudadesCatalogo(){
     this.ciudades=[];
     let ciudadesaux=[];
     let contador;
-    await this.sCatalogo.obtenerCiudades().subscribe((resp:any)=>{
+    await this.sub$.add(this.sCatalogo.obtenerCiudades().subscribe((resp:any)=>{
       ciudadesaux = resp.container;
       for (let x = 0; x < ciudadesaux.length; x++) {
         contador=0;
@@ -83,14 +88,14 @@ export class AbcUsuarioComponent {
         if(contador == 0)
         this.ciudades.push(ciudadesaux[x]) 
       }     
-    });
+    }));
   }
    
    async obtenerCiudadesUsuario(){
     this.ciudadesSelecionadas=[];
-    await this.sCatalogo.obtenerUsuarioCiudades(this.cve_usuario).subscribe((resp:any)=>{
+    this.sub$.add(await this.sCatalogo.obtenerUsuarioCiudades(this.cve_usuario).subscribe((resp:any)=>{
       this.ciudadesSelecionadas = resp.container;
-    });
+    }));
   }
 
 
@@ -118,19 +123,23 @@ export class AbcUsuarioComponent {
 
   
 
-  onSubmit(forma: NgForm){
+  async onSubmit(forma: NgForm){
+
     if(forma.invalid && this.ciudadesSelecionadas.length < 0){
       Swal.fire({
         title: 'Favor de completar el formulario',
         icon: 'info'
       });
     }else{
-      this.userservice.create(this.usuario, this.ciudadesSelecionadas).subscribe(resp=>{
-       // this.route.navigate(['/','usuarios',], {skipLocationChange: false});
+      await this.sub$.add(this.userservice.create(this.usuario, this.ciudadesSelecionadas).subscribe(resp=>{
+        this.route.navigate(['/','usuarios',], {skipLocationChange: false});
       }, error=>{
         alert(error);
-      });
+      }));
     }
   }
 
+  ngOnDestroy(): void {
+    this.sub$.unsubscribe();
+  }
 }

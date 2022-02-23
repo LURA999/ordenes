@@ -9,7 +9,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { PopupComentarioComponent } from '../popup-comentario/popup-comentario.component';
 import { NgDialogAnimationService } from 'ng-dialog-animation';
-import { ArrayType } from '@angular/compiler';
 
 @Component({
   selector: 'app-lista-clientess',
@@ -52,15 +51,18 @@ export class ListaClientessComponent implements OnInit {
   fin : number=10;
   inicio2 : number=0;
   fin2 : number=10;
-  si :Boolean = true;
+  peticionPrimeraTabla :Boolean = true;
+  peticionSegundaTabla :Boolean = true;
+
   acumClientesCVE : String [] =[];
   displayedColumns2: string[] = ['Id','Clave servicio','Servicio','Total de pago'];
   dataSource2 : any;
   tablaConvenios : any[] = [];
   displayedColumns = ['Clave', 'Nombre', 'Colonia', 'Calle', 'Num', 'Celular 1', 'Celular 2', 'Ciudad', 'Estado', 'Estatus'];
   load = true
-
-  focused: boolean;
+  slider : boolean = true;
+  carga :boolean;
+  contenedor_carga : boolean;
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChild('paginator2') paginator2: MatPaginator;
 
@@ -68,21 +70,20 @@ export class ListaClientessComponent implements OnInit {
     public dialog: NgDialogAnimationService) {
     this.cliente = new ClienteModel(); 
     this.cargarCiudades();
-    //primera tabla
-    this.cargarTodoClientes();
-    //segunda tabla 
-    this.cargarTodoServicios();
-   
+    //Cargar ambas tablas
+    this.cargarTodo();
   }
 
-  async cargarTodoClientes(){
+  async cargarTodo(){
+   this.peticionPrimeraTabla = await false;
    await this.totalClientes();
    await this.cargarInicio();
-  }
-
-  async cargarTodoServicios(){
    await this.llamarServicios();
    await this.cargarClientes();
+   this.peticionPrimeraTabla = await true;
+   this.contenedor_carga = await true;
+   this.carga = await true;
+ 
   }
 
   async llamarServicios(){
@@ -97,11 +98,10 @@ export class ListaClientessComponent implements OnInit {
     });
   }
 
-
-
   async totalClientes(){
     this.subcliente =  await this.sService.getAll(1).toPromise();
     this.subcliente = await this.subcliente.container; 
+
   }
 
   /** 
@@ -110,7 +110,7 @@ export class ListaClientessComponent implements OnInit {
    * PARA EL INICIO
    */
     async cargarClientes(){
-      this.si = false;
+      this.peticionSegundaTabla = false;
       this.noHayclientes(this.conveniosServicio.length,1);
     while ( this.inicio2 <this.fin2 + 2 && this.inicio2 < this.conveniosServicio.length) {
       if(this.inicio2 < this.fin2){
@@ -157,13 +157,13 @@ export class ListaClientessComponent implements OnInit {
     this.dataSource2.paginator = await this.paginator2;    
     this.paginator2.hidePageSize= await true;
     this.paginator2.length = await this.conveniosServicio.length;
-    this.si = true;
+    this.peticionSegundaTabla = true;
     }
 
 
 
   async cargarInicio(){
-    this.si = false;
+    this.peticionPrimeraTabla = false;
   this.noHayclientes(this.subcliente.length,0);
    while ( this.inicio <this.fin + 2 && this.inicio < this.subcliente.length) {
     if(this.inicio < this.fin){
@@ -183,7 +183,7 @@ export class ListaClientessComponent implements OnInit {
             nested:[{'Fecha':'','Servicio':'','Saldo':'','Intereses':'', '':''}]
           });
           /**con variable */
-       this.subclienteS = await this.sService.getServiciosCve(this.subcliente[this.inicio].idcliente).toPromise();
+      this.subclienteS = await this.sService.getServiciosCve(this.subcliente[this.inicio].idcliente).toPromise();
         this.subclienteS = this.subclienteS.container;    
         for await(const obj of this.subclienteS) {
             this.data[this.inicio].nested.push (
@@ -221,7 +221,7 @@ export class ListaClientessComponent implements OnInit {
     this.paginator.hidePageSize= await true;
     this.paginator.length = await this.subcliente.length;
     this.load = false;
-    this.si = true;
+    this.peticionPrimeraTabla = true;
   }
 
 
@@ -238,7 +238,7 @@ export class ListaClientessComponent implements OnInit {
 
   /* CUANDO PRESIONAS EL BOTON DE NEXT Y PREVIOUS  */
 async pageEvents(event: any) {
-  this.si = false;
+  this.peticionPrimeraTabla = false;
   if(event.previousPageIndex > event.pageIndex) {
     this.inicio = (this.inicio-(this.inicio%10)) - 20;
     if(this.inicio < 0){
@@ -255,10 +255,11 @@ async pageEvents(event: any) {
     this.data=[];
     await this.cargarInicio();
   }
-  this.si=true;
+  this.peticionPrimeraTabla=true;
 }
 
 async pageEvents2(event: any) {
+  this.peticionSegundaTabla = false;
   if(event.previousPageIndex > event.pageIndex) {
     this.inicio2 = (this.inicio2-(this.inicio2%10)) - 20;
     if(this.inicio2 < 0){
@@ -275,11 +276,15 @@ async pageEvents2(event: any) {
     this.data2=[];
     await this.cargarClientes();
   }
+  this.peticionSegundaTabla = true;
+
 }
 
 
   /* BUSCAR CLAVE DE USUARIO */
 async filtrar(valor :String) {
+  this.peticionPrimeraTabla = false;
+
   let iniciof : number =0;
   let id :any;
   this.dataSource=null;
@@ -293,6 +298,8 @@ async filtrar(valor :String) {
       id  = await this.sService.id(0,valor,this.estado,this.ciudad).toPromise();
     }
     id = id.container;
+    this.peticionPrimeraTabla = true;
+
     this.noHayclientes(id,0);
   for await (const obj of id) {
          this.data[iniciof] =(    
@@ -338,21 +345,24 @@ async filtrar(valor :String) {
     this.dataSource.paginator = await this.paginator;  
     await this.cargarInicio();
   }
-     
+
   }
 
 
     /* BUSCAR NOMBRE DE USUARIO */
 async filtrarNombre(valor :String) {
+  this.peticionSegundaTabla = false;
+
   let iniciof : number =0;
   let id :any;
   this.dataSource2=null;
   this.data2=[];
-console.log(valor)
   if(valor!=""){
     try{
       id  = await this.sService.buscarConveniosCliente(valor).toPromise();
       id = id.container;
+      this.peticionSegundaTabla = true;
+
       this.noHayclientes(id.length,1);
     for await (const obj of id) {
             this.data2[iniciof] =(    
@@ -399,57 +409,103 @@ console.log(valor)
 /**CARGA EL EXCEL */
   async onFileChange(evt: any){
     const target : DataTransfer = <DataTransfer>(evt.target);
-    if(target.files.length !==1) throw new Error('Cannot use multiple files');
-    const reader: FileReader= new FileReader();
-    reader.onload = async (e: any) =>{
-    const bstr : string = e.target.result;
-    const wb : XLSX.WorkBook = XLSX.read(bstr, {type:'binary'});
-    const wsname : string = wb.SheetNames[0];
-    const ws: XLSX.WorkSheet = wb.Sheets[wsname];
-
-    this.excel = (XLSX.utils.sheet_to_json(ws,{header: 1}));
-    /**Insertar dos tablas juntas */
-    if(this.excel[0].length == 13){
+     let formato= ""+target.files[0].name.split(".")[target.files[0].name.split(".").length-1];
+    if(formato == "xlsm" ||formato == "xlsx" || formato == "xlsb" ||formato == "xlts" ||formato == "xltm" ||formato == "xls" ||formato == "xlam" ||formato == "xla"||formato == "xlw" ){
       
-       for (let p=0; p<this.excel.length; p++) {
-        let repetido : any = await this.sService.getTotalDeServiciosClienteID(this.ExcelDateToJSDate(this.excel[p][9]).toLocaleString(),this.excel[p][0]).toPromise();
-        repetido = repetido.container;
-        let repetidocliente : any = await this.sService.clienteRepetido(this.excel[p][0]).toPromise();
-        repetidocliente = repetidocliente.container; 
-        try{
-           if(this.excel[p][0] !== undefined  && repetidocliente[0].repetido == 0 || this.excel[p][0] == "" && repetidocliente[0].repetido == 0){   
-              this.acumClientesCVE.push(this.excel[p][0]);
-              this.cliente.cve=this.excel[p][0];
-              this.cliente.nombre=this.excel[p][1];
-              this.cliente.colonia=this.excel[p][2];
-              this.cliente.calle=this.excel[p][3];
-              this.cliente.num=this.excel[p][4];
-              this.cliente.celular1=this.excel[p][5];
-              this.cliente.celular2=this.excel[p][6];
-              this.cliente.ciudad=this.excel[p][7];
-              this.cliente.estado= await this.estadoExcel(this.excel[p][8]);
-              await this.sLoader.insertClientes(this.cliente).toPromise();
-           }
-          }catch(Exception){}
-          try{
-          if(this.excel[p][9] !== undefined && repetido[0].total ==0 || this.excel[p][9] == "" && repetido[0].total ==0 ){
-            await this.sLoader.insertClientesServ(this.excel[p][0], this.ExcelDateToJSDate(this.excel[p][9]).toLocaleString(),this.excel[p][10],this.excel[p][11],this.excel[p][12]).toPromise();
-          }
-        }catch(Exception){}
-         }
-      /*  for(let x=0; x<this.acumClientesCVE.length; x++){
-         for(let y = 0; y<this.subcliente.length; y++){
-          if(this.acumClientesCVE[x] === this.subcliente[y]){
-            
-          }       
-        }
+      if(target.files.length !==1) throw new  alert('No puedes subir multiples archivos') ;
+      const reader: FileReader= new FileReader();
+      reader.onload = async (e: any) =>{
+      const bstr : string = e.target.result;
+      const wb : XLSX.WorkBook = XLSX.read(bstr, {type:'binary'});
+      const wsname : string = wb.SheetNames[0];
+      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+      this.excel = (XLSX.utils.sheet_to_json(ws,{header: 1}));
+      try{
+
+      if( this.subcliente.length != 0 && this.excel[0].length == 13){
+        /**Cuando ingresamos un excel nuevo todos los clientes viejos se ponen en 0*/
         for(let p=0; p<this.subcliente.length; p++){
-        }
-      }*/
-    await location.reload();
+          await this.sService.actualizarVista(0,this.subcliente[p].idcliente).toPromise();
+         }
       }
-    };
-    await reader.readAsBinaryString(target.files[0]);
+     
+
+       /**Insertar dos tablas juntas */
+       if(this.excel[0].length == 13){ 
+        for (let p=0; p<this.excel.length; p++) {
+         let repetido : any = await this.sService.getTotalDeServiciosClienteID(this.ExcelDateToJSDate(this.excel[p][9]).toLocaleString(),this.excel[p][0]).toPromise();
+         repetido = repetido.container;
+         let repetidocliente : any = await this.sService.clienteRepetido(this.excel[p][0]).toPromise();
+         repetidocliente = repetidocliente.container;
+  
+          if(this.subcliente.length == 0){
+            /**Entra a esta opcion, cuando es  el primer excel de todos, es decir solo se deberia de ejecutar una sola ves en toda la vida del programa */
+           try{
+             if(this.excel[p][0] !== undefined  && repetidocliente[0].repetido == 0 || this.excel[p][0] == "" && repetidocliente[0].repetido == 0){   
+                this.cliente.cve=this.excel[p][0];
+                this.cliente.nombre=this.excel[p][1];
+                this.cliente.colonia=this.excel[p][2];
+                this.cliente.calle=this.excel[p][3];
+                this.cliente.num=this.excel[p][4];
+                this.cliente.celular1=this.excel[p][5];
+                this.cliente.celular2=this.excel[p][6];
+                this.cliente.ciudad=this.excel[p][7];
+                this.cliente.estado= await this.estadoExcel(this.excel[p][8]);
+                await this.sLoader.insertClientes(this.cliente).toPromise();
+             }
+            }catch(Exception){}
+            try{
+            if(this.excel[p][9] !== undefined && repetido[0].total ==0 || this.excel[p][9] == "" && repetido[0].total ==0 ){
+              await this.sLoader.insertClientesServ(this.excel[p][0], this.ExcelDateToJSDate(this.excel[p][9]).toLocaleString(),this.excel[p][10],this.excel[p][11],this.excel[p][12]).toPromise();
+            }
+          }catch(Exception){}
+           
+          }else{
+  
+           /**Despues verificamos los clientes que se repiten y los que se repiten, se cambia de 0 a 1 para que permanezca en la lista*/
+           if(this.excel[p][0] !== undefined  && repetidocliente[0].repetido == 1){
+             await this.sService.actualizarVista(1, this.excel[p][0]).toPromise();
+           
+           } else  if(this.excel[p][0] !== undefined  && repetidocliente[0].repetido == 0 || this.excel[p][0] == "" && repetidocliente[0].repetido == 0){ 
+             /**Y los que no se repiten, simplemente se agregan normalmente */
+             try{
+               if(this.excel[p][0] !== undefined  && repetidocliente[0].repetido == 0 || this.excel[p][0] == "" && repetidocliente[0].repetido == 0){   
+                  this.cliente.cve=this.excel[p][0];
+                  this.cliente.nombre=this.excel[p][1];
+                  this.cliente.colonia=this.excel[p][2];
+                  this.cliente.calle=this.excel[p][3];
+                  this.cliente.num=this.excel[p][4];
+                  this.cliente.celular1=this.excel[p][5];
+                  this.cliente.celular2=this.excel[p][6];
+                  this.cliente.ciudad=this.excel[p][7];
+                  this.cliente.estado= await this.estadoExcel(this.excel[p][8]);
+                  await this.sLoader.insertClientes(this.cliente).toPromise();
+               }
+              }catch(Exception){}
+              try{
+              if(this.excel[p][9] !== undefined && repetido[0].total ==0 || this.excel[p][9] == "" && repetido[0].total ==0 ){
+                await this.sLoader.insertClientesServ(this.excel[p][0], this.ExcelDateToJSDate(this.excel[p][9]).toLocaleString(),this.excel[p][10],this.excel[p][11],this.excel[p][12]).toPromise();
+              }
+            }catch(Exception){}
+            
+          }
+         }
+         }
+  
+      await location.reload();
+       }
+      }catch(Exception){
+        this.contenedor_carga = await true;
+        this.slider = await true;
+        alert("No se permiten archivos vacios")
+      }
+      };
+      await reader.readAsBinaryString(target.files[0]);
+    }else{
+      alert("Solo se permiten tipos de archivos Excel")
+    }
+    
+
   }
 
   /**calcula la fecha que se introdujo en el excel */
@@ -464,6 +520,7 @@ console.log(valor)
     var hours = Math.floor(total_seconds / (60 * 60));
     var minutes = Math.floor(total_seconds / 60) % 60;
     return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate()+1, hours, minutes, seconds);
+     
  }
   
  /**metodos para la tabla */
@@ -527,7 +584,7 @@ console.log(valor)
   }
 
   async modificarEstatus( cve : String, input: String){
-    await this.sService.actualizarEstatus_Estado(2,(input? 1:0)+"", cve).toPromise();
+    await this.sService.actualizarEstatus((input? 1:0)+"", cve).toPromise();
     this.subcliente = await this.sService.getciudadesEstados(this.opcionCEfiltro, this.ciudad, this.estado).toPromise();
     this.subcliente = this.subcliente.container;
     await this.cargarInicio()
@@ -536,7 +593,6 @@ console.log(valor)
   async modificarEstado( cve : String, input: number){
     var cambiarColor = Array.from(document.getElementsByClassName(""+cve) as HTMLCollectionOf<HTMLElement>)
     for (let i = 0; i <cambiarColor.length; i++) {
-
     if(input == 1){
       cambiarColor[i].style.background="#4aef4a80";        
     }else if(input == 2){
@@ -550,7 +606,7 @@ console.log(valor)
     }
   }
     
-    await this.sService.actualizarEstatus_Estado(1,input+"", cve).toPromise();
+    await this.sService.actualizarEstado(input+"", cve).toPromise();
     this.subcliente = await this.sService.getciudadesEstados(this.opcionCEfiltro, this.ciudad, this.estado).toPromise();
     this.subcliente = this.subcliente.container;
     await this.cargarInicio();
@@ -577,8 +633,7 @@ console.log(valor)
       case "convenio":
         excel = "4";
       default:
-        throw new Error("no existe el estado");
-
+        excel= "0";
     }
     return excel
   }

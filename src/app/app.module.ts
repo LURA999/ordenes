@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './Components/Login/login.component';
 import { NavbarComponent } from './Components/navbar/navbar.component';
 
-//Modulos
+//Angular material
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -14,8 +14,6 @@ import { ChartsModule } from 'ng2-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './Components/home/home.component';
 import { NavbarService } from './services/navbar.service';
-import { CalendarModule, DateAdapter } from 'angular-calendar';
-import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { ListaClientessComponent } from './Components/lista-clientess/lista-clientess.component';
@@ -94,10 +92,6 @@ import { NgDialogAnimationService } from 'ng-dialog-animation';
     MatTabsModule,
     MatProgressSpinnerModule,
     FlatpickrModule.forRoot(),
-    CalendarModule.forRoot({
-      provide: DateAdapter,
-      useFactory: adapterFactory,
-    }),
   ],
   providers: [NgDialogAnimationService,
     NavbarService,    

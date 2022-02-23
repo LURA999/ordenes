@@ -31,26 +31,19 @@ export class UserService {
     return this.http.delete(this.local+'API/Users/user.php?ciudades=true&cve='+cve);
   }
 
-  public update(id:string, email: string, nivel: number, contrasena: string){
-let response;
-    if(email != undefined ){
-      response = this.http.patch(this.local+'API/email.php',{id: id, email:email},{responseType: 'text'});
-    }
-    
-    if(contrasena != undefined ){
-      response = this.http.patch(this.local+'API/Users/userLogin.php',{id: id,contrasena: contrasena},{responseType: 'text'}
-      );
-    }
-    
-    if(nivel != undefined){
-       response = this.http.patch(this.local+'API/Users/userLogin.php?',{id: id, nivel:nivel },{ responseType: 'text'}
-      );
-    }
- return response;
+  public updateEmail(id:string,email: string){ 
+    return this.http.patch(this.local+'API/email.php',{id: id, email:email },{ responseType: 'text'});
+  }
+
+  public updatePass(id:string, contrasena: string){
+    return  this.http.patch(this.local+'API/Users/userLogin.php',{id: id,contrasena: contrasena},{responseType: 'text'});
+  }
+  
+  public updateLevel(id:string, nivel: number){
+   return this.http.patch(this.local+'API/Users/userLogin.php',{id: id, nivel:nivel },{ responseType: 'text'})
   }
 
   public create(user: UsuarioModel, ciudades : any[]){
-    console.log(this.local+'API/Users/user.php')
     return this.http.post(this.local+'API/Users/user.php',{ nombre: user.nombre, email: user.email,
       password: user.password,nivel: user.nivel, ciudades: ciudades},{responseType: 'text'});
   }

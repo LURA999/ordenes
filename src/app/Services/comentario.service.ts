@@ -51,12 +51,10 @@ export class ComentarioService {
   }
 
   updateCommentAgreement(comentario : String,idcomentario:String,clave_serv:String,fecha:String,fecha2:String, cantidad:String,idconvenio: String){
-    console.log("COMENTARIO: "+comentario+"\n  IDCOMENTARIO: "+idcomentario+",\n CLAVESERV: "+clave_serv+",\n CANTIDAD "+fecha+",\n FECHA: "+fecha2+" 0:00:00,\n Cantidad"+cantidad+",\n SELECT:"+idconvenio)
     return this.http.patch(this.local+'API/Comments/commentsAgreements.php',{comentario:comentario,id:idcomentario,clave_serv:clave_serv,fecha:fecha,fecha2:fecha2,cantidad:cantidad,idconvenio:idconvenio},  {responseType: 'text'});
   }
 
   updateComment(comentario : String,idcomentario:String,clave_serv:String,fecha:String,fecha2:String, cantidad:String,idconvenio: String){
-    console.log(this.local+'API/Comments/normalComments.php')
     return this.http.patch(this.local+'API/Comments/normalComments.php',{comentario:comentario,id:idcomentario,clave_serv:clave_serv,fecha:fecha,fecha2:fecha2,cantidad:cantidad,idconvenio:idconvenio}, {responseType: 'text'});
   }
 

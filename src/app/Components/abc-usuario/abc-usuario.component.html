@@ -6,7 +6,7 @@
 </div>
 
 <div class="container table-container">
-<form #forma="ngForm" (ngSubmit)="onSubmit(forma)">
+<!--<form #forma="ngForm" (ngSubmit)="onSubmit(forma)">-->
     <div class="form-group row">
         <label for="inputNombre" class="col-sm-2 col-form-label">Nombre:</label>
         <div class="col-sm-10">
@@ -70,8 +70,7 @@
 
     <div class="form-group text-center">
         <button *ngIf="isUpdate == false"  type="submit" class="btn btn-success" style="margin-right: 5px;">Guardar</button>
-        <button *ngIf="isUpdate == true"  type="button" (click)="actualizar(forma)"class="btn btn-success" style="margin-right: 5px;">Editar</button>
+        <button *ngIf="isUpdate == true"  type="button" (click)="actualizar()"class="btn btn-success" style="margin-right: 5px;">Editar</button>
         <button [routerLink]="['/usuarios']" class="btn btn-danger">Cancelar</button>
     </div>
-</form>
 </div>
