@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 import {  ComentarioService } from "src/app/services/comentario.service";
 import Swal from 'sweetalert2';
 import { EditarComentarioComponent } from '../editar-comentario/editar-comentario.component';
@@ -13,6 +14,7 @@ import { EditarComentarioComponent } from '../editar-comentario/editar-comentari
 export class PopupComentarioComponent implements OnInit {
   contador =0;
   contadorFecha=0;
+  sub$ = new Subscription();
   comentarios : String [] = [];
   comentariosMostrar : any [] = [];
   listaConvenios : String []=[];
@@ -47,11 +49,14 @@ export class PopupComentarioComponent implements OnInit {
   }
 
   ngOnInit(): void {
-       this.serviceComent.getAllServClientAgreements(this.data.clave, this.data.fecha,0).subscribe((resp :any) =>{
+      this.sub$.add(this.serviceComent.getAllServClientAgreements(this.data.clave, this.data.fecha,0).subscribe((resp :any) =>{
         this.listaConvenios = resp.container;
-      });
+      }));
   }
 
+  ngOnDestroy(): void {
+    this.sub$.unsubscribe();
+  }
   dateChange(e,valor){
     let splitted =  valor.split("-");
     let fecha 
@@ -123,41 +128,41 @@ export class PopupComentarioComponent implements OnInit {
     this.comentario 
     switch(opc){
       case 0:
-        await this.serviceComent.getAllServClient(this.data.clave, this.data.fecha).subscribe((resp :any) =>{
+        await this.sub$.add(this.serviceComent.getAllServClient(this.data.clave, this.data.fecha).subscribe((resp :any) =>{
           this.comentarios = resp.container;
           this.comentariosMostrar = [];
           this.paginar(this.comentarios)
-        });
+        }));
       break;
       case 1:
-        await this.serviceComent.getAllServClientPayments(this.data.clave, this.data.fecha).subscribe((resp :any) =>{
+        await this.sub$.add(this.serviceComent.getAllServClientPayments(this.data.clave, this.data.fecha).subscribe((resp :any) =>{
           this.comentarios = resp.container;
           this.comentariosMostrar = [];
           this.paginar(this.comentarios)
-        });
+        }));
       break;
       case 2:
-        await this.serviceComent.getAllServClientAgreements(this.data.clave, this.data.fecha,0).subscribe((resp :any) =>{
+        await this.sub$.add(this.serviceComent.getAllServClientAgreements(this.data.clave, this.data.fecha,0).subscribe((resp :any) =>{
           this.comentarios = resp.container;
           this.comentariosMostrar = [];
           this.paginar(this.comentarios)
 
-        });
+        }));
       break;
       case 3:
-        await this.serviceComent.getAllServClientComments(this.data.clave, this.data.fecha).subscribe((resp :any) =>{
+        await this.sub$.add(this.serviceComent.getAllServClientComments(this.data.clave, this.data.fecha).subscribe((resp :any) =>{
           this.comentarios = resp.container;
           this.comentariosMostrar = [];
           this.paginar(this.comentarios)
 
-        });
+        }));
       break;
       case 4:
-        await this.serviceComent.getAllServClientAgreements(this.data.clave, this.data.fecha,1).subscribe((resp :any) =>{
+        await this.sub$.add(this.serviceComent.getAllServClientAgreements(this.data.clave, this.data.fecha,1).subscribe((resp :any) =>{
           this.comentarios = resp.container;
           this.comentariosMostrar = [];
           this.paginar(this.comentarios)
-        });
+        }));
       break;
     }
   }
@@ -165,39 +170,39 @@ export class PopupComentarioComponent implements OnInit {
   async todosServCliente2(opc : number, id : number){
     switch(opc){
       case 0:
-        await this.serviceComent.buscarIdTodos(this.data.clave, this.data.fecha, id).subscribe((resp :any) =>{
+        await this.sub$.add(this.serviceComent.buscarIdTodos(this.data.clave, this.data.fecha, id).subscribe((resp :any) =>{
           this.comentarios = resp.container;
           this.comentariosMostrar = [];
           this.paginar(this.comentarios);
-        })
+        }))
         break;
       case 1:
-        await this.serviceComent.buscarIdPagos(this.data.clave, this.data.fecha, id).subscribe((resp :any) =>{
+        await this.sub$.add(this.serviceComent.buscarIdPagos(this.data.clave, this.data.fecha, id).subscribe((resp :any) =>{
           this.comentarios = resp.container;
           this.comentariosMostrar = [];
           this.paginar(this.comentarios);
-        })
+        }))
         break;
       case 2:
-        await this.serviceComent.buscarIdConvenios(this.data.clave, this.data.fecha, id, 0).subscribe((resp :any) =>{
+        await this.sub$.add(this.serviceComent.buscarIdConvenios(this.data.clave, this.data.fecha, id, 0).subscribe((resp :any) =>{
           this.comentarios = resp.container;
           this.comentariosMostrar = [];
           this.paginar(this.comentarios);
-        })
+        }))
         break;
       case 3:
-        await this.serviceComent.buscarIdComentarios(this.data.clave, this.data.fecha, id).subscribe((resp :any) =>{
+        await this.sub$.add(this.serviceComent.buscarIdComentarios(this.data.clave, this.data.fecha, id).subscribe((resp :any) =>{
           this.comentarios = resp.container;
           this.comentariosMostrar = [];
           this.paginar(this.comentarios);
-        })
+        }))
         break;
       case 4:
-        await this.serviceComent.buscarIdConvenios(this.data.clave, this.data.fecha, id, 1).subscribe((resp :any) =>{
+        await this.sub$.add(this.serviceComent.buscarIdConvenios(this.data.clave, this.data.fecha, id, 1).subscribe((resp :any) =>{
           this.comentarios = resp.container;
           this.comentariosMostrar = [];
           this.paginar(this.comentarios);
-        })
+        }))
         break;
     }
  }
@@ -228,9 +233,9 @@ export class PopupComentarioComponent implements OnInit {
         await this.serviceComent.insertCommentAgreement(this.data.clave,this.data.fecha,textArea,this.data.name, this.data.email, this.categoria
           ,select,fecha+" 0:00:00",pago).toPromise();
           
-          this.serviceComent.getAllServClientAgreements(this.data.clave, this.data.fecha,0).subscribe((resp :any) =>{
+          this.sub$.add(this.serviceComent.getAllServClientAgreements(this.data.clave, this.data.fecha,0).subscribe((resp :any) =>{
             this.listaConvenios = resp.container;
-          });
+          }));
         break;
     }
 
@@ -248,14 +253,14 @@ export class PopupComentarioComponent implements OnInit {
      this.dialogRef = this.dialog.open(EditarComentarioComponent, 
       {data: {opc : this.tabCategoria,mensaje: e, idcomentario: idcomentario, clave_serv: clave_serv, fecha: fecha ,cantidad:cantidad, listaConvenios:this.listaConvenios, idconvenio:idconvenio, cantidadc:cantidadc},width:"500px",
       panelClass: ['animate__animated','animate__slideInLeft']});
-      this.dialogRef.afterClosed().subscribe(result => {
+      this.sub$.add(this.dialogRef.afterClosed().subscribe(result => {
         for (const key in result) {
           if (Object.prototype.hasOwnProperty.call(result, key)) {
             const element = result[key];
           }
         }
       this.todosServCliente(this.tabCategoria)
-      });
+      }));
 
 
  }
@@ -263,10 +268,13 @@ export class PopupComentarioComponent implements OnInit {
 
   async deleteComentario(idcomentario : String,clave_serv : String){
     let titulo : String;
-    if(this.tabCategoria == 1){
+
+    if(this.tabCategoria == 2){
       titulo = "Si borras este convenio, borraras todos los pagos relacionados.\n\n¿Estas seguro?"
-    }else{
+    }else if(this.tabCategoria == 1) {
       titulo = "¿Esta seguro de eliminarlo?"
+    }else{
+      titulo = "¿Esta seguro que desea restaurarlo?"
     }
     Swal.fire({
       icon: 'question',
@@ -290,6 +298,10 @@ export class PopupComentarioComponent implements OnInit {
     } else if (opc ==2 || opc == 4){
       await this.serviceComent.deleteCommentAgreement(idcomentario,clave_serv).toPromise();
       await this.todosServCliente(this.tabCategoria);
+      this.sub$.add(this.serviceComent.getAllServClientAgreements(this.data.clave, this.data.fecha,0).subscribe((resp :any) =>{
+        this.listaConvenios = resp.container;
+      }));
+
     } else {
       await this.serviceComent.deleteCommentNormal(idcomentario).toPromise();
       await this.todosServCliente(this.tabCategoria);

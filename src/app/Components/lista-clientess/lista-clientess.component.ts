@@ -93,9 +93,9 @@ export class ListaClientessComponent implements OnInit {
   }
 
   async cargarCiudades(){
-    await this.sService.getciudades(1,"").subscribe( (resp : any) =>{
+    await this.sub$.add(this.sService.getciudades(1,"").subscribe( (resp : any) =>{
       this.ciudades = resp.container;
-    });
+    }));
   }
 
   async totalClientes(){
@@ -411,7 +411,6 @@ async filtrarNombre(valor :String) {
     const target : DataTransfer = <DataTransfer>(evt.target);
      let formato= ""+target.files[0].name.split(".")[target.files[0].name.split(".").length-1];
     if(formato == "xlsm" ||formato == "xlsx" || formato == "xlsb" ||formato == "xlts" ||formato == "xltm" ||formato == "xls" ||formato == "xlam" ||formato == "xla"||formato == "xlw" ){
-      
       if(target.files.length !==1) throw new  alert('No puedes subir multiples archivos') ;
       const reader: FileReader= new FileReader();
       reader.onload = async (e: any) =>{
@@ -421,8 +420,9 @@ async filtrarNombre(valor :String) {
       const ws: XLSX.WorkSheet = wb.Sheets[wsname];
       this.excel = (XLSX.utils.sheet_to_json(ws,{header: 1}));
       try{
-
       if( this.subcliente.length != 0 && this.excel[0].length == 13){
+        this.contenedor_carga = await false;
+        this.slider = await false;
         /**Cuando ingresamos un excel nuevo todos los clientes viejos se ponen en 0*/
         for(let p=0; p<this.subcliente.length; p++){
           await this.sService.actualizarVista(0,this.subcliente[p].idcliente).toPromise();
@@ -432,6 +432,8 @@ async filtrarNombre(valor :String) {
 
        /**Insertar dos tablas juntas */
        if(this.excel[0].length == 13){ 
+        this.contenedor_carga = await false;
+        this.slider = await false;
         for (let p=0; p<this.excel.length; p++) {
          let repetido : any = await this.sService.getTotalDeServiciosClienteID(this.ExcelDateToJSDate(this.excel[p][9]).toLocaleString(),this.excel[p][0]).toPromise();
          repetido = repetido.container;
@@ -652,10 +654,10 @@ async filtrarNombre(valor :String) {
       , height:"80%", width:"75%"
     });
 
-     await dialogRef.afterClosed().subscribe(resp =>{
+     await this.sub$.add(dialogRef.afterClosed().subscribe(resp =>{
       this.llamarServicios();
       this.cargarClientes();
-    })
+    }));
   }
 
   ngOnDestroy(): void {

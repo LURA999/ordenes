@@ -31,6 +31,9 @@ export class EditarComentarioComponent implements OnInit {
     }else{
         this.contador = this.data.mensaje.length;
     }
+
+    console.log(this.data)
+
   }  
 
   onKey(e){
@@ -38,7 +41,6 @@ export class EditarComentarioComponent implements OnInit {
   }
 
   async editar(e:String, fecha:String, cantidad:String,selectValue:String){
-
     switch(this.data.opc){
       case 3:
        await this.serviceComent.updateComment(e,this.data.idcomentario,this.data.clave_serv,this.data.fecha,"0:00:00","0","").toPromise();

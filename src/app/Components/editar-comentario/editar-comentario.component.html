@@ -1,6 +1,8 @@
 <div class="container2" style="text-align: center;">
 
-<h1 style="font:500 20px/32px Roboto, 'Helvetica Neue', sans-serif">Actualizando datos <br> No.{{data.idcomentario}} </h1>
+<h1 style="font:500 20px/32px Roboto, 'Helvetica Neue', sans-serif">Actualizando datos 
+  <br> No.  {{ data.opc == 3 ? data.idcomentario: ''}}
+            {{ data.opc == 2 || data.opc == 1 ? data.clave_serv : ''}}</h1>
 
 <div>
     <ng-container *ngIf="data.opc == 3; else elseTemplate">
