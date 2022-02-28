@@ -1,7 +1,6 @@
-textarea{
-    width: 100%;
-    height: 100%;
-}
+
+/**ELEMENTOS PARA INGRESAR COMENTARIOS**/
+
 #titulo {
     text-align: center;
 }
@@ -50,17 +49,31 @@ textarea{
     outline: none;
 }
 
-.btn-editar{
-    color: white; 
-    border:transparent; 
-    background-color: black;
-    outline: none;
+.alert-success {
+    display:none;
+    color: #468847;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    margin-top: 10px;
 }
 
-.btn-editar:active{
-    background-color: #1472d6;
-
+.alert {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    width: 45%;
+    text-decoration: none;
+    text-decoration-line: none;
 }
+
+.envioExitoso {
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
+    display: inline-block;
+}
+
 
 .btn-exit{
     color: white; 
@@ -69,29 +82,6 @@ textarea{
     outline: none;
 }
 
-thead {
-    background: #f44336;
-    color: white;
-    border:transparent;
-    font-weight: bold;
-    font-family: "Trebuchet MS", Verdana, ui-sans-serif;
-}
-.fila1{
-    background: #FFF0BF;
-}
-
-.fila3{
-    background: #FFF0BF;
-}
-
-/****/
-
-/*css cuando no hay comentarios*/
-#Nohay{
-    text-align: center;
-}
-
-/*Empieza el codigo de la cabecera del dialog*/
 
 .cabecera{
     display: flex;
@@ -120,17 +110,13 @@ mat-card.mat-card {
     width: 100% !important;
 }
 
-textarea {
-    background-color: rgb(254 254 254);
-}
 textarea.mat-input-element {
     padding: 2px 0;
     margin: -5px 0;
 }
 
 #Comentar{
-    outline: none; 
-    
+    outline: none;
 }
 
 #Comentar:enabled{
@@ -138,17 +124,55 @@ textarea.mat-input-element {
     background: rgb(255, 60, 0);
 }
 
-/*ELEMENTOS DE TABS*/
+/**ELEMENTOS DE LAS TABLAS - TABS**/
+thead {
+    background: #f44336;
+    color: white;
+    border:transparent;
+    font-weight: bold;
+    font-family: "Trebuchet MS", Verdana, ui-sans-serif;
+}
+
 
 .btnb{
     margin-left: 1rem;
     background-color: #ffbe00;
     color: white;
 }
+.btns-eb{
+text-align: center;
+white-space: nowrap;
+}
 
+.btn-pagado{
+    color: white; 
+    border:transparent; 
+    background-color: rgb(0 142 0);;
+    outline: none;
+}
+
+.btn-pagado:active{
+    background-color: rgb(36, 128, 36);
+}
+
+.btn-editar{
+    color: white; 
+    border:transparent; 
+    background-color: black;
+    outline: none;
+}
+
+.btn-editar:active{
+    background-color: rgb(56, 56, 56);
+
+}
 .subcabecera{
     margin-top: 2%;
     margin-bottom: 3%;
+}
+
+.btns-eb button.mat-raised-button {
+    margin: 2px 2px;
 }
 
 #buscador {
@@ -190,6 +214,37 @@ background-color: #ffdb6e;
 .btn-list svg{
     cursor: pointer;
     fill:#ffc300;
+}
+
+#Nohay{
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    height: 80%;
+}
+
+.fila1{
+    background: #FFF0BF;
+}
+
+.fila3{
+    background: #FFF0BF;
+}
+
+.tab {
+    height: 601px;
+}
+
+.tab tbody td {
+    height: 100px;
+}
+
+.tab tbody td textarea {
+    border:none; 
+    resize: none;
+    background: none; 
+    outline: none; 
+    height: inherit;
 }
 
 @media screen and (max-width: 930px) {

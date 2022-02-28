@@ -43,9 +43,9 @@ export class UserService {
    return this.http.patch(this.local+'API/Users/userLogin.php',{id: id, nivel:nivel },{ responseType: 'text'})
   }
 
-  public create(user: UsuarioModel, ciudades : any[]){
+  public create(user: UsuarioModel){
     return this.http.post(this.local+'API/Users/user.php',{ nombre: user.nombre, email: user.email,
-      password: user.password,nivel: user.nivel, ciudades: ciudades},{responseType: 'text'});
+      password: user.password,nivel: user.nivel},{responseType: 'text'});
   }
 
   updateUltimaSesion(cve_usuario:number){

@@ -31,9 +31,6 @@ export class EditarComentarioComponent implements OnInit {
     }else{
         this.contador = this.data.mensaje.length;
     }
-
-    console.log(this.data)
-
   }  
 
   onKey(e){
@@ -41,20 +38,25 @@ export class EditarComentarioComponent implements OnInit {
   }
 
   async editar(e:String, fecha:String, cantidad:String,selectValue:String){
+    let splitted = [] ;
     switch(this.data.opc){
       case 3:
-       await this.serviceComent.updateComment(e,this.data.idcomentario,this.data.clave_serv,this.data.fecha,"0:00:00","0","").toPromise();
+       await this.serviceComent.updateComment(e,this.data.idcomentario,this.data.clave_serv,this.data.fecha," 00:00:00","0","").toPromise();
       break;
       case 2:
-        await this.serviceComent.updateCommentAgreement(e,this.data.idcomentario,this.data.clave_serv,this.data.fecha,fecha+" 0:00:00",cantidad,this.data.idconvenio).toPromise();
+         splitted =  fecha.split("/");
+        fecha = splitted[2]+"-"+splitted[1]+"-"+splitted[0];
+        await this.serviceComent.updateCommentAgreement(e,this.data.idcomentario,this.data.clave_serv,this.data.fecha,fecha+" 00:00:00",cantidad,this.data.idconvenio).toPromise();
       break;
       case 1:
-        await this.serviceComent.updateCommentPay(e,this.data.idcomentario,this.data.clave_serv,this.data.cantidad,fecha+" 0:00:00",cantidad,selectValue).toPromise();
+         splitted =  fecha.split("/");
+        fecha = splitted[2]+"-"+splitted[1]+"-"+splitted[0];
+        await this.serviceComent.updateCommentPay(e,this.data.idcomentario,this.data.clave_serv,this.data.cantidad,fecha+" 00:00:00",cantidad,selectValue).toPromise();
       break;
     }
 
 
-    this.dialogoRef.close({data:"Comentario: "+e+" \nFecha: "+ fecha+"\nCantidad: "+cantidad+"\nSelect: "+selectValue+""})
+  //  this.dialogoRef.close({data:"Comentario: "+e+" \nFecha: "+ fecha+"\nCantidad: "+cantidad+"\nSelect: "+selectValue+""})
   }
 
   dateChange(e,valor){

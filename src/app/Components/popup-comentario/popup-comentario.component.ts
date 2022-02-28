@@ -1,6 +1,7 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, Renderer2 } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
+import { window } from 'rxjs/operators';
 import {  ComentarioService } from "src/app/services/comentario.service";
 import Swal from 'sweetalert2';
 import { EditarComentarioComponent } from '../editar-comentario/editar-comentario.component';
@@ -11,6 +12,7 @@ import { EditarComentarioComponent } from '../editar-comentario/editar-comentari
   templateUrl: './popup-comentario.component.html',
   styleUrls: ['./popup-comentario.component.css']
 })
+
 export class PopupComentarioComponent implements OnInit {
   contador =0;
   contadorFecha=0;
@@ -35,25 +37,40 @@ export class PopupComentarioComponent implements OnInit {
   @ViewChild('picker') calendario;
   @ViewChild('inputPago') inputPago;
   @ViewChild('select') select;
+  @ViewChild('escribir') escribir ;
+  @ViewChild('alert') alert ;
+
   comentario : String;
   dialogRef   : any;
   atras : Boolean = true;
   adelante : Boolean;
 /**Variable para controlar los tipos de comentarios */
   activo : Boolean = true;
+  tabInicial : number;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private serviceComent :ComentarioService,
-  public dialog: MatDialog){
+  public dialog: MatDialog,private rendered2 : Renderer2){
     /**Para llenar la tabla */
-    this.todosServCliente(0);
+    if(this.data.idBuscar >=0){
+      this.tabInicial = this.data.tab;
+      this.tab(this.data.tab);
+      this.todosServCliente2(this.data.tab, this.data.idBuscar);
+    }else{
+      this.todosServCliente(0);
+    }
+
   }
 
-  ngOnInit(): void {
-      this.sub$.add(this.serviceComent.getAllServClientAgreements(this.data.clave, this.data.fecha,0).subscribe((resp :any) =>{
-        this.listaConvenios = resp.container;
-      }));
+  ngOnInit(): void { 
+    this.sub$.add(this.serviceComent.getAllServClientAgreements(this.data.clave, this.data.fecha,0).subscribe((resp :any) =>{
+      this.listaConvenios = resp.container;
+    }));
   }
-
+  ngAfterViewInit(): void {
+    if(this.data.idBuscar > 0){
+      this.escribir.nativeElement.value = this.data.idBuscar;
+    }
+  }
   ngOnDestroy(): void {
     this.sub$.unsubscribe();
   }
@@ -125,10 +142,10 @@ export class PopupComentarioComponent implements OnInit {
   }
 
   async todosServCliente(opc : number){
-    this.comentario 
+
     switch(opc){
       case 0:
-        await this.sub$.add(this.serviceComent.getAllServClient(this.data.clave, this.data.fecha).subscribe((resp :any) =>{
+        await this.sub$.add(this.serviceComent.getAllServClient(this.data.clave,this.data.fecha).subscribe((resp :any) =>{
           this.comentarios = resp.container;
           this.comentariosMostrar = [];
           this.paginar(this.comentarios)
@@ -158,7 +175,14 @@ export class PopupComentarioComponent implements OnInit {
         }));
       break;
       case 4:
-        await this.sub$.add(this.serviceComent.getAllServClientAgreements(this.data.clave, this.data.fecha,1).subscribe((resp :any) =>{
+        await this.sub$.add(this.serviceComent.getAllServClientAgreements(this.data.clave,this.data.fecha,1).subscribe((resp :any) =>{
+          this.comentarios = resp.container;
+          this.comentariosMostrar = [];
+          this.paginar(this.comentarios)
+        }));
+      break;
+      case 5:
+        await this.sub$.add(this.serviceComent.getAllServClientAgreements(this.data.clave, this.data.fecha,2).subscribe((resp :any) =>{
           this.comentarios = resp.container;
           this.comentariosMostrar = [];
           this.paginar(this.comentarios)
@@ -204,6 +228,13 @@ export class PopupComentarioComponent implements OnInit {
           this.paginar(this.comentarios);
         }))
         break;
+        case 5:
+        await this.sub$.add(this.serviceComent.buscarIdConvenios(this.data.clave, this.data.fecha, id, 2).subscribe((resp :any) =>{
+          this.comentarios = resp.container;
+          this.comentariosMostrar = [];
+          this.paginar(this.comentarios);
+        }))
+        break;
     }
  }
 
@@ -215,6 +246,8 @@ export class PopupComentarioComponent implements OnInit {
 
   /**Esta funcion ayuda a insertar un comentario nuevo */
   async actualizarComentarios(textArea : String, pago:String,fecha:String, select:String){
+    let fechaof = fecha.split(" ")[0].split("/");    
+    fecha  = fechaof[2]+"-"+fechaof[1]+"-"+fechaof[0]+" 00:00:00";
 
     switch(this.categoria){
       case 0:
@@ -226,19 +259,20 @@ export class PopupComentarioComponent implements OnInit {
           break;
       case 1:
         await this.serviceComent.insertCommentPay(this.data.clave,this.data.fecha,textArea,this.data.name, this.data.email, this.categoria
-          ,select,fecha+" 0:00:00",pago).toPromise();
+          ,select,fecha,pago).toPromise();
         break;
       case 2:
         select = "0";
         await this.serviceComent.insertCommentAgreement(this.data.clave,this.data.fecha,textArea,this.data.name, this.data.email, this.categoria
-          ,select,fecha+" 0:00:00",pago).toPromise();
-          
+          ,select,fecha,pago).toPromise();
           this.sub$.add(this.serviceComent.getAllServClientAgreements(this.data.clave, this.data.fecha,0).subscribe((resp :any) =>{
             this.listaConvenios = resp.container;
           }));
         break;
     }
-
+    
+    const alert = this.alert.nativeElement;
+    this.rendered2.setStyle(alert, 'display', 'block')
     this.todosServCliente(this.tabCategoria);
 
   }
@@ -246,7 +280,7 @@ export class PopupComentarioComponent implements OnInit {
   async editarComentario(e:String,idcomentario : String,clave_serv : String,fecha : String, cantidad :String,idconvenio : String, cantidadc : String,id:String){
     if(this.tabCategoria != 10){
       fecha = fecha.split(" ")[0];
-      var fecha2 = fecha.split('/');
+      var fecha2 = fecha.split('-');
       fecha = fecha2[2]+"/"+fecha2[1]+"/"+fecha2[0]
       }
 
@@ -271,7 +305,7 @@ export class PopupComentarioComponent implements OnInit {
 
     if(this.tabCategoria == 2){
       titulo = "Si borras este convenio, borraras todos los pagos relacionados.\n\n¿Estas seguro?"
-    }else if(this.tabCategoria == 1) {
+    }else if(this.tabCategoria == 1 || this.tabCategoria == 3) {
       titulo = "¿Esta seguro de eliminarlo?"
     }else{
       titulo = "¿Esta seguro que desea restaurarlo?"
@@ -295,7 +329,7 @@ export class PopupComentarioComponent implements OnInit {
     if(opc == 1){
       await this.serviceComent.deleteCommentPay(idcomentario,clave_serv).toPromise();
       await this.todosServCliente(this.tabCategoria);
-    } else if (opc ==2 || opc == 4){
+    } else if (opc ==2 || opc == 4 || opc==5){
       await this.serviceComent.deleteCommentAgreement(idcomentario,clave_serv).toPromise();
       await this.todosServCliente(this.tabCategoria);
       this.sub$.add(this.serviceComent.getAllServClientAgreements(this.data.clave, this.data.fecha,0).subscribe((resp :any) =>{
@@ -379,6 +413,7 @@ export class PopupComentarioComponent implements OnInit {
   }
   /**Este sirve para que respete los radiobutton*/
   condicionesRadioButton(pago:String,fecha:String,select:String){
+   
     switch(this.categoria){
       case 0:
         if(this.contador == 0){
@@ -402,6 +437,10 @@ export class PopupComentarioComponent implements OnInit {
           this.activo = false;
         }
       break;   
+    }
+    if(this.contador == 0){
+      const alert = this.alert.nativeElement;
+      this.rendered2.setStyle(alert, 'display', 'none')
     }
   }
 

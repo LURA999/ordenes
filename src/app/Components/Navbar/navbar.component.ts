@@ -18,6 +18,5 @@ export class NavbarComponent{
   nivel: number = localStorage['level'];
   usuario: string = localStorage['name'];
    public testOut() {
-      console.log("hovering outside sidebar");
       }
 }

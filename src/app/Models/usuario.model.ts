@@ -3,5 +3,4 @@ export class UsuarioModel{
     password; string;
     nombre: string;
     nivel: number;
-    ciudad: number;
 }

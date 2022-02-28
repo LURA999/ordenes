@@ -35,7 +35,7 @@ export class ListaClientessComponent implements OnInit {
   subclienteS: any;
   conveniosServicio : any;
   conveniosCliente: any;
-
+  fechaHoy = new Date();
   aux:any;
   data : any []=[];
   data2 : any []=[];
@@ -53,9 +53,8 @@ export class ListaClientessComponent implements OnInit {
   fin2 : number=10;
   peticionPrimeraTabla :Boolean = true;
   peticionSegundaTabla :Boolean = true;
-
   acumClientesCVE : String [] =[];
-  displayedColumns2: string[] = ['Id','Clave servicio','Servicio','Total de pago'];
+  displayedColumns2: string[] = ['ID convenio','Fecha convenio','Clave servicio','Servicio','Total de pago','color'];
   dataSource2 : any;
   tablaConvenios : any[] = [];
   displayedColumns = ['Clave', 'Nombre', 'Colonia', 'Calle', 'Num', 'Celular 1', 'Celular 2', 'Ciudad', 'Estado', 'Estatus'];
@@ -63,8 +62,10 @@ export class ListaClientessComponent implements OnInit {
   slider : boolean = true;
   carga :boolean;
   contenedor_carga : boolean;
+  selectBuscadorVigencia : number; 
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChild('paginator2') paginator2: MatPaginator;
+  
 
   constructor(private sService: ClientService, private sLoader: LoaderService,
     public dialog: NgDialogAnimationService) {
@@ -75,12 +76,14 @@ export class ListaClientessComponent implements OnInit {
   }
 
   async cargarTodo(){
+    this.peticionSegundaTabla = await false;
    this.peticionPrimeraTabla = await false;
    await this.totalClientes();
    await this.cargarInicio();
    await this.llamarServicios();
    await this.cargarClientes();
    this.peticionPrimeraTabla = await true;
+   this.peticionSegundaTabla = await true;
    this.contenedor_carga = await true;
    this.carga = await true;
  
@@ -117,11 +120,13 @@ export class ListaClientessComponent implements OnInit {
         this.data2[this.inicio2] =(    
             {
               'info.dependent': 'parent',
-              'Id': this.conveniosServicio[this.inicio2].id,
+              'ID convenio': this.conveniosServicio[this.inicio2].idconvenio,
+              'Fecha convenio': this.conveniosServicio[this.inicio2].fechac,
               'Clave servicio': this.conveniosServicio[this.inicio2].clave_serv,
               'Servicio': this.conveniosServicio[this.inicio2].servicio,
               'Total de pago': this.conveniosServicio[this.inicio2].cantidad,
-              nested:[{'Clave':'','Nombre':'','Colonia':'','Calle':'','Num':'','Celular1':'','Celular2':'','Ciudad':'', 'Estado':'','Estatus':''}]
+              'color':this.color(this.conveniosServicio[this.inicio2].fechac), 
+               nested:[{'Clave':'','Nombre':'','Colonia':'','Calle':'','Num':'','Celular1':'','Celular2':'','Ciudad':'', 'Estado':'','Estatus':''}]
             });
             this.data2[this.inicio2].nested.push (
             {
@@ -142,23 +147,25 @@ export class ListaClientessComponent implements OnInit {
           this.data2[this.inicio2] =(    
             {
               'info.dependent': 'parent',
-              'Id': this.conveniosServicio[this.inicio2].id,
+              'ID convenio': this.conveniosServicio[this.inicio2].idconvenio,
+              'Fecha convenio': this.conveniosServicio[this.inicio2].fechac,
               'Clave servicio': this.conveniosServicio[this.inicio2].clave_serv,
               'Servicio': this.conveniosServicio[this.inicio2].servicio,
               'Total de pago': this.conveniosServicio[this.inicio2].cantidad+this.conveniosServicio[this.inicio2].interes,
+              'color':this.color(this.conveniosServicio[this.inicio2].fechac),
               nested:[{'Clave':'','Nombre':'','Colonia':'','Num':'','Celular1':'','Celular2':'','Ciudad':'', 'Estado':'','Estatus':''}]
             });
           } 
           this.inicio2++
         }
       }
-
     this.dataSource2 = await new MatTableDataSource(this.data2);
     this.dataSource2.paginator = await this.paginator2;    
     this.paginator2.hidePageSize= await true;
     this.paginator2.length = await this.conveniosServicio.length;
     this.peticionSegundaTabla = true;
-    }
+  }
+
 
 
 
@@ -220,7 +227,6 @@ export class ListaClientessComponent implements OnInit {
     this.dataSource.paginator = await this.paginator;    
     this.paginator.hidePageSize= await true;
     this.paginator.length = await this.subcliente.length;
-    this.load = false;
     this.peticionPrimeraTabla = true;
   }
 
@@ -290,9 +296,10 @@ async filtrar(valor :String) {
   this.dataSource=null;
   this.data=[];
 
-  if(valor!==""){
+  if(valor!=="" || valor == undefined){
+    
   try{
-    if(this.ciudad == "-1" && this.estado == "5" || this.ciudad == undefined && this.estado == undefined){
+    if(this.ciudad == "-1" && this.estado == "-1" || this.ciudad == undefined && this.estado == undefined){
       id  = await this.sService.id(5,valor,"","").toPromise();
     }else{
       id  = await this.sService.id(0,valor,this.estado,this.ciudad).toPromise();
@@ -345,22 +352,23 @@ async filtrar(valor :String) {
     this.dataSource.paginator = await this.paginator;  
     await this.cargarInicio();
   }
-
   }
 
 
     /* BUSCAR NOMBRE DE USUARIO */
 async filtrarNombre(valor :String) {
-  this.peticionSegundaTabla = false;
 
+  this.peticionSegundaTabla = false;
   let iniciof : number =0;
   let id :any;
+  let opc :number  = this.selectBuscadorVigencia == undefined ? 0 : this.selectBuscadorVigencia; 
+
   this.dataSource2=null;
   this.data2=[];
+
   if(valor!=""){
     try{
-      id  = await this.sService.buscarConveniosCliente(valor).toPromise();
-      id = id.container;
+      await this.verConvenioCliente(opc, valor); 
       this.peticionSegundaTabla = true;
 
       this.noHayclientes(id.length,1);
@@ -368,10 +376,12 @@ async filtrarNombre(valor :String) {
             this.data2[iniciof] =(    
               {
                 'info.dependent': 'parent',
-                'Id': obj.id,
+                'ID convenio': obj.id,
+                'Fecha convenio': this.conveniosServicio[this.inicio2].fechac,
                 'Clave servicio': obj.clave_serv,
                 'Servicio': obj.servicio,
                 'Total de pago': obj.cantidad,
+                'color':this.color(this.conveniosServicio[this.inicio2].fechac), 
                 nested:[{'Clave':'','Nombre':'','Colonia':'','Calle':'','Num':'','Celular1':'','Celular2':'','Ciudad':'', 'Estado':'','Estatus':''}]
 
               });
@@ -397,12 +407,15 @@ async filtrarNombre(valor :String) {
       }catch(Exception){
       }
     }else{
+      this.dataSource2=null; 
+      this.data2 =[];
+      this.paginator2.pageIndex = 0;
       this.inicio2 =0;
       this.fin2 =10;
       this.dataSource2 = await new MatTableDataSource(this.data2);
       this.displayedColumns2 =await this.displayedColumns2;
       this.dataSource2.paginator = await this.paginator2;  
-      await this.cargarClientes();
+      this.verConvenioCliente(opc,undefined);
     }
   }
 
@@ -506,8 +519,6 @@ async filtrarNombre(valor :String) {
     }else{
       alert("Solo se permiten tipos de archivos Excel")
     }
-    
-
   }
 
   /**calcula la fecha que se introdujo en el excel */
@@ -569,9 +580,7 @@ async filtrarNombre(valor :String) {
 
   /**filtro de estado*/
   async verEstado(estado : String){
-
     this.estado = estado;  
-
     if(this.estado !=undefined && this.ciudad != undefined){
       this.dataSource=null; 
       this.data =[];
@@ -640,7 +649,7 @@ async filtrarNombre(valor :String) {
     return excel
   }
   /*abrir el modulo comentario*/
-  async abrirComentario(idCliente:String, clave : String, fecha : String){
+  async abrirComentario(idCliente:String, clave : String, fecha : String,idBuscar :number, tab : number){
     let dialogRef =this.dialog.open(PopupComentarioComponent,
     {animation: { to: "bottom"},
     data: 
@@ -649,7 +658,9 @@ async filtrarNombre(valor :String) {
         name: localStorage.getItem("name"), 
         clave: clave, 
         fecha: fecha, 
-        email: localStorage.getItem("email")
+        email: localStorage.getItem("email"),
+        tab: tab,
+        idBuscar : idBuscar
       }
       , height:"80%", width:"75%"
     });
@@ -672,5 +683,76 @@ async filtrarNombre(valor :String) {
     }
   }
 
+/**Decide el color del renglon de la fila  de convenios*/
+  color(fecha : String) {
+    let arrayFecha = fecha.split(" ")[0].split("-");    
+    let fechaConv = new Date(arrayFecha[2]+"-"+arrayFecha[1]+"-"+arrayFecha[0])
+
+//console.log((fechaConv.getTime() + 86400000) +" < "+this.fechaHoy.getTime()+"  = "+ ((fechaConv.getTime() + 86400000) < this.fechaHoy.getTime()))
+//console.log((fechaConv.getTime() + 86400000) +" > "+ (this.fechaHoy.getTime()+ 345600000)+" = "+((fechaConv.getTime() + 86400000) > (this.fechaHoy.getTime()+ 345600000)))
+
+  if( (fechaConv.getTime() + 86400000) < this.fechaHoy.getTime() && (fechaConv.getDay() + 1) != this.fechaHoy.getDay() )  {
+    return 'rojo';
+  }else if( (fechaConv.getTime() + 86400000) > (this.fechaHoy.getTime()+ 345600000)){
+    return 'blanco';
+  }else{
+    return 'amarillo';
+  }
+/*if( (fechaConv.getTime() + 86400000) < this.fechaHoy.getTime()) {
+    return 'rojo';
+  }else if( (fechaConv.getTime() + 86400000) > (this.fechaHoy.getTime()+ 345600000)){
+    return 'blanco';
+  }else{
+    return 'amarillo';
+  }*/
+
+}
+
+    async recargar(){
+      this.peticionSegundaTabla = await false;
+      await this.llamarServicios();
+      await this.cargarClientes();
+      this.peticionSegundaTabla = await true;
+    }
+
+    /**select de la tabla convenios clientes */
+    async verConvenioCliente(opc : number, nombre? : String){
+      this.peticionSegundaTabla = false;
+      this.dataSource2=null; 
+      this.data2 =[];
+      this.inicio2=0;
+      this.fin2=10;
+      this.paginator2.pageIndex = 0;
+      this.selectBuscadorVigencia = opc;
+
+      switch(opc){
+        case 0:
+          this.conveniosServicio= await this.sService.obtenerSoloConvenios(nombre).toPromise();
+          this.conveniosServicio = await this.conveniosServicio.container;
+          await this.cargarClientes();
+          
+        break;
+        case 1:
+          this.conveniosServicio= await this.sService.obtenerConveniosVigentes(nombre).toPromise();
+          this.conveniosServicio = await this.conveniosServicio.container;
+          await this.cargarClientes();
+        break;
+
+        case 2:
+          this.conveniosServicio= await this.sService.obtenerConveniosUltimosDias(nombre).toPromise();
+          this.conveniosServicio = await this.conveniosServicio.container;
+          this.dataSource2=await null; 
+          await this.cargarClientes();
+        break;
+
+        case 3:
+          this.conveniosServicio= await this.sService.obtenerConveniosExpirados(nombre).toPromise();
+          this.conveniosServicio = await this.conveniosServicio.container;
+          this.dataSource2=await null; 
+          await this.cargarClientes();
+        break;
+      }
+      this.peticionSegundaTabla = true;
+    }
 }
 

@@ -184,6 +184,8 @@ table {
 .seleccionar{
   cursor:pointer;
 }
+
+
  
 /*Lista expandible*/
   mat-paginator
@@ -243,7 +245,7 @@ select{
   padding: 3px;
   border-radius: 5px;
 }
-/** Colores de las filas*/
+/** Colores de las filas tabla clientes*/
 .▼1 {
 background: #4aef4a80;
 }
@@ -259,6 +261,7 @@ background: #ff797999;
 .▼5{
   background: #ff910059;
 }
+
 
 .option1:hover{
   display:none;
@@ -352,6 +355,10 @@ mat-label{
   margin-left: 4%;
 }
 
+.buscador-vigencia .mat-form-field.mat-primary.mat-form-field-type-mat-select {
+  width: 80%;
+}
+
 
 .agregar{
   display: flex;
@@ -376,6 +383,35 @@ mat-label{
 }
 
 /** Tabla convenios*/
+
+.recargar {
+  margin: auto;
+  background: #0c82ff;
+  color: white;
+  border-radius: 50px;
+  border: transparent;
+  outline: none;
+  box-shadow: 1px 2px 2px #ccc;
+  font: menu;
+}
+
+.recargar:active{
+  background: #004997;
+}
+
+.color {
+  display: none;
+}
+.amarillo{
+  background: rgba(255 255 0 / 35%);
+}
+.rojo {
+ background: #ff797999;
+}
+.blanco{
+ background: white;
+}
+
  .tab-convenio{
    margin-top: 10%;
  }

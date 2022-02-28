@@ -58,11 +58,6 @@ export class ClientService {
   id(opc:number,cve:String, estado:String, ciudad:String){
     return this.http.get(this.local+'API/Customers/customerSearch.php?opc='+opc+'&cve='+cve+'&estado='+estado+'&ciudad='+ciudad);
   }
-
-  buscarConveniosCliente(nombre:String){
-    return this.http.get(this.local+'API/Services/serviceAgreements.php?nombre='+nombre);
-  }
-
   
   actualizarEstado(estado: String, cve : String){
     return this.http.patch(this.local+'API/Customers/customers.php',{estado:estado,cve:cve},{responseType: 'text'});
@@ -79,8 +74,20 @@ export class ClientService {
   clienteRepetido(cve : String){
     return this.http.get(this.local+'API/services_client.php?cve_cliente='+cve);
   }
-
+  obtenerSoloConvenios(nombre?:String){
+    return this.http.get(this.local+'API/Agreements/agreement.php?opc=-1&nombre='+(nombre == undefined ? '' : nombre))
+  }
+  obtenerConveniosVigentes(nombre?:String){
+    return this.http.get(this.local+'API/Agreements/agreement.php?opc=1&nombre='+(nombre == undefined ? '' : nombre))
+  }
+  obtenerConveniosUltimosDias(nombre?:String){
+    return this.http.get(this.local+'API/Agreements/agreement.php?opc=2&nombre='+(nombre == undefined ? '' : nombre))
+  }
+  obtenerConveniosExpirados(nombre?:String){
+    return this.http.get(this.local+'API/Agreements/agreement.php?opc=0&nombre='+(nombre == undefined ? '' : nombre))
+  }
   actualizarVista(mostrar : number, cve : String){
     return this.http.patch(this.local+'API/Customers/customers.php',{mostrar:mostrar,cve:cve}, {responseType: 'text'})
   }
+
 }
