@@ -22,16 +22,18 @@ export class AbcUsuarioComponent {
   ciudadCursor: number;
   titulo: string = "Nuevo usuario";
   ciudades : any [];
+  ciudadesSelecionadas : any[] = [];
 
   constructor(private userservice: UserService, private route: Router, private aroute: ActivatedRoute, private sCatalogo: CatalogueService) { 
     this.usuario = new UsuarioModel();
-
     if(aroute.snapshot.paramMap.has('id')){
       this.isUpdate = true;
       this.titulo = "Editar usuario";
       userservice.get(aroute.snapshot.paramMap.get('id')).subscribe(resp=>{
         resp = resp.container;
         this.cve_usuario = parseInt(aroute.snapshot.paramMap.get('id'));
+        this.obtenerCiudadesUsuario();
+        this.obtenerCiudadesCatalogo();
         this.usuario.nombre = resp[0]["nombre"];
         this.usuario.email = resp[0]["email"];
         this.usuario.nivel = resp[0]["nivel"];
@@ -39,6 +41,8 @@ export class AbcUsuarioComponent {
       });
     }else{
       this.isUpdate=false;
+      this.usuario.ciudad = 0;
+      this.obtenerCiudadesCatalogo();
     }
   } 
 
@@ -65,23 +69,69 @@ export class AbcUsuarioComponent {
          this.route.navigateByUrl('/usuarios');
        }));
      }
+
+    }
+
+  async obtenerCiudadesCatalogo(){
+    this.ciudades=[];
+    let ciudadesaux=[];
+    let contador;
+    await this.sub$.add(this.sCatalogo.obtenerCiudades().subscribe((resp:any)=>{
+      ciudadesaux = resp.container;
+      for (let x = 0; x < ciudadesaux.length; x++) {
+        contador=0;
+        for(let y =0; y < this.ciudadesSelecionadas.length; y++ ){
+          if(ciudadesaux[x].idciudad === this.ciudadesSelecionadas[y].cve_ciudad){
+            contador++;
+          } 
+        }
+        if(contador == 0)
+        this.ciudades.push(ciudadesaux[x]) 
+      }     
+    }));
+  }
+   
+   async obtenerCiudadesUsuario(){
+    this.ciudadesSelecionadas=[];
+    this.sub$.add(await this.sCatalogo.obtenerUsuarioCiudades(this.cve_usuario).subscribe((resp:any)=>{
+      this.ciudadesSelecionadas = resp.container;
+    }));
   }
 
 
- 
+  agregarCiudad(){
+    if(this.usuario.ciudad != undefined && this.usuario.ciudad != 0){
+      if(!this.ciudadesSelecionadas.find(x => x.idciudad == this.usuario.ciudad)){
+        this.ciudadesSelecionadas.push(this.ciudades.find(x => x.idciudad == this.usuario.ciudad));
+        this.ciudades = this.ciudades.filter(x=> x.idciudad != this.usuario.ciudad);
+      }else{
+        Swal.fire({
+          title: 'Ciudad ya agregada',
+          icon: 'info'
+        });
+      }
+    }
+  }
 
-  async onSubmit(){
-    console.log()
-    if(this.usuario.email == "" || this.usuario.email == undefined 
-    || this.usuario.password == '' || this.usuario.password == undefined ||
-    this.usuario.nivel != undefined ){
-      
+  quitarCiudad(){
+    if(this.ciudadCursor != undefined && this.ciudadCursor != 0){
+      this.ciudades.push(this.ciudadesSelecionadas.find(x => x.idciudad == this.ciudadCursor));
+      this.ciudadesSelecionadas = this.ciudadesSelecionadas.filter(x=>x.idciudad != this.ciudadCursor);
+    }
+  }
+
+
+  
+
+  async onSubmit(forma: NgForm){
+
+    if(forma.invalid && this.ciudadesSelecionadas.length < 0){
       Swal.fire({
         title: 'Favor de completar el formulario',
         icon: 'info'
       });
     }else{
-      await this.sub$.add(this.userservice.create(this.usuario).subscribe(resp=>{
+      await this.sub$.add(this.userservice.create(this.usuario, this.ciudadesSelecionadas).subscribe(resp=>{
         this.route.navigate(['/','usuarios',], {skipLocationChange: false});
       }, error=>{
         alert(error);
