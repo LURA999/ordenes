@@ -29,6 +29,8 @@ export class PopupComentarioComponent implements OnInit {
   totalPages: number;
   currentElement: number;
   lastElement: number;
+  id =localStorage.getItem("id") 
+
   nivel =localStorage.getItem("level") 
   nuevoComentario :String;
   nuevaFechap : String;
@@ -62,15 +64,19 @@ export class PopupComentarioComponent implements OnInit {
   }
 
   ngOnInit(): void { 
+    
     this.sub$.add(this.serviceComent.getAllServClientAgreements(this.data.clave, this.data.fecha,0).subscribe((resp :any) =>{
       this.listaConvenios = resp.container;
     }));
+    console.log(this.data)
   }
+  
   ngAfterViewInit(): void {
     if(this.data.idBuscar > 0){
       this.escribir.nativeElement.value = this.data.idBuscar;
     }
   }
+
   ngOnDestroy(): void {
     this.sub$.unsubscribe();
   }
@@ -271,8 +277,8 @@ export class PopupComentarioComponent implements OnInit {
         break;
     }
     
-    const alert = this.alert.nativeElement;
-    this.rendered2.setStyle(alert, 'display', 'block')
+   const alert = this.alert.nativeElement;
+   this.rendered2.setStyle(alert, 'display', 'block')
     this.todosServCliente(this.tabCategoria);
 
   }

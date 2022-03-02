@@ -20,15 +20,15 @@ export class ComentarioService {
 
   insertCommentPay(cve:  String, clave_serv : String, comentario : String, nombre :String, correo :String, tipo : number
     ,clave_conv :String ,fecha : String , cantidad : String){
-    
-
     return this.http.post(this.local+'API/Comments/payComments.php',{cve:cve,clave_serv:clave_serv,comentario:comentario,nombre:nombre
       ,correo:correo,tipo:tipo,clave_conv:clave_conv,fecha:fecha,cantidad:cantidad},  {responseType: 'text'});
   }
 
   insertCommentAgreement(cve:  String, clave_serv : String, comentario : String, nombre :String, correo :String, tipo : number
     ,clave_conv :String ,fecha : String , cantidad : String){
-
+      console.log(this.local+'API/Comments/commentsAgreements.php');
+      console.log({cve:cve,correo:correo,clave_serv:clave_serv,comentario:comentario,nombre:nombre
+        ,tipo:tipo,clave_conv:clave_conv,fecha:fecha,cantidad:cantidad})
     return this.http.post(this.local+'API/Comments/commentsAgreements.php',{cve:cve,correo:correo,clave_serv:clave_serv,comentario:comentario,nombre:nombre
     ,tipo:tipo,clave_conv:clave_conv,fecha:fecha,cantidad:cantidad},  {responseType: 'text'});
   }

@@ -37,13 +37,11 @@
           <select class="form-control" name="nivel" [(ngModel)]="usuario.nivel" [class.is-invalid]="nivel.touched && !nivel.valid" 
           #nivel="ngModel"  required> 
               <option value="1">Admistrador</option>
-              <option value="2">Ventas</option>
-              <option value="3">Infraestructura</option>
-              <option value="4">Instalador</option>
-              <option value="5">Coordinador</option>
+              <option value="4">Usuario</option>
           </select>
         </div>
     </div>
+    <!--
     <div class="form-group row">
         <label for="inputPassword" class="col-sm-2 col-md-2 col-form-label">Ciudad:</label>
         <div class="col-4 col-sm-4 col-md-4" >
@@ -66,7 +64,7 @@
                 <option [value]="ciudad.idciudad" *ngFor="let ciudad of ciudadesSelecionadas">{{ciudad.Nombre}}</option>
             </select>
           </div>
-    </div>
+    </div> -->
 
     <div class="form-group text-center">
         <button *ngIf="isUpdate == false"  type="submit" class="btn btn-success" style="margin-right: 5px;">Guardar</button>

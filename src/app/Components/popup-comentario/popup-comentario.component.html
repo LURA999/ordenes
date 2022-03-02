@@ -182,7 +182,7 @@
                             <td>{{c.cantidadp}}</td>
                             <td>{{c.clav_conv}}</td>
                             <td>
-                            <ng-container *ngIf="email != c.correo; else elseTemplate">
+                            <ng-container *ngIf="id != c.cve_usuario; else elseTemplate">
                                 <ng-container *ngIf="nivel == 1; else elseTemplate">
                                     <div class="btns-eb">
                                         <button mat-raised-button class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.idpagos,c.fechap,c.fecha,c.clav_conv, c.cantidadp,c.idpagos)">Editar</button>
@@ -252,7 +252,7 @@
                             <td >{{c.fechac}}</td>
                             <td >{{c.cantidadc}}</td>
                             <td>
-                            <ng-container *ngIf="email != c.correo; else elseTemplate">
+                            <ng-container *ngIf="id != c.cve_usuario; else elseTemplate">
                                 <ng-container *ngIf="nivel == 1; else elseTemplate">
                                     <div class="btns-eb">
                                         <button mat-raised-button  class="btn-pagado" (click)="deleteComentario(c.idconvenio, 2)">Pagado</button>
@@ -318,7 +318,7 @@
                                 <td  style="text-align: justify;"><textarea readonly="yes">{{c.comentario}}</textarea></td>
                                 <td>{{c.fecha}}</td>       
                                 <td>
-                                <ng-container *ngIf="email != c.correo; else elseTemplate">
+                                <ng-container *ngIf="id != c.cve_usuario; else elseTemplate">
                                     <ng-container *ngIf="nivel == 1; else elseTemplate">
                                         <div class="btns-eb">
                                             <button mat-raised-button  class="btn-editar" (click)="editarComentario(c.comentario,c.idcomentarios,c.clave_serv,c.fecha,'','')">Editar</button>
@@ -382,7 +382,7 @@
                                 <td  style="text-align: justify;"><textarea readonly="yes" >{{c.comentario}}</textarea></td>
                                 <td>{{c.fecha}}</td>
                                 <td>
-                                <ng-container *ngIf="email != c.correo; else elseTemplate">
+                                <ng-container *ngIf="id != c.cve_usuario; else elseTemplate">
                                     <ng-container *ngIf="nivel == 1; else elseTemplate">
                                         <div class="btns-eb">
                                             <button mat-raised-button class="btn-exit" color="black" (click)="deleteComentario(c.idconvenio,0)">Restaurar</button>
@@ -443,7 +443,7 @@
                               <td  style="text-align: justify;"><textarea readonly="yes" >{{c.comentario}}</textarea></td>
                               <td>{{c.fecha}}</td>
                               <td>
-                              <ng-container *ngIf="email != c.correo; else elseTemplate">
+                              <ng-container *ngIf="id != c.cve_usuario; else elseTemplate">
                                   <ng-container *ngIf="nivel == 1; else elseTemplate">
                                       <div class="btns-eb">
                                           <button mat-raised-button class="btn-exit" color="black" (click)="deleteComentario(c.idconvenio,0)">Restaurar</button>
