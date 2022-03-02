@@ -77,16 +77,12 @@
     </div>
     <hr>
 
-<div class="subcabecera">
-        <form >
-            <div class="aqui">
-                <div style="font-size: small;">Buscar clave</div>
-                <input id="buscador" #escribir placeholder="Ingrese No.">
-                <button mat-raised-button  (click)="filtrar(escribir.value)" class="btnb" >Buscar</button>
-            </div>
-           
-        </form>
-</div>
+    <div class="aqui">
+        <div style="font-size: small;">Buscar clave</div>
+        <input id="buscador" #escribir placeholder="Ingrese No.">
+        <button mat-raised-button  (click)="filtrar(escribir.value)" class="btnb" >Buscar</button>
+    </div>
+
 
     <!-- Grupo de TABS -->
     <mat-tab-group (selectedIndexChange)="tab($event)" color="accent" [selectedIndex] = "tabInicial">

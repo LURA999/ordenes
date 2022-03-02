@@ -281,6 +281,9 @@ export class PopupComentarioComponent implements OnInit {
    this.rendered2.setStyle(alert, 'display', 'block')
     this.todosServCliente(this.tabCategoria);
 
+   setTimeout(() =>{
+    this.rendered2.setStyle(alert, 'display', 'none')
+  }, 3000 );
   }
 
   async editarComentario(e:String,idcomentario : String,clave_serv : String,fecha : String, cantidad :String,idconvenio : String, cantidadc : String,id:String){
