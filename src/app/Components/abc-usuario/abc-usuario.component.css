@@ -3,13 +3,11 @@
     background-color: white;
     padding-bottom: 10px;
     padding-top: 15px;
+    box-shadow: gainsboro 2px 2px;
 }
 
-.max-panel{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 80vh;
-    width: 100%;
-    margin:auto;
+.title-container{
+    padding: 15px; width: 100%; 
+    margin-bottom: 10px;
 }
+

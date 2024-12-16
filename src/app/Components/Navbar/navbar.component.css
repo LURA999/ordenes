@@ -1,6 +1,8 @@
 nav{
-    background-color: black;
+    background-image:url('https://htmlcolorcodes.com/assets/images/html-color-codes-color-tutorials-hero.jpg');
+    font-family:'Roboto', sans-serif;
 }
+
 a{
     color: white;
     opacity: 1;
@@ -8,8 +10,10 @@ a{
 }
 
 a:hover{
-    opacity: 0.6;
+    background-color:#7c3d3d;
+    color: rgb(255, 255, 255);
 }
+
 
 .dropdown-item{
     color: black;
@@ -19,3 +23,9 @@ a:hover{
     background-color: blanchedalmond;
     color: black;
 }
+
+@media only screen and (max-width: 600px) {
+    .hidden-small{
+      display: none;
+    }
+  }

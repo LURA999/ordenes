@@ -1,0 +1,85 @@
+<app-navbar></app-navbar>
+<div class="roboto">
+<div class="container title-container">
+  <div class="row">
+    <div class="col-sm-10 title-container-movil">
+      <h3>Vehiculos</h3>
+    </div>
+    <div class="col-sm-2 title-container-movil">
+      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#nuevaCiudad">Agregar</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <table class="table table-hover table-container">
+    <thead>
+      <tr class="">
+        <th scope="col" class="hidden-small">Clave</th>
+        <th scope="col">Descripcion</th>
+        <th scope="col" class="hidden-small">Ciudad</th>
+        <th scope="col">Placa</th>
+        <th scope="col" class="hidden-small">Estatus</th>
+        <th scope="col">Opciones</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let a of vehiculos">
+      <tr>
+        <td class="hidden-small">{{a.cve_vehiculo}}</td>
+        <td>{{a.descripcion}}</td>
+        <td class="hidden-small">{{a.Nombre}}</td>
+        <td>{{a.placa}}</td>
+        <td class="hidden-small"><p *ngIf="a.estatus==1" href="#" style="background-color:#00B74A; border-radius: 3px; text-align: center;  color:white; ">Disponible</p>
+        <p *ngIf="a.estatus==2" style="background-color:#F93154; border-radius: 3px; text-align: center;  color:white;   ">No disponible</p></td>
+        <td><button class="btn"><img src="assets/delete.svg" (click)="borrar(a.cve_vehiculo)" style="height: 24px; width: 24px;"></button>
+        <button class="btn" *ngIf="a.estatus==1" (click)="cambiarEstatus(2, a.cve_vehiculo)"><img src="assets/cancel.png" style="height: 24px; width: 24px;"></button>
+        <button class="btn" *ngIf="a.estatus==2" (click)="cambiarEstatus(1,a.cve_vehiculo)"><img src="assets/ok.png" style="height: 24px; width: 24px;"></button></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="row" >
+    <div class="col-md-12 text-center" style="margin-bottom:10px;">
+      <button class="btn btn-primary" [disabled]="!paginar.btnPrev" (click)="previo()"> Anterior</button>
+      <span style="margin-left: 10px; margin-right: 10px;">{{paginar.actualPage}} de {{paginar.totalPages}}</span>
+      <button class="btn btn-primary" [disabled]="!paginar.btnNext" (click)="siguiente()">Siguiente</button>
+    </div>
+  </div>
+  <div class="container text-center">
+    <span class="text-danger" *ngIf="vehiculos.length <= 0" >Sin resultados</span>
+  </div>
+</div>
+
+<div class="modal fade  bd-example-modal-lg" id="nuevaCiudad" tabindex="-1" role="dialog" aria-labelledby="nuevoContacto" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Nuevo vehiculo</h5>
+          </div>
+        <div class="modal-body">
+            <form (ngSubmit)="guardarVehiculo(vehiculoForm)" #vehiculoForm="ngForm"novalidate="" >
+              <div class="row">
+                <div class="col-md-4">
+                  <label>Descripcion</label>
+                  <input type="text" class="form-control" name="descripcion" required [(ngModel)]="vehiculoNuevo.descripcion">
+                </div>
+                <div class="col-md-3">
+                  <label>Placas</label>
+                  <input type="text" class="form-control"  name="placa" required [(ngModel)]="vehiculoNuevo.placa">
+                </div>
+                <div class="col-md-3">
+                  <label>Ubicacion</label>
+                  <select name="ciudad" class="form-control" name="ciudad" required [(ngModel)]="vehiculoNuevo.ciudad">
+                  <option [value]="ciudad.idciudad" *ngFor="let ciudad of ciudades">{{ciudad.Nombre}}</option>
+                </select>
+                </div>
+              </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button  class="btn btn-success" (click)="guardarVehiculo(vehiculoForm)">Guardar</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

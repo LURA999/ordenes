@@ -1,5 +1,7 @@
 <app-navbar></app-navbar>
-<div class="container"  style="padding: 20px; width: 95%;">
+
+<div class="roboto-font">
+<div class="container"  style="width: 95%;">
     <div class="row">
       <div class="form-group form-inline">
         <div class="col-md-12 col-sm-3 text-center">
@@ -14,7 +16,7 @@
         <div class="col-md-7 col-xs-12 text-right">
           <select class="custom-select" name="estatus" [(ngModel)]="estatus" >
             <option value="0">Todo</option>
-            <option value="1">Abierta</option>
+            <option value="1" *ngIf="nivel != 4">Abierta</option>
             <option value="2">Asignada</option>
             <option value="3">Cerrada</option>
         </select>
@@ -41,60 +43,57 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="form-group" *ngIf="nivel != 4">
         <div class="col-md-12">
-          <button [routerLink]="['/abcOrden']" class="btn btn-success">Agregar <img src="./assets/plus.png"></button>
+          <button [routerLink]="['/ordenes/abcOrden']" class="btn btn-success">Agregar <img src="./assets/plus.png"></button>
         </div>
       </div>
-
-
-
     </div>
 </div>
-<div class="container table-container">
-  <table class="table table-hover" id="ordenes">
+<div class="container">
+  <table class="table table-hover table-container" id="ordenes">
     <thead>
       <tr >
         <th scope="col" >Orden</th>
         <th class="hidden-small" scope="col" >Empresa</th>
         <th class="hidden-small" scope="col" >Sucursal</th>
         <th class="hidden-small" scope="col" >Creada</th>
-        <th class="hidden-small" scope="col" >Instalador</th>
+        <th class="hidden-small" scope="col" >Instalador(es)</th>
         <th class="hidden-small" scope="col" >Fecha programada</th>
+        <th class="hidden-small" scope="col" >Ciudad</th>
         <th scope="col" >Estatus</th>
         <th scope="col" >Opciones</th>
-
       </tr>
     </thead>
-    <tbody *ngFor="let o of ordenesMostrar">
-        <tr>
-          <th scope="row">{{o.cve_orden}}</th>
-          <td class="hidden-small">{{o.Empresa }}</td>
-          <td class="hidden-small">{{o.cve_sucursal }}</td>
-          <td class="hidden-small">{{o.fecha_creacion }}</td>
-          <td class="hidden-small">
-            <p *ngIf="o.Instalador== null">Sin asignar</p>
-            <p *ngIf="o.estatus>0">{{o.cve_instalador}}</p>
-          </td>
+      <tbody >
+       
+        <tr *ngFor="let o of ordenesMostrar;let oi = index">
+          <td scope="row">{{o.cve_orden}}</td>
+          <td class="hidden-small">{{o.cliente }}</td>
+          <td class="hidden-small">{{o.sucursal }}</td>
+          <td class="hidden-small">{{o.fecha_creacion | date: 'dd/MM/yyyy'}}</td>
+          <td class="hidden-small" class="cantidad">{{cantidad(o.cve_orden)}}</td>
           <td class="hidden-small">
             <p *ngIf="o.fecha_programada== null">Sin programar</p>
-            <p *ngIf="o.fecha_programada!=null">{{o.fecha_programada}}</p>
+            <p *ngIf="o.fecha_programada!=null">{{o.fecha_programada | date: 'dd/MM/yyyy'}}</p>
           </td>
+          <td class="hidden-small">{{o.Ciudad}}</td>
           <td>
-              <p *ngIf="o.estatus==1">Abierta</p>
-              <p *ngIf="o.estatus==2">Asignada</p>
-              <p *ngIf="o.estatus==3">Cerrada</p>
+              <p *ngIf="o.estatus==1" style="background-color:#00B74A; border-radius: 3px; text-align: center;  padding: 5px;">Abierta</p>
+              <p *ngIf="o.estatus==2" style="background-color:#FFA900; border-radius: 3px; text-align: center;  padding: 5px;">Asignada</p>
+              <p *ngIf="o.estatus==3" style="background-color:#F93154; border-radius: 3px; text-align: center;  padding: 5px;">Cerrada</p>
           </td>
           <td >
-            <button style="margin-right: 5px;" class="btn btn-danger" (click)="borrar(o.cve_orden)"><img src="/assets/delete-24px.svg" alt=""></button>
-            <button [routerLink]="['/abcOrden', o.cve_orden]" class="btn btn-primary"><img src="/assets/pageview-24px.svg" alt=""></button>
+            <button [routerLink]="['/ordenes/abcOrden', o.cve_orden]" class="btn "><img src="/assets/pageview-24px.svg"  style="width: 24px; height: 24px;"></button>
+            <button *ngIf="nivel != 4 && o.estatus != 3" style="margin-right: 5px;" class="btn " (click)="borrar(o.cve_orden)" ><img src="/assets/delete.svg" style="width: 24px; height: 24px;"></button>
+
         </td>
         </tr>
       </tbody>
   </table>
   <div class="row" *ngIf="ordenes.length > 0 ">
     <div class="col-md-12 text-center">
-      <button class="btn btn-primary" [disabled]="!btnPrev"> Anterior</button>
+      <button class="btn btn-primary" [disabled]="!btnPrev" (click)="previo()"> Anterior</button>
       <span style="margin-left: 10px; margin-right: 10px;">{{actualPage}} de {{totalPages}}</span>
       <button class="btn btn-primary" [disabled]="!btnNext" (click)="siguiente()">Siguiente</button>
     </div>
@@ -103,5 +102,5 @@
   <div class="container text-center">
     <span class="text-danger" *ngIf="ordenes.length == 0 " >Sin resultados</span>
   </div>
-
+</div>
 </div>

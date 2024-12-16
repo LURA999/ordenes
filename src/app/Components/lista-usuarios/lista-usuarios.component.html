@@ -1,17 +1,18 @@
 <app-navbar></app-navbar>
-<div class="container text-center" style="padding: 10px; width: 90%;">
+
+<div class="container title-container">
 <div class="row">
-    <div class="col-md-10 col-sm-7 text-left">
+    <div class="col-md-10 title-container-movil">
         <h3>Lista de usuarios</h3>
     </div>
-    <div  class="col-md-2 col-sm-5 text-right">
-        <a [routerLink]="['/abcUsuario']" class="btn btn-success">Agregar</a>
+    <div  class="col-md-2 title-container-movil">
+        <a [routerLink]="['/usuarios/abcUsuario']" class="btn btn-success">Agregar</a>
     </div>
 </div>
 </div>
 
-<div class="container table-container">
-    <table class="table table-hover"  >
+<div class="container">
+    <table class="table table-hover table-container">
         <thead>
           <tr class="">
             <th scope="col" >Nombre</th>
@@ -29,11 +30,13 @@
                 <p *ngIf="u.nivel==2">Ventas</p>
                 <p *ngIf="u.nivel==3">Infraestructura</p>
                 <p *ngIf="u.nivel==4">Instalador</p>
+                <p *ngIf="u.nivel==5">Coordinador</p>
+
             </td>
               <td>{{u.email }}</td>
               <td >
-                <button class="btn btn-primary" [routerLink]="['/abcUsuario', u.cve_usuario]" style="margin-right: 5px;"><img src="/assets/editar.png" alt=""></button>
-                <button class="btn btn-danger"  (click)="borrar(u.cve_usuario, u.email)"><img src="/assets/delete-24px.svg" alt=""></button>
+                <button class="btn " [routerLink]="['/usuarios/abcUsuario', u.cve_usuario]" style="margin-right: 5px;"><img src="/assets/editar.png" alt=""></button>
+                <button class="btn "  (click)="borrar(u.cve_usuario, u.email)"><img src="/assets/delete.svg" style="width: 24px; height: 24px;"></button>
             </td>
             </tr>
           </tbody>
@@ -43,3 +46,4 @@
       </div>
 
 </div>
+

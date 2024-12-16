@@ -1,0 +1,131 @@
+
+
+<div class="container text-center" style="padding: 10px; width: 90%;">
+    <div class="row">
+        <div class="col-md-10 text-left">
+            <h3>{{titulo}}</h3>
+        </div>
+    </div>
+</div>
+s
+<div class="container" *ngIf="esDetalle == false" style="background-color:white; box-shadow: gainsboro 3px 3px; padding: 20px;margin-bottom: 2%;">
+    <form [formGroup]="formaLevantamiento" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="col-md-6">
+                <label for="inputCliente" class="col-form-label">Cliente: </label>
+                <input name="cliente" type="text" (change)="cargarSucursal($event)"
+                    class="form-control" id="inputCliente" list="listaClientes" formControlName="cve_cliente">
+                <datalist id="listaClientes">
+                    <option *ngFor="let cliente of clientes" [value]="cliente.nombre">
+                    <option>
+                </datalist>
+            </div>
+
+            <div class="col-md-3">
+                <label for="inputSucursal" class="col-form-label">Sucursal: </label>
+                <input name="sucursal" type="text" (change)="cargarContactos($event)"
+                    class="form-control" id="inputSucursal" list="listaSucursales" formControlName="cve_sucursal">
+                <datalist id="listaSucursales">
+                    <option *ngFor="let sucursal of sucursales" [value]="sucursal.nombre">
+                    <option>
+                </datalist>
+            </div>
+
+         
+            <div class="col-md-3">
+                <label for="inputContacto" class="col-form-label">Contacto: </label>
+                <input name="contacto" type="text" (change)="datosContacto($event)"
+                    class="form-control" id="inputSucursal" list="listaContactos" formControlName="cve_contacto">
+                <datalist id="listaContactos">
+                    <option *ngFor="let contacto of contactos" [value]="contacto.Nombre">
+                    <option>
+                </datalist>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label for="inputTelefono" class="col-form-label">Telefono: </label>
+                
+                <input name="telefono" type="text"
+                class="form-control" id="telegono" value="{{telefono}}" >
+            </div>
+            <div class="col-md-3">
+                <label for="inputCorreo" class="col-form-label">Correo: </label>
+              
+                <input name="correo" type="text"
+                class="form-control" id="correo" value="{{correo}}" >
+            </div>
+            
+        
+            <div class="col-md-3">
+                <label for="inputRepetidora" class="col-form-label">Repetidora: </label>
+                <input name="Repetidora" type="text" (change)="asignarRepetidora($event)"
+                    class="form-control" id="inputRepetidora" list="listaRepetidoras" formControlName="cve_cliente">
+                <datalist id="listaRepetidoras">
+                    <option *ngFor="let r of repetidoras" [value]="r.nombre">
+                    <option>
+                </datalist>
+            </div>
+           <!-- <div class="col-md-3">
+                <label for="inputMegas" class="col-form-label">Megas: </label>
+                <input name="megas" type="text" 
+                    class="form-control" formControlName="megas">
+            </div>-->
+            <div class="col-md-3">
+                <label for="inputMegas" class="col-form-label">Megas: </label>
+                <input name="Megass" type="text" (change)="asignarMegas($event)"
+                    class="form-control" id="inputMegas" list="listaMegas" formControlName="cve_cliente">
+                <datalist id="listaMegas">
+                    <option *ngFor="let m of megass" [value]="m.descripcion">
+                    <option>
+                </datalist>
+            </div>
+        </div>
+        <div class="row">
+            
+            <!-- <div class="col-md-4">
+                <label for="inputServicio" class="col-form-label">Servicio: </label>
+                <input name="servicio" type="text" 
+                    class="form-control" formControlName="servicio">
+            </div>-->
+
+            <div class="col-md-4">
+                <label for="inputServicio" class="col-form-label">Servicio: </label>
+                <input name="servicio" type="text" (change)="asignarServicio($event)"
+                    class="form-control" id="inputServicio" list="listaServicio" formControlName="cve_cliente">
+                <datalist id="listaServicio">
+                    <optgroup label="Swedish Cars">
+                    <option *ngFor="let s of servicios" [value]="s.descripcion">
+                    <option>
+                    </optgroup>
+                </datalist>
+            </div>
+            <div class="col-md-5">
+                <label for="inputCiudades" class="col-form-label">Ciudad: </label>
+                <select name="ciudad" class="form-control" formControlName="ciudad">
+                    <option [value]="c.idciudad" *ngFor="let c of ciudades">{{c.Nombre}}</option>
+                </select>
+            </div>
+          <div class="col-md-3">
+                <label for="inputCoordenadas" class="col-form-label">Coordenadas: </label>
+                <input name="coordenadas" type="text" 
+                    class="form-control" formControlName="coordenadas">
+            </div>
+          
+          
+           
+        </div>
+        <div class="row" style="margin-top: 5px;">
+            <div class="col-md-12 text-right">
+                <div class="form-group">
+                    <button type="submit" style="margin-right:5px;" class="btn btn-success"  [disabled]="!formaLevantamiento.valid">Aceptar</button>
+                    <button class="btn btn-danger">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<app-detalle-levantamiento [cve_levantamiento]="cve_levantamiento" *ngIf="esDetalle"></app-detalle-levantamiento>
+

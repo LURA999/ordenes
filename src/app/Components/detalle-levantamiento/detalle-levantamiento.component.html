@@ -1,0 +1,278 @@
+<div class="container normal" style="background-color:white; padding: 20px;margin-bottom: 2%;" >
+    <h6 class="titulo">Cliente</h6>
+    <div class="row">
+        <div class="col-md-4">
+            <label>Nombre:</label>
+            <p>{{levantamientoMostrar.nombreCliente}}</p>
+        </div>
+        <div class="col-md-4">
+            <label>Sucursal:</label>
+            <p>{{levantamientoMostrar.sucursal}}</p>
+        </div>
+        <div class="col-md-4">
+            <label>Coordenadas:</label>
+            <p>{{levantamientoMostrar.coordenadas == "" || levantamientoMostrar.coordenadas == undefined ? 
+                'Sin coordenadas': levantamientoMostrar.coordenadas}}</p>
+        </div>
+        <div class="col-md-4">
+            <label>Servicio:</label>
+            <p>{{levantamientoMostrar.servicio == "" || levantamientoMostrar.servicio == undefined ? 
+                'No disponible': levantamientoMostrar.servicio}}</p>
+        </div>
+        <div class="col-md-4">
+            <label>Descripcion:</label>
+            <p>{{levantamientoMostrar.descripcion == "" || levantamientoMostrar.descripcion == undefined ? 
+                'No disponible': levantamientoMostrar.descripcion}}</p>
+        </div>
+        <div class="col-md-4">
+            <label>Megas:</label>
+            <p>{{levantamientoMostrar.megas == 0 || levantamientoMostrar.megas == undefined ? 
+                'No disponible': levantamientoMostrar.megas}}</p>
+        </div>
+    </div>
+        <hr width="100%">
+    <h6>Contacto</h6>
+    <div class="row">
+        <div class="col-md-4">
+            <label>Nombre:</label>
+            <p>{{levantamientoMostrar.contacto}}</p>
+        </div>
+        <div class="col-md-2">
+            <label>Telefono:</label>
+            <p>{{levantamientoMostrar.telefono == "" || levantamientoMostrar.telefono == undefined ? 
+                'Sin telefono': levantamientoMostrar.telefono}}</p>
+        </div>
+        <div class="col-md-4">
+            <label>Correo:</label>
+            <p>{{levantamientoMostrar.correo == "" || levantamientoMostrar.correo == undefined ? 
+                'Sin correo': levantamientoMostrar.correo}}</p>
+        </div>
+    </div>
+    <hr width="100%" style="box-shadow: 5px;">
+    <h6>Datos de instalación.</h6>
+    <div  class="row">
+        <div class="col-md-4">
+            <label>
+                Instalador
+            </label>
+            <p *ngFor="let nombre of nombres; let indice=index">{{nombre}}<span *ngIf="nombre == ' ' ">No hay asignado</span></p>
+        </div>
+        <div class="col-md-4">
+            <label>
+                Fecha programada
+            </label>
+            <p>{{fecha == undefined ? 
+                "Sin programar" : fecha | date: 'y-MMMM-d HH:mm'}}</p>
+        </div>
+        <div class="col-md-4" style="margin-top: 35px;">
+            <button *ngIf="nivel==4 && estatus != 3" class="btn btn-primary"  data-toggle="modal" data-target="#cerrarOrden" >Cerrar levantamiento</button>
+        </div>
+    </div>
+    <hr width="100%">
+    <h6 *ngIf="nivel == 1">Modificar</h6>
+    <div *ngIf="nivel == 1" class="row">
+        <div class="col-md-3">
+            <label for="instalador" class="col-form-label">Instalador(es) oficial(es):</label>
+                <div [disabled]="nivel != 1" class="form-control instaladores"  >
+                    <span *ngFor="let i of instaladores" value="{{i.cve_usuario}}" >
+                        <input type="checkbox" checked=true id={{i.nombre}} name={{i.nombre}} (click)= "seleccionandoInstalador(isChecked,i.instalador)" >
+                        <label for={{i.nombre}}>&nbsp;{{i.nombre}}</label><br/>
+                    </span>
+                    <p *ngIf="instaladores.length == 0 " class="advertencia">No hay instaladores</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <label for="instalador" class="col-form-label">Selecciona un instalador:</label>
+                    <div [disabled]="nivel != 1" class="form-control instaladores"  >
+                        <span *ngFor="let i of instaladoresmas" value="{{i.cve_usuario}}" >
+                            <input type="checkbox" id="{{i.nombre}}2" name={{i.nombre}} (click)= "seleccionandoInstalador(isChecked2,i.cve_usuario)" >
+                            <label for="{{i.nombre}}2">&nbsp;{{i.nombre}}</label><br/>
+                        </span>
+                        <p *ngIf="instaladoresmas.length == 0 " class="advertencia">No hay mas instaladores</p>
+                    </div>
+                </div>
+        <div >
+            <label for="fecha" class="col-form-label">Fecha programada:</label>
+            <input name="fecha" (change)="cambioFecha($event)" [(ngModel)]="levantamientoMostrar.fecha" class="form-control" type="date" [disabled]="nivel != 1">
+        </div>
+        <div class= "col-md">
+            <label for="fecha" class="col-form-label">HH:</label>
+            <select class="form-control" name="hora" [(ngModel)]="hh">
+                <option *ngFor="let hora of horas" [value]="hora">{{hora}}</option>
+            </select>
+        </div>
+        <div >
+            <label for="fecha" class="col-form-label">MM:</label>
+            <select class="form-control" name="minutos" [(ngModel)]="mm" >
+                <option  [value]="00">00</option>
+                <option  [value]="15">15</option>
+                <option  [value]="30">30</option>
+                <option  [value]="45">45</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label for="fecha" class="col-form-label">Vehiculo:</label>
+            <select class="form-control" name="hora" (change)="cambioVehiculo($event)" [(ngModel)]="vehiculo">
+                <option [value]="0" ></option>
+                <option  name="vehiculo" *ngFor="let v of vehiculos" [value]="v.cve_vehiculo">{{v.descripcion}}</option>
+            </select>
+        </div>
+        <div class="col-md-1" style="margin-top: 35px;">
+            <button class="btn btn-success" (click)="actualizarOrden()" [disabled]="modInstalador ==false && modFecha === false && modVehiculo ==false">Guardar</button>
+        </div>
+
+    </div>
+    <h6 *ngIf="ordenCompleta == true">Datos de visita</h6>
+    <hr width="100%" *ngIf="ordenCompleta == true">
+    <div class="row" *ngIf="ordenCompleta == true">
+        <div class="col-md-1" style="margin-top: 35px;">
+            <label>Fecha de cierre</label>
+            <p>{{levantamientoMostrar.fechaCierre}}</p>
+        </div>
+        <div class="col-md-2" style="margin-top: 35px;">
+            <label>Altura (metros)</label>
+            <p>{{levantamientoMostrar.altura}}</p>
+        </div>
+        <div class="col-md-2" style="margin-top: 35px;">
+            <label>Tipo</label>
+            <p>{{levantamientoMostrar.tipo}}</p>
+        </div>
+        <div class="col-md-2" style="margin-top: 35px;">
+            <label>Energia electrica</label>
+            <p>{{levantamientoMostrar.energia == 1 ? "Si":"No" }}</p>
+        </div>
+        <div class="col-md-1" style="margin-top: 35px;">
+            <label>Rack</label>
+            <p>{{levantamientoMostrar.rack == 1 ? "Si":"No" }}</p>
+        </div>
+        <div class="col-md-2" style="margin-top: 35px;">
+            <label>Linea de vista</label>
+            <p>{{levantamientoMostrar.rack == 1 ? "Si":"No" }}</p>
+        </div>
+        <div class="col-md-2" style="margin-top: 35px;">
+            <label>Torre/mastil</label>
+            <p>{{levantamientoMostrar.torre_mastil}}</p>
+        </div>
+        <div class="col-md-2" style="margin-top: 35px;">
+            <button class="btn btn-info" data-toggle="modal" data-target="#listaDocumentos" (click)="cargarDocumentos()" >Ver documentos</button>
+        </div>
+    </div>
+
+</div>
+<div class="modal fade  bd-example-modal-lg" id="cerrarOrden" tabindex="-1" role="dialog" aria-labelledby="nuevoContacto" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Cierre de levantamiento</h5>
+          </div>
+        <div class="modal-body">
+            <form id="coordenadas" [formGroup]="formaCierre" >
+                <div class="row">
+                    <div class="col-md-2" >
+                        <label>Altura</label>
+                        <input name="altura" class="form-control" formControlName="altura">
+                    </div>
+                    <div class="col-md-4">
+                        <label>Tipo</label>
+                        <input name="tipo" class="form-control" formControlName="tipo">
+                    </div>
+                    <div class="col-md-4">
+                        <label>Tipo de techo</label>
+                        <input name="tipoTecho" class="form-control" formControlName="tipoTecho">
+                    </div>
+                </div>
+                <hr width="100%">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Torre\mastil</label>
+                        <input alturaa="torre" class="form-control" formControlName="torre">
+                    </div>
+                    <div class="col-md-8">
+                        <label>Repetidora: </label>
+                        <select name="Repetidora" type="text" 
+                            class="form-control" id="inputRepetidora" formControlName="repetidora">
+                            <option *ngFor="let r of repetidoras" [value]="r.idrepetidora">{{r.nombre}}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Energia electrica</label>
+                        <select class="custom-select" name="energia" formControlName="energia" >
+                            <option value="1">Si</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Rack</label>
+                        <select class="custom-select" name="rack" formControlName="rack" >
+                            <option value="1">Si</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Linea de vista</label>
+                        <select class="custom-select" name="rack" formControlName="linea" >
+                            <option value="1">Si</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                </div>
+                <hr width="100%">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Observaciones</label>    
+                        <textarea name="descripcion" id="descripcion" cols="30" rows="4"
+                            class="form-control" style="resize: none;" formControlName="observaciones"></textarea>
+                            <label  class="btn btn-secondary" style="margin-top: 6px; margin-right: 5px;">
+                                <input name="info[]" type="file" (change)="cargandoImagen($event.target.files)" multiple style="display: none;">
+                               Adjuntar fotos</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button  class="btn btn-success" (click)="actualizarLevantamiento()">Guardar</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal documentos -->
+<div class="modal fade  bd-example-modal-lg" id="listaDocumentos" tabindex="-1" role="dialog" aria-labelledby="listaDocumentos" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Documentos adjuntos al comentario</h5>
+          </div>
+        <div class="modal-body">
+            <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let o of documentos">
+                    <td>{{o.nombre_documento}}</td>
+                    <td><button class="btn  btn-info" data-toggle="modal" data-target="#foto" (click)="cargarImagen(o.nombre_documento)">ver</button></td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal documentos -->
+<div class="modal fade  bd-example-modal-lg" id="foto" tabindex="-1" role="dialog" aria-labelledby="foto" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+            <img [src]="imagen" style="max-width: 500px;max-height: 800px;">
+        </div>
+      </div>
+    </div>
+  </div>

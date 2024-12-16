@@ -1,0 +1,103 @@
+<app-navbar></app-navbar>
+
+<div class="roboto-font">
+<div class="container "  style="width: 95%;">
+    <div class="row">
+      <div class="form-group form-inline">
+        <div class="col-md-12 col-sm-3 text-center">
+          <h3>Lista de levantamientos</h3>
+      </div>
+      </div>
+    </div>
+
+      <div class="row">  
+      <div class="form-group form-inline">
+        <label  for="estatus">Estatus</label>
+        <div class="col-md-7 col-xs-12 text-right">
+          <select class="custom-select" name="estatus" [(ngModel)]="estatus" >
+            <option value="0">Todo</option>
+            <option value="1" *ngIf="nivel != 4">Abierta</option>
+            <option value="2">Asignada</option>
+            <option value="3">Cerrada</option>
+        </select>
+      </div>
+      </div>
+
+      <div class="form-group form-inline">
+        <label  for="inicio">De:</label>
+        <div class="col-md-9 col-xs-12 text-left">
+          <input class="form-control" type="date"  name="inicio" [(ngModel)]="fechaInicio">
+      </div>
+      </div>
+
+      <div class="form-group form-inline">
+        <label  for="fin">Hasta:</label>
+        <div class="col-md-9 col-xs-12 text-left">
+          <input class="form-control" type="date"  name="fin" [(ngModel)]="fechaFin">
+      </div>
+      </div>
+      
+      <div class="form-group">
+        <div class="col-md-12">
+          <button class="btn btn-primary" (click)="filtrar()">Buscar</button>
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="nivel != 4">
+        <div class="col-md-12">
+          <button [routerLink]="['/levantamientos/abcLevantamiento']" class="btn btn-success">Agregar</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="container">
+  <table class="table table-hover table-container" id="ordenes">
+    <thead>
+      <tr >
+        <th scope="col" >Orden</th>
+        <th class="hidden-small" scope="col" >Cliente</th>
+        <th class="hidden-small" scope="col" >Sucursal</th>
+        <th class="hidden-small" scope="col" >Creada</th>
+        <th class="hidden-small" scope="col" >Fecha programada</th>
+        <th class="hidden-small" scope="col" >Ciudad</th>
+        <th scope="col" >Estatus</th>
+        <th scope="col" >Opciones</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let o of levantamientosMostrar; let indice=index">
+        <tr>
+          <td scope="row">{{o.cve_levantamiento }}</td>
+          <td class="hidden-small">{{o.cliente }}</td>
+          <td class="hidden-small">{{o.sucursal }}</td>
+          <td class="hidden-small">{{o.fecha_creacion | date: 'dd/MM/yyyy'}}</td>
+          <td class="hidden-small">
+            <p *ngIf="o.fecha_programada== null">Sin programar</p>
+            <p *ngIf="o.fecha_programada!=null">{{o.fecha_programada | date: 'dd/MM/yyyy'}}</p>
+          </td>
+          <td class="hidden-small">{{o.Ciudad }}</td>
+          <td style="color: white;">
+              <p *ngIf="o.estatus==1" style="background-color:#00B74A; border-radius: 3px; text-align: center; padding: 5px;">Abierta</p>
+              <p *ngIf="o.estatus==2" style="background-color:#FFA900; border-radius: 3px; text-align: center; padding: 5px;">Asignada</p>
+              <p *ngIf="o.estatus==3" style="background-color:#F93154; border-radius: 3px; text-align: center; padding: 5px;">Cerrada</p>
+          </td>
+          <td >
+            <button *ngIf="nivel != 4" style="margin-right: 5px;" class="btn" (click)="borrar(o.cve_levantamiento)" ><img src="/assets/delete.svg" style="width: 24px; height: 24px;"></button>
+            <button [routerLink]="['/levantamientos/abcLevantamiento', o.cve_levantamiento]" class="btn"><img src="/assets/pageview-24px.svg" style="width: 24px; height: 24px;"></button>
+        </td>
+        </tr>
+      </tbody>
+  </table>
+  <div class="row" *ngIf="levantamientos.length > 0 " >
+    <div class="col-md-12 text-center">
+      <button class="btn btn-primary" [disabled]="!btnPrev" (click)="previo()"> Anterior</button>
+      <span style="margin-left: 10px; margin-right: 10px;">{{actualPage}} de {{totalPages}}</span>
+      <button class="btn btn-primary" [disabled]="!btnNext" (click)="siguiente()">Siguiente</button>
+    </div>
+  </div>
+  <br/>
+  <div class="container text-center">
+    <span class="text-danger" *ngIf="levantamientos.length == 0 " >Sin resultados</span>
+  </div>
+</div>
+</div>

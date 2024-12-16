@@ -1,5 +1,5 @@
-<nav class="navbar navbar-expand-lg" >
-  <a class="navbar-brand" href="#"><img src="./assets/Logotipo_blanco-01.svg" width="100px" height="50"></a>
+<nav class="navbar navbar-expand-lg">
+  <a class="navbar-brand" (click)="nivel !=4" href="#"><img src="./assets/Logotipo_blanco-01.svg" width="100px" height="50"></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"><img src="./assets/open-menu.svg" width="50px" height="40px"></span>
   </button>
@@ -7,23 +7,30 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a [routerLink]="['/home']" class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
+        <a [routerLink]="['/home']"  *ngIf="nivel != 4"class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Levantamientos</a>
+        <a class="nav-link" [routerLink]="['/levantamientos']" href="#">Levantamientos</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/listaOrdenes']" href="#">Ordenes Servicio</a>
+        <a class="nav-link" [routerLink]="['/ordenes']" href="#">Ordenes Servicio</a>
       </li>
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown" *ngIf="nivel == 1 || nivel==2">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Catalogos
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a [routerLink]="['/listaUsuarios']" class="dropdown-item" href="#">Usuarios</a>
+          <a *ngIf="nivel == 1" [routerLink]="['/actividades']" class="dropdown-item" href="#">Actividades</a>
+          <a *ngIf="nivel == 1 || nivel==2" [routerLink]="['/ciudades']" class="dropdown-item" href="#">Ciudades</a>
+          <a *ngIf="nivel == 1 || nivel==2" [routerLink]="['/clientes']" class="dropdown-item" href="#">Clientes</a>
+          <a *ngIf="nivel == 1" [routerLink]="['/tipoDocumento']" class="dropdown-item" href="#">Tipos de documento</a>
+          <a [routerLink]="['/usuarios']" class="dropdown-item" href="#">Usuarios</a>
+          <a *ngIf="nivel == 1" [routerLink]="['/vehiculos']" class="dropdown-item" href="#">Vehiculos</a>
         </div>
-      </li>
-      <li class="nav-item dropdown">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/calendario']" href="#">Calendario</a>
+        </li>
+      <!-- <li class="nav-item dropdown"
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Reportes
         </a>
@@ -32,10 +39,13 @@
           <a class="dropdown-item" href="#">Levantamientos</a>
           <a class="dropdown-item" href="#">Instaladores</a>
         </div>
-      </li>
+      </li> -->
     </ul>
     <form class="form-inline  my-lg-0">
-      <a [routerLink]="['/logout']" class="nav-link" href="#"> Cerrar sesion <img src="./assets/logout.svg" width="10px" height="10px"> <span class="sr-only">(current)</span></a>
+      
+        <a class="nav-link">{{usuario}}</a>
+ 
+      <a [routerLink]="['/logout']" class="btn btn-warning" href="#"> Cerrar sesion <img src="./assets/logout.svg" width="10px" height="10px"> <span class="sr-only">(current)</span></a>
     </form>
   </div>
 </nav>

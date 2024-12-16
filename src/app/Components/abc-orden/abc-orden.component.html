@@ -1,4 +1,5 @@
 <app-navbar></app-navbar>
+
 <div class="container text-center" style="padding: 10px; width: 90%;">
     <div class="row">
         <div class="col-md-10 text-left">
@@ -7,7 +8,7 @@
     </div>
 </div>
 <div class="container" style="background-color:white; border-radius: 0px 0px 4px 4px; padding: 20px;margin-bottom: 2%;" *ngIf="!esDetalle">
-    <form autocomplete="off" #forma="ngForm" (ngSubmit)="onSubmit(forma)">
+    <form  autocomplete="off" #forma="ngForm" (ngSubmit)="onSubmit(forma)">
         <!-- Datos del cliente  -->
         <div class="form-group">
             <div class="row">
@@ -28,50 +29,92 @@
                     <select name="sucursal" [(ngModel)]="orden.idSucursal" (change)="cargarContactos()"
                         [class.is-invalid]="sucursal.touched && !sucursal.valid" #sucursal="ngModel"
                         [disabled]="clienteValido == false" class="form-control" id="listaSucursales" required>
-                        <option *ngFor="let sucursal of sucursales" value="{{sucursal.idsucursal}}">{{sucursal.nombre}}
-                        </option>
+                        <option *ngFor="let sucursal of sucursales" value="{{sucursal.idsucursal}}">{{sucursal.nombre}}</option>
                     </select>
                 </div>
 
                 <div class="col-md-3">
                     <label for="contacto" class="col-form-label">Contacto: </label>
-
                     <select name="contacto" [(ngModel)]="orden.idContacto" [disabled]="sucursalValida == false"
                         (change)="cargarTelefono()" class="form-control" required>
-                        <option *ngFor="let contacto of contactos" value="{{contacto.idcontacto}}">{{contacto.Nombre}}
-                        </option>
+                        <option *ngFor="let contacto of contactos" value="{{contacto.idcontacto}}">{{contacto.Nombre}}</option>
                     </select>
                 </div>
+
                 <div class="col-md-3">
                     <label class="col-form-label">Telefono</label>
                     <input name="numero" [(ngModel)]="numero" class="form-control" id="telefono" disabled>
                 </div>
+               
             </div>
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-3">
+                    <label for="coordenadas" class="col-form-label">Coordenadas:</label>
+                    <input name="coordenadas" [(ngModel)]="orden.coordenadas"
+                        class="form-control" id="coordenadas" required>
+                </div>
+                <!--
+                <div class="col-md-3">
                     <label for="descserv" class="col-form-label">Servicio:</label>
                     <input name="servicio" [(ngModel)]="orden.servicio"
                         [class.is-invalid]="servicioVAL.touched && !servicioVAL.valid" #servicioVAL="ngModel"
                         class="form-control" id="descserv" required>
                 </div>
-                <div class="col-md-3 ">
-                    <label for="instalador" class="col-form-label">Instalador:</label>
-                    <select class="form-control" id="instalador" name="instalador" [(ngModel)]="orden.idInstalador"
-                        >
-                        <option *ngFor="let i of instaladores" value="{{i.cve_usuario}}">{{i.nombre}}</option>
+-->
+
+                <div class="col-md-3">
+                    <label for="descserv" class="col-form-label">Servicios: </label>
+                    <select name="servicio" class="form-control"  (change)="asignarServicio($event)">
+                        <optgroup label="Instalacion">
+                        <option [value]="c.descripcion"  *ngFor="let c of instalacion">{{c.descripcion}}</option>
+                        </optgroup>
+                        <optgroup label="Mantenimiento">
+                            <option [value]="c.descripcion" *ngFor="let c of mantenimiento">{{c.descripcion}}</option>
+                        </optgroup>
+                        <optgroup label="Emergencia">
+                            <option [value]="c.descripcion" *ngFor="let c of emergencia">{{c.descripcion}}</option>
+                        </optgroup>
+                        <optgroup label="Otro">
+                            <option [value]="c.descripcion" *ngFor="let c of otro">{{c.descripcion}}</option>
+                        </optgroup>
                     </select>
                 </div>
+
+                <div class="col-md-3">
+                    <label for="descserv" class="col-form-label">Ciudad:</label>
+                    <select class="form-control" id="ciudad" name="ciudad" [(ngModel)]="orden.ciudad" required>
+                        <option *ngFor="let c of ciudades" value="{{c.idciudad}}">{{c.Nombre}}</option>
+                    </select>
+                </div>
+
                 <div class="col-md-3 ">
                     <label for="instalador" class="col-form-label">Fecha programada:</label>
-                    <input name="fecha" [(ngModel)]="orden.fechaProgramada" class="form-control" type="date">
+                    <input [disabled]="nivel !=1" name="fecha" [(ngModel)]="orden.fechaProgramada" class="form-control" type="date">
+                </div >
+
+                <!--<option *ngFor="let i of instaladores" value="{{i.cve_usuario}}" type="checkbox"> <label><input type="checkbox"> {{i.nombre}}</label><br>-->
+                <!--<div class="col-md-3 ">
+                        <label for="instalador" class="col-form-label">Instalador:</label>
+                        <select [disabled]="nivel != 1" class="form-control" id="instalador" name="instalador" [(ngModel)]="orden.idInstalador" (click) ="verOrden(orden.idInstalador)">
+                            <option *ngFor="let i of instaladores" value="{{i.cve_usuario}}">{{i.nombre}}</option>
+                        </select>
+                    </div>-->
+            <div class="col-md-3">
+                <label for="instalador" class="col-form-label">Instalador:</label>
+                    <div [disabled]="nivel != 1" class="form-control instaladores"  >
+                        <span *ngFor="let i of instaladores" value="{{i.cve_usuario}}" >
+                            <input type="checkbox" id={{i.nombre}} name={{i.nombre}} (click)= "seleccionandoInstalador(i.cve_usuario)" >
+                            <label for={{i.nombre}}>&nbsp;{{i.nombre}}</label><br/>
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="descripcion" class="col-form-label">Descripción</label>
-                        <textarea name="descripcion" [(ngModel)]="orden.descripcion" id="descripcion" cols="30" rows="8"
+                        <textarea name="descripcion" [(ngModel)]="orden.descripcion" id="descripcion" cols="30" rows="4"
                         [class.is-invalid]="descVAL.touched && !descVAL.valid" #descVAL="ngModel"
                             class="form-control" style="resize: none;" required></textarea>
                     </div>
@@ -84,12 +127,16 @@
             <div class="col-md-12 text-right">
                 <div class="form-group">
                     <button style="margin-right:5px;" class="btn btn-success">Aceptar</button>
-                    <button class="btn btn-danger">Cancelar</button>
+                    <button class="btn btn-danger" [routerLink]="['/ordenes']">Cancelar</button>
                 </div>
             </div>
         </div>
 
     </form>
+
 </div>
+
+
+
 
 <app-orden-detalles [cve_orden]="cve_orden" *ngIf="esDetalle"></app-orden-detalles>

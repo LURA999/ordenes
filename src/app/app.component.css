@@ -1,0 +1,17 @@
+.table-container{
+    background-color: white;
+    margin-bottom: 15px;
+}
+
+.max-panel{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    width: 100%;
+    margin:auto;
+}
+.container{
+    margin-top: 1%;
+}
+

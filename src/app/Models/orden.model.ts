@@ -6,5 +6,7 @@ export class OrdenModel{
     descripcion: string;
     fechaProgramada: Date;
     idInstalador: number;
+    ciudad: number;
     idUsuario:number;
+    coordenadas: string;
 }

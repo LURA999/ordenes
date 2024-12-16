@@ -1,0 +1,24 @@
+.table-container {
+    background-color: white;
+    box-shadow: gainsboro 2px 2px;
+}
+
+.title-container{
+    width: 100%; 
+    margin-bottom: 10px;
+}
+
+.roboto{
+  font-family: 'Roboto', sans-serif;
+}
+
+@media only screen and (max-width: 600px) {
+    .title-container-movil {
+      float: center;
+      text-align: center;
+    }
+
+    .hidden-small{
+      display: none;
+    }
+  }

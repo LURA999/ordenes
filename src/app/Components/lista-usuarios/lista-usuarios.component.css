@@ -1,6 +1,17 @@
 .table-container{
-    border-radius: 8px;
+    box-shadow: black 2px 2px;
     background-color: white;
     padding-bottom: 10px;
 }
 
+.title-container {
+    width: 90%; 
+    margin-bottom: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+    .title-container-movil {
+      float: center;
+      text-align: center;
+    }
+  }

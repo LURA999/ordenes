@@ -1,11 +1,10 @@
-import { Component, OnInit, resolveForwardRef } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { FormsModule, NgForm } from '@angular/forms';
-import { UsuarioModel } from '../../Models/usuario.model'
-import { ErrorModel } from '../../Models/error.model'
-import { AuthService } from '../../Services/auth.service'
+import { Component, OnInit, Input } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { UsuarioModel } from '../../models/usuario.model'
+import { ErrorModel } from '../../models/error.model'
+import { AuthService } from '../../services/auth.service'
 import { Router } from '@angular/router';
-import { map } from 'rxjs/operators'
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-login',
@@ -20,7 +19,10 @@ export class LoginComponent implements OnInit{
   process: boolean = false;
 
   constructor( private auth: AuthService, private route: Router){
-  
+    if(localStorage['token'] != undefined){
+      route.navigate(['/home',{skipLocationChange:false}]);
+      
+    }
   }
 
   ngOnInit(){
@@ -30,33 +32,50 @@ export class LoginComponent implements OnInit{
   }
 
   public onSubmit( form:NgForm ){
-    this.cleanError();
-    this.process = true;
+    Swal.fire({
+      allowOutsideClick: false,
+      icon: 'info',
+      text: 'Cargando'
+    });
+    Swal.showLoading();
     if( form.invalid){
-      this.cleanError();
-      this.error.error=true;
-      this.process = false;
-      this.error.descripcion="Favor de llenar correctamente los campos \n";
-      return ;
+      Swal.close();
+      Swal.fire({
+        icon: 'warning',
+        text: 'Favor de proporcionar toda la informacion'
+      });
+      return;
     }
-    this.auth.login( this.usuario ).subscribe( resp=>{
+    this.auth.login( this.usuario ).subscribe((resp:any)=>{
       if(this.auth.autenticado()){
+        Swal.close();
         let obj = JSON.parse(atob(localStorage['token'].split('.')[1]));
        localStorage.setItem('name',obj.name);
        localStorage.setItem('id', obj.sub);
        localStorage.setItem('level',obj.level);
        localStorage.setItem('email',obj.email);
-       this.process = false;
+       let fechaVencimiento = new Date().getTime();
+       fechaVencimiento = fechaVencimiento + 2400000;
+       localStorage.setItem('endSeason',fechaVencimiento.toString());
+       
+      if(localStorage.getItem('level')=='4'){
+        this.route.navigateByUrl('/levantamientos');
+       }else{
         this.route.navigateByUrl('/home');
+       }
       }else{
-        this.process = false;
-        this.sesion.error=true;
-        this.sesion.descripcion="Credenciales invalidas";
+        Swal.close();
+        Swal.fire({
+          icon: 'error',
+          text: 'Credenciales invalidas'
+        });
       }
     }, (err)=>{
-      this.process = false;
-      this.sesion.error=true;
-      this.sesion.descripcion="ERR_CONNECTION_REFUSED";
+      Swal.close();
+      Swal.fire({
+        icon: 'error',
+        text: 'ERR_CONNECTION_REFUSED'
+      });
     });
  
   }

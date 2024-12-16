@@ -1,6 +1,7 @@
 <div class="container" style="background-color:white; border-radius: 0px 0px 4px 4px; padding: 20px;margin-bottom: 2%;">
     <div class="row">
-        <div class="col-md-3 ">
+
+        <div class="col-md-6 ">
             <label for="inputCliente" class="col-form-label">Cliente: </label>
             <input name="cliente" type="text" [(ngModel)]="cliente"
                 class="form-control" id="inputCliente" disabled>
@@ -23,27 +24,187 @@
             <input name="telefono" type="text" [(ngModel)]="numero"
                 class="form-control" id="telefono" disabled>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6 ">
+     
+        <div class="col-md-3 ">
             <label for="servicio" class="col-form-label">Servicio: </label>
             <input name="servicio" type="text" [(ngModel)]="servicio"
                 class="form-control" id="servicio" disabled>
         </div>
-
         <div class="col-md-3 ">
-            <label for="instalador" class="col-form-label">Instalador:</label>
-            <select class="form-control" id="instalador" name="instalador" [(ngModel)]="instalador">
-            <option *ngFor="let i of instaladores" value="{{i.cve_usuario}}">{{i.nombre}}</option>
+            <label for="ciudad" class="col-form-label">Ciudad: </label>
+            <input name="ciudad" type="text" [(ngModel)]="ciudad"
+                class="form-control" id="ciudad" disabled>
+        </div>
+        <div class="col-md-3 ">
+            <label for="fecha" class="col-form-label">Fecha Programada: </label>
+            <input name="fecha" type="text" [(ngModel)]="fechaFull"
+            class="form-control" id="fecha" disabled>
+            
+        </div>
+        <div class="col-md-12 ">
+            <label for="coordenadas" class="col-form-label">Coordenadas: </label>
+            <input name="coordenadas" type="text" [(ngModel)]="coordenadas"
+                class="form-control" id="servicio" disabled>
+        </div>
+
+       
+    </div>
+    <!-- IMPRIMIENDO INSTALADORES DE LA ORDEN-->
+    
+       
+  <div class="row">
+    <div class="col-md">
+        <label for="instalador" class="col-form-label">Instalador(es) oficial(es):</label>
+            <div class="form-control instaladores"  >
+                <span *ngFor="let i of instaladores" value="{{i.instalador}}" >
+                    <input type="checkbox" checked=true id={{i.nombre}} name={{i.nombre}} (click)= "seleccionandoInstalador(isChecked,i.instalador)" >
+                    <label for={{i.nombre}}>&nbsp;{{i.nombre}}</label><br/>
+                </span>
+                <p *ngIf="instaladores.length == 0 " class="advertencia">No hay instaladores</p>
+            </div>
+        </div>
+        <div class="col-md">
+            <label for="instalador" class="col-form-label">Selecciona un instalador:</label>
+                <div  class="form-control instaladores"  >
+                    <span *ngFor="let x of instaladoresmas" value="{{x.instalador}}2" >
+                        <input type="checkbox" id="{{x.nombre}}2" name="{{x.nombre}}2" (click)= "seleccionandoInstalador(isChecked2,x.cve_usuario)" >
+                        <label for="{{x.nombre}}2">&nbsp;{{x.nombre}}</label><br/>
+                    </span>
+                    <p *ngIf="instaladoresmas.length == 0 " class="advertencia">No hay mas instaladores</p>
+                </div>
+            </div>
+        <div >
+            <label for="instalador" class="col-form-label">Fecha programada:</label>
+            <input name="fecha" [(ngModel)]="fecha" (change)="cambioFecha($event)" class="form-control" type="date" [disabled]="nivel != 1">
+        </div>
+
+        <div class="col-md-1">
+            <label for="fecha" class="col-form-label">Horas:</label>
+            <select class="form-control" name="hora" [(ngModel)]="hh" (change)="cambioFecha($event)" [disabled]="nivel != 1">
+                <option *ngFor="let hora of horas" [value]="hora">{{hora}}</option>
+            </select>
+        </div>
+        <div >
+            <label for="fecha" class="col-form-label">Min:</label>
+            <select class="form-control" name="minutos" [(ngModel)]="mm" (change)="cambioFecha($event)"  [disabled]="nivel != 1">
+                <option  [value]="00">00</option>
+                <option  [value]="15">15</option>
+                <option  [value]="30">30</option>
+                <option  [value]="45">45</option>
             </select>
         </div>
 
+        <div class="col-md-2" style="display: block; float: left;">
+            <label for="fecha" class="col-form-label">Vehiculo:</label>
+            <select class="form-control" name="hora" (change)="cambioVehiculo($event)" [(ngModel)]="cve_vehiculo"  [disabled]="nivel != 1">
+                <option [value]="0" ></option>
+                <option  name="vehiculo" *ngFor="let v of vehiculos" [value]="v.cve_vehiculo">{{v.descripcion}}</option>
+            </select>
+        </div>
 
-
-        
     </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="descripcion" class="col-form-label">Descripción</label>
+                <textarea name="descripcion" [(ngModel)]="descripcion" id="descripcion" cols="30" rows="4"
+                    class="form-control" style="resize: none;" disabled></textarea>
+            </div>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button *ngIf="nivel == 1" class="btn btn-success" (click)="actualizarOrden()" [disabled]="modInstalador ==false && modFecha === false && modVehiculo ==false">Guardar</button>
+        </div>
+    </div>
 
 </div>
+    <div class="container" style="background-color:white; border-radius: 0px 0px 4px 4px; padding: 20px;margin-bottom: 2%;" >
+        <h3>Comentarios</h3>
+        <div class="row">
+            <table class="table table-hover table-container">
+                <thead>
+                  <tr class="">
+                    <th scope="col" >Usuario</th>
+                    <th scope="col" >Comentario</th>
+                    <th scope="col" >Fecha</th>
+                    <th scope="col" >Fotos</th>
+                  </tr>
+                </thead>
+                <tbody *ngFor="let o of comentarios">
+                    <tr>
+                      <td scope="row">{{o.nombre}}</td>
+                      <td scope="row">{{o.descripcion}}</td>
+                      <td scope="row">{{ o.fecha | date:'dd/MM/yy' }}</td>
+                      <td scope="row"><button class="btn btn-info" data-toggle="modal" data-target="#listaDocumentos" (click)="cargarDocumentos(o.cve_ordenComentario)">Ver</button></td>
+                    </tr>
+                  </tbody>
+              </table>
+        </div>
+        <div class="container text-center">
+            <span class="text-danger" *ngIf="comentarios.length == 0 " >Sin resultados</span>
+        </div>
+    </div>
+
+<div class="container" style="background-color:white; border-radius: 0px 0px 4px 4px; padding: 20px;margin-bottom: 2%;" >
+    <h3>Agregar comentario o adjunto</h3>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="comentario" class="col-form-label">Nuevo comentario</label>
+                <textarea name="comentario" id="descripcion" scols="30" rows="4"
+                    class="form-control" style="resize: none;" #nuevoComentario></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row"> 
+        <div class="col-sm-12 col-md-12">
+            <button *ngIf="estatus == 2 || estatus == 1" class="btn btn-success" (click)="agregarComentario(nuevoComentario.value)" style="margin-right: 5px;" >Agregar comentario</button>
+            <label *ngIf="estatus != 3"   class="btn btn-secondary" style="margin-top: 6px; margin-right: 5px;">
+                <input name="info[]" type="file" (change)="cargandoImagen($event.target.files)" multiple style="display: none;">
+               Adjuntar fotos</label>
+               <span *ngIf="estatus != 3">{{contDocs}} archivos seleccionados</span>
+               <button *ngIf="nivel == 4 && (estatus == 2 || estatus == 1)" class="btn btn-primary" (click)="cerrarOrden(nuevoComentario.value)" >Cerrar orden</button>           
+        </div>
+    </div>
+</div>
+
+<!-- Modal documentos -->
+<div class="modal fade  bd-example-modal-lg" id="listaDocumentos" tabindex="-1" role="dialog" aria-labelledby="listaDocumentos" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Documentos adjuntos al comentario</h5>
+          </div>
+        <div class="modal-body">
+            <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let o of documentos">
+                    <td>{{o.nombre_documento}}</td>
+                    <td><button class="btn  btn-info" data-toggle="modal" data-target="#foto" (click)="cargarImagen(o.nombre_documento)">ver</button></td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal documentos -->
+<div class="modal fade  bd-example-modal-lg" id="foto" tabindex="-1" role="dialog" aria-labelledby="foto" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+            <img [src]="imagen" style="max-width: 500px;max-height: 800px;">
+        </div>
+      </div>
+    </div>
+  </div>

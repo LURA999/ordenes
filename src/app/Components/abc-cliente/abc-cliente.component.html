@@ -1,0 +1,111 @@
+<app-navbar></app-navbar>
+
+<div class="text-center" style="padding: 10px; width: 90%;">
+    <div class="row">
+        <div class="col-md-10 text-left">
+            <h3>Nuevo cliente</h3>
+        </div>
+    </div>
+</div>
+<div class="container table-container">
+    <form [formGroup]="formaCliente" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Generales</h4>
+            </div>
+        </div>
+        <div class="row" style="padding-bottom: 10px;">
+                <div class="col-md-6">
+                    <label for="nombre">Nombre:</label>
+                    <input class="form-control"
+                    [class.is-invalid]="formaCliente.controls['nombre'].touched && !formaCliente.controls['nombre'].valid" 
+                    type="text" id="nombre" formControlName="nombre">
+                </div>
+                <div class="col-md-3">
+                    <label for="rfc">*RFC:</label>
+                    <input class="form-control" type="text" id="rfc" formControlName="rfc">
+                </div>
+                <div class="col-md-3">
+                    <label for="dueno">*Dueño:</label>
+                    <input class="form-control" type="text" id="dueno" formControlName="dueno">
+                </div>
+        </div>
+        <div class="row" style="padding-bottom: 10px;">
+            <hr size="2" width="100%">
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Ubicación</h4>
+            </div>
+        </div>
+        <div class="row" style="padding-bottom: 10px;">
+            <div class="col-md-3">
+                <label for="estado">Estado:</label>
+                <input class="form-control" 
+                [class.is-invalid]="formaCliente.controls['estado'].touched && !formaCliente.controls['estado'].valid" 
+                type="text" id="estado" formControlName="estado">
+            </div>
+                <div class="col-md-3">
+                    <label for="ciudad">Ciudad:</label>
+                    <input class="form-control" 
+                    [class.is-invalid]="formaCliente.controls['ciudad'].touched && !formaCliente.controls['ciudad'].valid"
+                    type="text" id="ciudad" formControlName="ciudad">
+                </div>
+                <div class="col-md-3">
+                    <label for="colonia">Colonia:</label>
+                    <input class="form-control" 
+                    [class.is-invalid]="formaCliente.controls['colonia'].touched && !formaCliente.controls['colonia'].valid"
+                    type="text" id="colonia" formControlName="colonia">
+                </div>
+                <div class="col-md-3">
+                    <label for="calle">Calle:</label>
+                    <input class="form-control" 
+                    [class.is-invalid]="formaCliente.controls['calle'].touched && !formaCliente.controls['calle'].valid"
+                    type="text" id="calle" formControlName="calle">
+                </div>
+                <div class="col-md-2">
+                    <label for="numero">Numero:</label>
+                    <input class="form-control" 
+                    [class.is-invalid]="formaCliente.controls['numero'].touched && !formaCliente.controls['numero'].valid"
+                    type="text" id="numero" formControlName="numero">
+                </div>
+                <div class="col-md-2">
+                    <label for="cp ">CP:</label>
+                    <input class="form-control" 
+                    [class.is-invalid]="formaCliente.controls['codigoPostal'].touched && !formaCliente.controls['codigoPostal'].valid"
+                    type="text" id="cp" formControlName="codigoPostal">
+                </div>
+        </div>
+        <div class="row" style="padding-bottom: 10px;">
+            <hr size="2" width="100%">
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Internos</h4>
+            </div>
+        </div>
+        <div class="row" style="padding-bottom: 10px;">
+            <div class="col-md-3">
+                <label for="vendedor">Vendedor:</label>
+                <input class="form-control" 
+                [class.is-invalid]="formaCliente.controls['vendedor'].touched && !formaCliente.controls['vendedor'].valid"
+                type="text" id="vendedor" formControlName="vendedor">
+            </div>
+            <div class="col-md-3">
+                <label for="encargado">Encargado interno:</label>
+                <input class="form-control"
+                [class.is-invalid]="formaCliente.controls['encargado'].touched && !formaCliente.controls['encargado'].valid"
+                type="text" id="encargado" formControlName="encargado">
+            </div>
+        </div>  
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <div class="form-group">
+                    <button type="submit" style="margin-right:5px;" class="btn btn-success"  [disabled]="!formaCliente.valid">Aceptar</button>
+                    <button class="btn btn-danger">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+

@@ -1,12 +1,19 @@
+.roboto-font{
+    font-family: 'Roboto', sans-serif;
+}
 .table-container{
-    border-radius: 8px;
     background-color: white;
     padding-bottom: 10px;
     margin-bottom: 20px;
+    box-shadow: gainsboro 2px 2px;
 }
 
 @media only screen and (max-width: 900px) {
     .hidden-small{
         display: none;
     }
+}
+
+.cantidad{
+    text-align: center;
 }

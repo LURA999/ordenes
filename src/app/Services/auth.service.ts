@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { UsuarioModel } from '../Models/usuario.model';
+import { UsuarioModel } from '../models/usuario.model';
 import { map } from 'rxjs/operators'
 
 @Injectable({
@@ -18,7 +18,12 @@ export class AuthService {
 
   //Loggear usuario
   login (usuario:UsuarioModel){
-    return this.http.get('http://localhost/Login.php?user='+ usuario.email +'&contrasena=' + usuario.password
+    //var local='';
+    var   local='http://localhost';
+
+  
+ //   return this.http.get('http://localhost/xampp/API3.1/Login.php?user=brandon@red-7.net&contrasena=123456'
+    return this.http.get(local+'/API3.1/Login.php?user='+ usuario.email +'&contrasena=' + usuario.password
     ).pipe( map( resp =>{
       if(resp["error"] == false){
         this.saveToken( resp['token']);
@@ -53,7 +58,7 @@ export class AuthService {
       if(!localStorage['token']){ return false }else{return true} ;
   }
 
-  actualiarUltimoInicio(){
+  revisarVigenciaToken(){
     
   }
 }

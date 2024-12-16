@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-import { OrdenService } from '../../Services/orden.service'
-import { ThrowStmt } from '@angular/compiler';
+import { OrdenService } from '../../services/orden.service'
+
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -12,8 +11,10 @@ import { ThrowStmt } from '@angular/compiler';
 })
 export class ListaOrdenesComponent {
 
+  contador : number=0; 
   ordenes: any[] = [];
   ordenesMostrar: any[] = [];
+  ordenesMostrar2 = new Array(6);
   estatus: number;
   fechaInicio: Date;
   fechaFin: Date;
@@ -24,49 +25,118 @@ export class ListaOrdenesComponent {
   actualPage: number;
   lastElement: number;
   currentElement: number;
+  instaladores: any []= [];
+  nombre:String="";
+  nombre2:String="";
+  instaOrd:number;
+  c:number=0;
+  norepetir:number=0;
+  nivel : number = localStorage['level'];
 
-  constructor(private http: HttpClient, private ordenServ: OrdenService) {
+
+
+  constructor( private ordenServ: OrdenService) {
     this.estatus = 0;
     this.populate();
   }
 
-  populate() {
+
+  populate() {  
     this.ordenServ.getAllOrders(this.estatus).subscribe((response: any) => {
       this.ordenes = response;
       this.paginar(this.ordenes);
+      this.llamarOrden();
+
     });
+
+  }
+
+  contar(){
+    this.c = this.c+1;
+  }
+
+   llamarOrden(){
+     for (let i = 0; i < this.ordenes.length; i++) {
+     this.ordenServ.selectListaInstaldoresOrden(this.ordenes[i].cve_orden).subscribe((Response :any)=>{
+       for(let x =0; x<Response.length; x++){
+        this.instaladores.push(Response[x]);
+       }
+      });
+
+     }
+
+  }
+  cantidad(cve:number){
+   var c=0;
+   var salir =false;
+
+    while( salir == false && this.instaladores.length > c){
+      if(this.instaladores[c].orden === cve){
+        salir = true;
+        return "Hay "+this.instaladores[c].cantidad +" instalador(es)";
+      }
+      c++;
+    }
+    return "No hay asignado";
+
+}
+
+  reiniciar(){
+    this.c = 0;
+  }
+
+  ngOnInit(): void {
+
   }
 
   filtrar() {
-    if (this.estatus != undefined && this.fechaInicio != undefined && this.fechaFin != undefined) {
-
+    if (this.estatus != undefined && this.fechaInicio != undefined && this.fechaFin != undefined ) {
       if (this.fechaInicio > this.fechaFin) {
         alert("La fecha de inicio no puede ser mayor a la fecha final.");
       } else {
+        if( !(""+this.fechaFin === "") && !(""+this.fechaInicio === "")){
         this.ordenServ.getOrdersFilter(this.fechaInicio, this.fechaFin, this.estatus).subscribe((response: any) => {
-          this.ordenes = response;
-          this.paginar(this.ordenes);
-        });
+            this.ordenes = response;
+            this.ordenesMostrar = [];
+            this.paginar(this.ordenes);
+
+          });
+      }else{
+          this.ordenServ.getAllOrders(this.estatus).subscribe((response: any) => {
+            this.ordenes = response;
+            this.ordenesMostrar = [];
+            this.paginar(this.ordenes);
+
+          });
+      
+        }
       }
-    }else{
-      if (this.estatus != undefined) {
+      }else{
         this.ordenServ.getAllOrders(this.estatus).subscribe((response: any) => {
           this.ordenes = response;
+          this.ordenesMostrar = [];
           this.paginar(this.ordenes);
+
         });
       }
     }
 
-  }
 
-  borrar(cve_orden: string) {
-    var confirmacion = confirm("¿Desea eliminar la orden?",);
-    if (confirmacion) {
-      this.ordenServ.delete(cve_orden).subscribe((response: any) => {
+   borrar(cve_orden : number){
+    Swal.fire({
+      icon: 'question',
+      title: '¿Esta seguro de eliminar la orden?',
+      showConfirmButton: true,
+      confirmButtonText: 'Confirmar',
+      showDenyButton: true,
+      denyButtonText: 'Cancelar'
+    }).then((result)=>{
+      if(result.isConfirmed){
+     this.ordenServ.delete(cve_orden).subscribe((resp:any)=>{
         window.location.reload();
-      });
+     });
     }
-
+    });
   }
 
   paginar(arreglo:any[]){
@@ -119,6 +189,26 @@ export class ListaOrdenesComponent {
     }
   }
 
+  public previo(){
+      this.actualPage -= 1;
+      this.btnNext = true;
+      if(this.actualPage == 1){
+        this.ordenesMostrar = [];
+        this.btnPrev = false;
+        for(let i = 0; i<=9; i++){
+          this.ordenesMostrar.push(this.ordenes[i]);
+          this.currentElement = i ;
+        }
+      }else{
+        this.currentElement = this.currentElement - (this.ordenesMostrar.length+10);
+        this.ordenesMostrar = [];
+        for(let i = 0; i<=9; i++){
+          this.ordenesMostrar.push(this.ordenes[this.currentElement+1]);
+          this.currentElement ++;
+        }
+      }
+
+  }
 
 }
 

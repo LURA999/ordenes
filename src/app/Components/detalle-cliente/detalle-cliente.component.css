@@ -1,0 +1,28 @@
+.table-container {
+    background-color: white;
+    box-shadow: gainsboro 2px 2px;
+    align-items: center;
+    justify-content: center;
+    min-height: 10vh;
+    width: 90%;
+    margin:auto;
+    padding-left: 15px;
+    margin-bottom: 10px;
+}
+
+.title-container{
+    padding: 15px; width: 100%; 
+    margin-bottom: 10px;
+}
+
+.roboto-font{
+  font-family: 'Roboto', sans-serif;
+}
+
+@media only screen and (max-width: 600px) {
+    .title-container-movil {
+      float: center;
+      text-align: center;
+    }
+  }
+

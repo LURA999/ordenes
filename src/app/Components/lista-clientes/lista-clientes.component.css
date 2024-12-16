@@ -1,0 +1,19 @@
+.table-container{
+    background-color: white;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    box-shadow: gainsboro 2px 2px;
+}
+
+.title-container{
+    padding: 15px; 
+    width: 90%; 
+    margin-bottom: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+    .title-container-movil {
+      float: center;
+      text-align: center;
+    }
+  }

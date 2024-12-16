@@ -1,1 +1,41 @@
-<p>lista-clientes works!</p>
+<app-navbar></app-navbar>
+
+<div class="container title-container">
+  <div class="row">
+      <div class="col-sm-10 title-container-movil">
+        <h3>Clientes</h3>
+      </div>
+    <div class="col-sm-1 title-container-movil">
+      <button [routerLink]="['/clientes/abcCliente/agregar']" class="btn btn-success">Agregar</button>
+    </div>
+  </div>
+</div>
+  <div class="container" >
+    <table class="table table-hover table-container" id="ordenes" >
+      <thead>
+        <tr>
+          <th scope="col">Clave</th>
+          <th class="hidden-small" scope="col"><input #cliente type="text" class="form-control" placeholder="Nombre"
+              (keyup)="buscar(cliente.value)"></th>
+          <th class="hidden-small" scope="col">Opciones</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let c of clientesMostrar">
+        <th>{{c.idprospecto}}</th>
+        <td>{{c.nombre}}</td>
+        <td><button [routerLink]="['/clientes', c.idprospecto]" class="btn btn-primary"> Editar</button></td>
+      </tbody>
+    </table>
+    <div class="row" *ngIf="clientes.length > 0 ">
+      <div class="col-md-12 text-center">
+        <button class="btn btn-primary" [disabled]="!btnPrev" (click)="previo()"> Anterior</button>
+        <span style="margin-left: 10px; margin-right: 10px;">{{actualPage}} de {{totalPages}}</span>
+        <button class="btn btn-primary" [disabled]="!btnNext" (click)="siguiente()">Siguiente</button>
+      </div>
+    </div>
+
+    <div class="container text-center">
+      <span class="text-danger" *ngIf="clientes.length == 0 ">Sin resultados</span>
+    </div>
+  </div>
+  
